@@ -1,0 +1,38 @@
+<%-include ('partials/header.ejs')%>
+<%-include ('partials/navbar.ejs')%>
+<!-- ======= Hero Section ======= -->
+<section id="hero" class="d-flex align-items-center" style="height:100%;padding-bottom:0;">
+    <!-- https://stackoverflow.com/questions/16244821/how-to-stop-sticky-footer-from-covering-content -->
+    <div class="container" data-aos="zoom-out" data-aos-delay="100">
+        <h1 class="mt-4">Manage Council</h1>
+        <hr>
+        <h1 class="mt-4">System Administrators</h1>
+        <div class="card-group">
+            <% sysAds.forEach( person => { %>
+                <%-include ('partials/roleCard.ejs', {person: person})%>
+            <% }) %>
+        </div>
+        <hr>
+        <h1 class="mt-4">Application Administrators</h1>
+        <div class="card-group">
+            <% appAds.forEach( person => { %>
+                <%-include ('partials/roleCard.ejs', {person: person})%>
+            <% }) %>
+        </div>
+        <hr>
+        <h1 class="mt-4">Council Advisors</h1>
+        <div class="card-group">
+            <% couAdv.forEach( person => { %>
+                <%-include ('partials/roleCard.ejs', {person: person})%>
+            <% }) %>
+        </div>
+        <hr>
+        <h1 class="mt-4">Application Administrators</h1>
+        <div class="card-group">
+            <% couOff.forEach( person => { %>
+                <%-include ('partials/roleCard.ejs', {person: person})%>
+            <% }) %>
+        </div>
+        <hr>
+</section>
+<%-include ('partials/footer.ejs')%>
