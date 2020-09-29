@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const ejs = require('ejs');
-const site=" | Red Cross Youth Chapter";
+const site=" | Red Cross Youth Cebu Chapter";
 
 app.use(express.static("public"));
 
@@ -25,7 +25,7 @@ app.get('/members', (req,res)=>{
         {name: "Kushina Anna", pic: "http://imgur.com/5Pz32yG.jpg", id:5}
     ];
     // console.log(ads);
-    res.render('members', {
+    res.render('members',{
         title: "Members" + site,
         sysAds: ads,
         appAds: ads,
@@ -40,24 +40,25 @@ app.get('/login', (req,res)=>{
 
 app.get('/signup', (req,res)=>{
     res.render('signup', {title: "Sign Up" + site});
+    //I think it's better if an admin makes the accounts, pina ISMIS.
 });
 
 app.get('/about', (req,res)=>{
     res.render('about', {title: "About" + site});
 });
 app.get('/home', (req,res)=>{
-    res.render('home');
+    res.render('home',{title: "Home" + site});
 });
 
 app.get('/officerActivity', (req,res) =>{
-    res.render('officerActivity');
+    res.render('officerActivity',{title: "Officers Activity" + site});
 });
 
 app.get('/adminActivity', (req,res) =>{
-    res.render('adminActivity');
+    res.render('adminActivity',{title: "Admin Activity" + site});
 });
 
 app.get('/activityForm', (req,res)=>{
-    res.render('addReport');
+    res.render('addReport',{title: "Activity Form" + site});
 });
 app.listen(3000);
