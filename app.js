@@ -6,11 +6,6 @@ app.use(express.static("public"));
 
 app.set('view engine', 'ejs');
 
-conn.connect((err) => {
-    if (err) throw err;
-    console.log("Connected");
-})
-
 app.get('/', (req,res)=>{
     res.render('index', {title: "Home"});
 });
