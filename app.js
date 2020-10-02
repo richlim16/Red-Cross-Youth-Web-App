@@ -1,21 +1,6 @@
 const express = require('express');
 const app = express();
 const ejs = require('ejs');
-<<<<<<< Updated upstream
-const site=" | Red Cross Youth Cebu Chapter";
-=======
-const mysql= require('mysql');
-const bodyParser = require('body-parser');
-const urlencodedParser= bodyParser.urlencoded({extended: false});
-const path = require('path');
-
-const conn=mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "anilist"
-});
->>>>>>> Stashed changes
 
 app.use(express.static("public"));
 
@@ -27,8 +12,7 @@ conn.connect((err) => {
 })
 
 app.get('/', (req,res)=>{
-
-    res.render('index', {title: "Home" + site});
+    res.render('index', {title: "Home"});
 });
 
 app.get('/members', (req,res)=>{
@@ -45,7 +29,7 @@ app.get('/members', (req,res)=>{
     ];
     // console.log(ads);
     res.render('members',{
-        title: "Members" + site,
+        title: "Members",
         sysAds: ads,
         appAds: ads,
         couAdv: ads2,
@@ -54,30 +38,35 @@ app.get('/members', (req,res)=>{
 });
 
 app.get('/login', (req,res)=>{
-    res.render('login', {title: "Login" + site});
+    res.render('login', {title: "Login"});
 });
 
 app.get('/signup', (req,res)=>{
-    res.render('signup', {title: "Sign Up" + site});
+    res.render('signup', {title: "Sign Up"});
     //I think it's better if an admin makes the accounts, pina ISMIS.
 });
 
 app.get('/about', (req,res)=>{
-    res.render('about', {title: "About" + site});
+    res.render('about', {title: "About"});
 });
 app.get('/home', (req,res)=>{
-    res.render('home',{title: "Home" + site});
+    res.render('home',{title: "Home"});
 });
 
 app.get('/officerActivity', (req,res) =>{
-    res.render('officerActivity',{title: "Officers Activity" + site});
+    res.render('officerActivity',{title: "Officers Activity"});
 });
 
 app.get('/adminActivity', (req,res) =>{
-    res.render('adminActivity',{title: "Admin Activity" + site});
+    res.render('adminActivity',{title: "Admin Activity"});
 });
 
 app.get('/activityForm', (req,res)=>{
-    res.render('addReport',{title: "Activity Form" + site});
+    res.render('addReport',{title: "Activity Form"});
 });
+
+app.get('/docs', (req,res)=>{
+    res.render('docs', {title: "Documents"});
+});
+
 app.listen(3000);
