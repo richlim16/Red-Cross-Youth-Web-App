@@ -3,6 +3,18 @@ const app = express();
 const ejs = require('ejs');
 <<<<<<< Updated upstream
 const site=" | Red Cross Youth Cebu Chapter";
+=======
+const mysql= require('mysql');
+const bodyParser = require('body-parser');
+const urlencodedParser= bodyParser.urlencoded({extended: false});
+const path = require('path');
+
+const conn=mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "anilist"
+});
 >>>>>>> Stashed changes
 
 app.use(express.static("public"));
