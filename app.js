@@ -1,11 +1,18 @@
 const express = require('express');
 const app = express();
 const ejs = require('ejs');
+<<<<<<< Updated upstream
 const site=" | Red Cross Youth Cebu Chapter";
+>>>>>>> Stashed changes
 
 app.use(express.static("public"));
 
 app.set('view engine', 'ejs');
+
+conn.connect((err) => {
+    if (err) throw err;
+    console.log("Connected");
+})
 
 app.get('/', (req,res)=>{
 
