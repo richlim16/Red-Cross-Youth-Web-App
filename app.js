@@ -1,13 +1,12 @@
-const express = require('express');
-const app = express();
-const ejs = require('ejs');
-
+const port=3000;
+const express=require('express');
+const app=express();
+const ejs=require('ejs');
 app.use(express.static("public"));
-
 app.set('view engine', 'ejs');
 
 app.get('/', (req,res)=>{
-    res.render('index', {title: "Home"});
+    res.render('home', {title: "Home"});
 });
 
 app.get('/members', (req,res)=>{
@@ -64,4 +63,6 @@ app.get('/docs', (req,res)=>{
     res.render('docs', {title: "Documents"});
 });
 
-app.listen(3000);
+app.listen(port,()=>{
+    console.log('Server is running!');
+});
