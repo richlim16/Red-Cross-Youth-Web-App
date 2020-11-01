@@ -64,6 +64,22 @@ app.get('/activityForm', (req,res)=>{
     res.render('addReport',{title: "Activity Form"});
 });
 
+app.get('/membershipForm', (req,res)=>{
+    res.render('membershipForm',{title: "Membership Form"});
+});
+
+app.get('/committeeMembershipForm', (req,res)=>{
+    res.render('committeeMembershipForm',{title: "Committee Membership Form"});
+});
+
+app.get('/activityRequestForm', (req,res)=>{
+    res.render('activityRequestForm',{title: "Activity Request Form"});
+});
+
+app.get('/activityReportForm', (req,res)=>{
+    res.render('activityReportForm',{title: "Activity Report Form"});
+});
+
 app.get('/docs', (req,res)=>{
     res.render('docs', {title: "Documents"});
 });
