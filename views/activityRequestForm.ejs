@@ -1,0 +1,186 @@
+<%-include ("partials/header.ejs") %> 
+<%-include ("partials/formsNav.ejs") %> 
+
+
+<!-- ======= Breadcrumbs ======= -->
+<section class="breadcrumbs">
+    <div class="container">
+
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>ACTIVITY FORM</h2>
+        <ol>
+          <li><a href="index.html">Back To Activity Page</a></li>
+          <li>Adding Report</li>
+        </ol>
+      </div>
+
+    </div>
+  </section><!-- End Breadcrumbs -->
+
+  <section class="inner-page">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 order-md-1">
+        <form class="needs-validation" novalidate="" action="/act/add" method="post">
+          
+          <div class="row d-flex mb-4">
+            <div class="col-md-8">
+              <label for="committee">Council</label>
+              <select type="text" class="form-control" name="committee" value="" required="">
+                <option></option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label for="dateFiled">Date Filed:</label>
+              <input type="date" class="form-control" name="dateFiled" placeholder="" value="" required="">
+            </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-md-8">
+              <label for="filedby">Filed by</label>
+              <input type="text" class="form-control" name="filedby" placeholder="Filed by:" value="" required="">
+            </div>
+            <div class="col-md-4">
+              <label for="position">Position</label>
+              <input type="text" class="form-control" name="position" placeholder="Position" value="" required="">
+            </div>
+          </div>
+
+          <div class="form-group mb-4">
+            <label for="objectives">Objectives</label>
+            <textarea class="form-control" name="objectives" rows="5"></textarea>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-md-2">
+              <label for="date">Date</label>
+              <input type="date" class="form-control" name="date" value="" required="">
+            </div>
+            <div class="col-md-2">
+              <label for="startTime">Start Time</label>
+              <input type="time" class="form-control" name="startTime" value="" required="">
+            </div>
+            <div class="col-md-2">
+              <label for="endTime">End Time</label>
+              <input type="time" class="form-control" name="endTime" value="" required="">
+            </div>
+            <div class="col-md-6">
+              <label for="venue">Venue</label>
+              <input type="text" class="form-control" name="venue" placeholder="Venue" value="" required="">
+            </div>
+          </div>
+
+          <div class="form-group mb-4">
+            <label for="components">Participating Components</label>
+            <textarea class="form-control" name="components" rows="5"></textarea>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-md-3">
+              <label for="rcys">Number of RCYs involved</label>
+              <input type="number" class="form-control" name="rcys" placeholder="" value="" required="">
+            </div>
+          </div>
+
+          <label for="committeesList">Commitee/s Involved</label>
+          <div id="committeesList" name="committeesList">
+            <div id="committee" class="row col-md-6 mb-2">
+              <select type="text" class="form-control" value="" required="">
+                <option></option>
+              </select>
+            </div>
+          </div>
+          <svg id="addCommittee" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+          </svg>
+        
+          <div class="mt-4 mb-5">
+            <label for="chairList">Commitee Chairperson/s</label>
+            <div id="chairList" class="mb-5" name="chairList">
+              automatic fill when Committee is selected
+            </div>
+          </div>
+
+
+
+
+         <h6 class="mt-5">Submitted by: </h6>
+          <div class="row mb-3 text-center">
+            <div class="col-md-6 mt-5">
+              <h5 name="councilPres" id="councilPres"></h5>
+              <hr class="my-1">  
+              <p>Council President</p>
+            </div>
+            <div class="col-md-6 mt-5">
+              <h5 name="councilAdv" id="councilAdv"></h5>
+              <hr class="my-1">  
+              <p>Council Adviser</p>
+            </div>
+          </div>
+
+          <h6>Noted by: </h6>
+          <div class="row mb-4 text-center">
+            <div class="col-md-6 mt-5">
+              <h5 name="cycChair" id="cycChair"></h5>
+              <hr class="my-1">  
+              <p>CYC Chairperson</p>
+            </div>
+            <div class="col-md-6 mt-5">
+              <h5 name="cycPres" id="cycPres"></h5>
+              <hr class="my-1">  
+              <p>CYC President</p>
+            </div>
+          </div>
+
+          <div class="row mb-1 d-flex justify-content-end">
+            <div class="col-md-6">
+              <label for="receivedBy">Received by:</label>
+              <select type="text" class="form-control" name="receivedBy" value="" required="">
+                <option></option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-4 d-flex justify-content-end">
+            <div class="col-md-6">
+              <label for="dateReceived">Date Received:</label>
+              <input type="date" class="form-control" name="dateReceived" placeholder="" value="" required="">
+            </div>
+          </div>
+          
+          <h6>Recommending Approval: </h6>
+          <div class="row mb-3 text-center">
+            <div class="col-md-6 mt-5">
+              <h5 name="chapterRep" id="chapterRep"></h5>
+              <hr class="my-1">  
+              <p class="mb-1">Chapter Service Representative</p>
+              <p>Red Cross Youth</p>
+            </div>
+          </div>
+
+          <div class="row mb-5 d-flex justify-content-center">
+            <div class="col"></div>
+            <div class="col-md-6">
+              <h6>Approved by: </h6>
+              <div class="mt-5 text-center">
+                <h5 name="chapterAdmin" id="chapterAdmin"></h5>
+                <hr class="my-1">  
+                <p class="mb-1">Chapter Administrator</p>
+              </div>
+            </div>
+            <div class="col"></div>   
+          </div>
+
+
+          <hr class="mb-4">        
+          <button type='submit' class="btn btn-danger btn-lg btn-block text-white">Post</button>        
+        </form>
+          <a href="activities.php">Back</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<%-include ('partials/footer.ejs') %> 

@@ -1,0 +1,163 @@
+<%-include ("partials/header.ejs") %> 
+<%-include ("partials/formsNav.ejs") %> 
+
+
+<!-- ======= Breadcrumbs ======= -->
+<section class="breadcrumbs">
+    <div class="container">
+
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>ACTIVITY REPORT FORM</h2>
+        <ol>
+          <li><a href="index.html">Back To Activity Page</a></li>
+          <li>Adding Report</li>
+        </ol>
+      </div>
+
+    </div>
+  </section><!-- End Breadcrumbs -->
+
+  <section class="inner-page">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 order-md-1">
+        <form class="needs-validation" novalidate="" action="/act/add" method="post">
+          
+          <div class="row d-flex mb-4">
+            <div class="col-md">
+              <label for="committee">Council</label>
+              <select type="text" class="form-control" name="committee" value="" required="">
+                <option></option>
+              </select>
+            </div>
+            <div class="col-md">
+              <label for="activity">Name of Activity</label>
+              <select type="text" class="form-control" name="activity" value="" required="">
+                <option></option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-md-2">
+              <label for="date">Date</label>
+              automatic fill when Name of Activity is selected
+            </div>
+            <div class="col-md-2">
+              <label for="startTime">Start Time</label>
+              automatic fill when Name of Activity is selected
+            </div>
+            <div class="col-md-2">
+              <label for="endTime">End Time</label>
+              automatic fill when Name of Activity is selected
+            </div>
+            <div class="col-md-6">
+              <label for="venue">Venue</label>
+              automatic fill when Name of Activity is selected
+            </div>
+          </div>
+
+          <div class="form-group mb-4">
+            <label for="components">Components who Participated</label>
+            automatic fill when Name of Activity is selected
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-md-6">
+              <label for="resourcePerson">Resource Person Invited (Outside of council)</label>
+              <input type="text" class="form-control" name="resourcePerson" placeholder="Resource Person" value="" required="">
+            </div>
+            <div class="col-md-6">
+              <label for="cycRep">CYC Representative</label>
+              <input type="text" class="form-control" name="cycRep" placeholder="CYC Representative" value="" required="">
+            </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col-md-2">
+              <label for="participants">No. of Participants</label>
+              <input type="number" class="form-control" name="participants" placeholder="" value="" required="">
+            </div>
+            <div class="col-md-2">
+              <label for="beneficiaries">No. of Recipients/Beneficiaries</label>
+              <input type="number" class="form-control" name="beneficiaries" placeholder="" value="" required="">
+            </div>
+          </div>
+
+          <label for="committeesList">Commitee/s Involved</label>
+          <div id="committeesList" class="mb-4" name="committeesList">
+            <div id="committee" class="row col-md-6 mb-2">
+              automatic fill when Name of Activity is selected
+            </div>
+          </div>
+
+          <label for="chairList">Commitee Chairperson/s</label>
+          <div id="chairList" class="mb-5" name="chairList">
+            automatic fill when Name of Activity is selected
+          </div>
+
+          <div class="form-group mb-4">
+            <label for="output">Output</label>
+            <textarea class="form-control" name="output" rows="2"></textarea>
+          </div>
+
+          <div class="form-group mb-4">
+            <label for="report">Narrative Report: (Include description of activity, evaluation, comments & suggestion)</label>
+            <textarea class="form-control" name="report" rows="12"></textarea>
+          </div>
+
+
+
+         
+          <div class="row mb-3 mt-5">
+            <div class="col-md-6">
+              <h6>Submitted by: </h6>
+              <div class="mt-4 text-center">
+                <h5 name="councilPres" id="councilPres"></h5>
+                <hr class="my-1">  
+                <p>Council President</p>
+              </div>
+              
+            </div>
+            <div class="col-md-6">
+              <h6>Noted by: </h6>
+              <div class="mt-4 text-center">
+                <h5 name="councilAdv" id="councilAdv"></h5>
+                <hr class="my-1">  
+                <p>Council Adviser</p>
+              </div>
+            </div>           
+          </div> 
+
+          <div class="row mb-1 d-flex justify-content-end">
+            <div class="col-md-6">
+              <label for="receivedBy">Received by:</label>
+              <select type="text" class="form-control" name="receivedBy" value="" required="">
+                <option></option>
+              </select>
+            </div>
+          </div>
+          <div class="row mb-4 d-flex justify-content-end">
+            <div class="col-md-3">
+              <label for="dateReceived">Date:</label>
+              <input type="date" class="form-control" name="dateReceived" placeholder="" value="" required="">
+            </div>
+            <div class="col-md-3">
+              <label for="timeReceived">Time:</label>
+              <input type="time" class="form-control" name="timeReceived" placeholder="" value="" required="">
+            </div>
+          </div>
+
+
+
+          <hr class="mb-4">        
+          <button type='submit' class="btn btn-danger btn-lg btn-block text-white">Post</button>        
+        </form>
+          <a href="activities.php">Back</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<%-include ('partials/footer.ejs') %> 
