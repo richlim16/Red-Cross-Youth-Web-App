@@ -1,7 +1,9 @@
 const port=3000;
-const express=require('express');
-const app=express();
-const ejs=require('ejs');
+const express = require('express');
+const app = express();
+const ejs = require('ejs');
+
+
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 
@@ -43,9 +45,6 @@ app.get('/signup', (req,res)=>{
 app.get('/about', (req,res)=>{
     res.render('about', {title: "About"});
 });
-app.get('/home', (req,res)=>{
-    res.render('home',{title: "Home"});
-});
 
 app.get('/officerActivity', (req,res) =>{
     res.render('officerActivity',{title: "Officers Activity"});
@@ -54,15 +53,56 @@ app.get('/officerActivity', (req,res) =>{
 app.get('/adminActivity', (req,res) =>{
     res.render('adminActivity',{title: "Admin Activity"});
 });
+//DOCUMENTS START HERE
+app.get('/docs', (req,res)=>{
+    res.render('docs', {title: "Documents"});
+});
+
+app.get('/addReport', (req,res)=>{
+    res.render('addReport', {title: "Add Report"});
+});
 
 app.get('/activityForm', (req,res)=>{
     res.render('addReport',{title: "Activity Form"});
 });
 
-app.get('/docs', (req,res)=>{
-    res.render('docs', {title: "Documents"});
+app.get('/membershipForm', (req,res)=>{
+    res.render('membershipForm',{title: "Membership Form"});
+});
+
+app.get('/committeeMembershipForm', (req,res)=>{
+    res.render('committeeMembershipForm',{title: "Committee Membership Form"});
+});
+
+app.get('/activityRequestForm', (req,res)=>{
+    res.render('activityRequestForm',{title: "Activity Request Form"});
+});
+
+app.get('/activityReportForm', (req,res)=>{
+    res.render('activityReportForm',{title: "Activity Report Form"});
+});
+
+app.get('/unifRequest', (req,res)=>{
+    res.render('uniformRequest', {title: "Uniform Request"});
+});
+
+app.get('/unifClaim', (req,res)=>{
+    res.render('uniformClaimSlip', {title: "Uniform Claim Slip"});
+});
+
+app.get('/serviceReq', (req,res)=>{
+    res.render('serviceRequest', {title: "Service Request Form"});
+});
+//DOCUMENTS END HERE
+
+app.get('/admin',(req,res)=>{
+    res.render('adminHome');
+});
+
+app.get('/adminProfile',(req,res)=>{
+    res.render('adminEditProf');
 });
 
 app.listen(port,()=>{
-    console.log('Server is running!');
+    console.log("Server is running");
 });
