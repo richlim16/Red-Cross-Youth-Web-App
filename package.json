@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
   "name": "redcross",
   "version": "1.0.0",
@@ -15,3 +16,25 @@
     "mysql": "^2.18.1"
   }
 }
+=======
+{
+  "name": "redcross",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.3.5",
+    "sequelize-cli": "^6.2.0"
+  }
+}
+>>>>>>> e3dfaa847c6927ab98f90e7179e097726e9cde32

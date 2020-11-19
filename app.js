@@ -1,13 +1,14 @@
+const port=3000;
 const express = require('express');
 const app = express();
 const ejs = require('ejs');
 
-app.use(express.static("public"));
 
+app.use(express.static("public"));
 app.set('view engine', 'ejs');
 
 app.get('/', (req,res)=>{
-    res.render('index', {title: "Home"});
+    res.render('home', {title: "Home"});
 });
 
 app.get('/members', (req,res)=>{
@@ -44,9 +45,6 @@ app.get('/signup', (req,res)=>{
 app.get('/about', (req,res)=>{
     res.render('about', {title: "About"});
 });
-app.get('/home', (req,res)=>{
-    res.render('home',{title: "Home"});
-});
 
 app.get('/officerActivity', (req,res) =>{
     res.render('officerActivity',{title: "Officers Activity"});
@@ -54,6 +52,10 @@ app.get('/officerActivity', (req,res) =>{
 
 app.get('/adminActivity', (req,res) =>{
     res.render('adminActivity',{title: "Admin Activity"});
+});
+//DOCUMENTS START HERE
+app.get('/docs', (req,res)=>{
+    res.render('docs', {title: "Documents"});
 });
 
 app.get('/addReport', (req,res)=>{
@@ -80,9 +82,18 @@ app.get('/activityReportForm', (req,res)=>{
     res.render('activityReportForm',{title: "Activity Report Form"});
 });
 
-app.get('/docs', (req,res)=>{
-    res.render('docs', {title: "Documents"});
+app.get('/unifRequest', (req,res)=>{
+    res.render('uniformRequest', {title: "Uniform Request"});
 });
+
+app.get('/unifClaim', (req,res)=>{
+    res.render('uniformClaimSlip', {title: "Uniform Claim Slip"});
+});
+
+app.get('/serviceReq', (req,res)=>{
+    res.render('serviceRequest', {title: "Service Request Form"});
+});
+//DOCUMENTS END HERE
 
 app.get('/admin',(req,res)=>{
     res.render('adminHome');
@@ -92,4 +103,6 @@ app.get('/adminProfile',(req,res)=>{
     res.render('adminEditProf');
 });
 
-app.listen(3000);
+app.listen(port,()=>{
+    console.log("Server is running");
+});
