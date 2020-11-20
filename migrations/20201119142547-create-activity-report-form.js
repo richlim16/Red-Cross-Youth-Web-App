@@ -9,10 +9,18 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       council_id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'council', 
+          key: 'id',
+        }
       },
       activity_request_form_id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'activity_request_form', 
+          key: 'id',
+        }
       },
       output: {
         type: Sequelize.TEXT
@@ -24,7 +32,11 @@ module.exports = {
         type: Sequelize.STRING
       },
       cyc_representative_id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'council', 
+          key: 'id',
+        }
       },
       no_of_recipients: {
         type: Sequelize.INTEGER
@@ -33,16 +45,28 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       received_by: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'chapter_personnel', 
+          key: 'id',
+        }
       },
       date_time: {
         type: Sequelize.DATE
       },
       submitted_by: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'officer', 
+          key: 'id',
+        }
       },
       noted_by: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'council_advisor', 
+          key: 'id',
+        }
       },
       council_pres_sig: {
         type: Sequelize.BOOLEAN

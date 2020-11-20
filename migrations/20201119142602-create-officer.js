@@ -9,10 +9,18 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       membership_form_id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'membership_form', 
+          key: 'id',
+        }
       },
       committee_id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'committee', 
+          key: 'id',
+        }
       },
       position: {
         type: Sequelize.STRING

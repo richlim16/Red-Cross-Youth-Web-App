@@ -9,13 +9,21 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       council_id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'council', 
+          key: 'id',
+        }
       },
       type: {
         type: Sequelize.STRING
       },
       chairperson_id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'officer', 
+          key: 'id',
+        }
       },
       no_of_members: {
         type: Sequelize.INTEGER

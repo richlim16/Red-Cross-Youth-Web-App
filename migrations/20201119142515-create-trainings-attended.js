@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('trainings_attendeds', {
+    await queryInterface.createTable('trainings_attended', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -9,7 +9,11 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       membership_form_id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'membership_form', 
+          key: 'id',
+        }
       },
       certificate_no: {
         type: Sequelize.STRING
@@ -40,6 +44,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('trainings_attendeds');
+    await queryInterface.dropTable('trainings_attended');
   }
 };

@@ -9,7 +9,11 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       document_id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'document', 
+          key: 'id',
+        }
       },
       blood_type: {
         type: Sequelize.STRING
@@ -18,7 +22,11 @@ module.exports = {
         type: Sequelize.BIGINT
       },
       committee_membership_id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'committee', 
+          key: 'id',
+        }
       },
       surname: {
         type: Sequelize.STRING

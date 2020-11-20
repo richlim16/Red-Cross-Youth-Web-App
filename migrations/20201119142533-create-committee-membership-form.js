@@ -8,26 +8,33 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      chapter_id: {
-        type: Sequelize.BIGINT
-      },
-      council_id: {
-        type: Sequelize.BIGINT
-      },
-      volunteer_id: {
-        type: Sequelize.BIGINT
-      },
       committee_id: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'committee', 
+          key: 'id',
+        }
       },
       prepared_by: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'officer', 
+          key: 'id',
+        }
       },
       noted_by: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'council_advisor', 
+          key: 'id',
+        }
       },
       submitted_by: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'officer', 
+          key: 'id',
+        }
       },
       date_filed: {
         type: Sequelize.DATE

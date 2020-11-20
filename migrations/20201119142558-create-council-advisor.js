@@ -9,13 +9,18 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       user_id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'user', 
+          key: 'id',
+        }
       },
       council_id: {
-        type: Sequelize.BIGINT
-      },
-      volunteer_id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'council', 
+          key: 'id',
+        }
       },
       createdAt: {
         allowNull: false,

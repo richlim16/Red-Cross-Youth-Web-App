@@ -15,8 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   };
   council_advisor.init({
     user_id: DataTypes.BIGINT,
-    council_id: DataTypes.BIGINT,
-    volunteer_id: DataTypes.BIGINT
+    council_id: DataTypes.BIGINT
   }, {
     sequelize,
     modelName: 'council_advisor',
