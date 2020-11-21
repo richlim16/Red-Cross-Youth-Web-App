@@ -9,7 +9,11 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       chapter_id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'chapter', 
+          key: 'id',
+        }
       },
       category: {
         type: Sequelize.STRING

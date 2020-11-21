@@ -14,9 +14,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   committee_membership_form.init({
-    chapter_id: DataTypes.BIGINT,
-    council_id: DataTypes.BIGINT,
-    volunteer_id: DataTypes.BIGINT,
     committee_id: DataTypes.INTEGER,
     prepared_by: DataTypes.BIGINT,
     noted_by: DataTypes.BIGINT,

@@ -9,13 +9,25 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       council_id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'council', 
+          key: 'id',
+        }
       },
       cyc_id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'council', 
+          key: 'id',
+        }
       },
       member_id: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'officer', 
+          key: 'id',
+        }
       },
       activity_name: {
         type: Sequelize.STRING
@@ -45,19 +57,39 @@ module.exports = {
         type: Sequelize.STRING
       },
       submitted_by_pres: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'officer', 
+          key: 'id',
+        }
       },
       submitted_by_adv: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'officer', 
+          key: 'id',
+        }
       },
       noted_by_chair: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'officer', 
+          key: 'id',
+        }
       },
       noted_by_pres: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'officer', 
+          key: 'id',
+        }
       },
       received_by: {
-        type: Sequelize.BIGINT
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'chapter_personnel', 
+          key: 'id',
+        }
       },
       date_received: {
         type: Sequelize.DATE
