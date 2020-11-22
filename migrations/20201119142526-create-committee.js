@@ -19,11 +19,7 @@ module.exports = {
         type: Sequelize.ENUM('')
       },
       chairperson_id: {
-        type: Sequelize.BIGINT,
-        references: {
-          model: 'officers', 
-          key: 'id',
-        }
+        type: Sequelize.BIGINT
       },
       no_of_members: {
         type: Sequelize.INTEGER

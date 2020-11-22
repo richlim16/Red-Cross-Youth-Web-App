@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('committee_membership_forms', {
+    await queryInterface.createTable('activity_report_forms', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -15,50 +15,57 @@ module.exports = {
           key: 'id',
         }
       },
-      committee_id: {
+      council_id: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'committees', 
+          model: 'councils', 
           key: 'id',
         }
       },
-      prepared_by: {
+      activity_request_form_id: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'committees', 
+          model: 'activity_request_forms', 
           key: 'id',
         }
       },
-      noted_by: {
-        type: Sequelize.BIGINT,
-        references: {
-          model: 'council_advisors', 
-          key: 'id',
-        }
+      output: {
+        type: Sequelize.TEXT
       },
-      submitted_by: {
-        type: Sequelize.BIGINT,
-        references: {
-          model: 'officers', 
-          key: 'id',
-        }
+      narrative_report: {
+        type: Sequelize.TEXT
       },
-      date_filed: {
+      resource_person_invited: {
+        type: Sequelize.STRING
+      },
+      cyc_representative_id: {
+        type: Sequelize.BIGINT
+      },
+      no_of_recipients: {
+        type: Sequelize.INTEGER
+      },
+      no_of_participants: {
+        type: Sequelize.INTEGER
+      },
+      received_by: {
+        type: Sequelize.BIGINT
+      },
+      date_time: {
         type: Sequelize.DATE
       },
-      school_council_sec_sig: {
+      submitted_by: {
+        type: Sequelize.BIGINT
+      },
+      noted_by: {
+        type: Sequelize.BIGINT
+      },
+      council_pres_sig: {
         type: Sequelize.BOOLEAN
       },
-      school_council_adv_sig: {
+      council_adv_sig: {
         type: Sequelize.BOOLEAN
       },
-      school_council_pres_sig: {
-        type: Sequelize.BOOLEAN
-      },
-      chapter_service_rep_sig: {
-        type: Sequelize.BOOLEAN
-      },
-      chapter_admin_sig: {
+      received_by_sig: {
         type: Sequelize.BOOLEAN
       },
       createdAt: {
@@ -72,6 +79,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('committee_membership_forms');
+    await queryInterface.dropTable('activity_report_forms');
   }
 };

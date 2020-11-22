@@ -3,20 +3,21 @@ const {DataTypes, DATE} = require('sequelize');
 const connection = require('../dbconnection');
 
 
-const chapterPersonnel = connection.sequelize.define('chapter_personnel', {
+const User = connection.sequelize.define('user', {
   id: {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
     type: DataTypes.BIGINT
   },
-  chapter_id: DataTypes.BIGINT,
-  position: DataTypes.ENUM()
+  username: DataTypes.STRING,
+  password: DataTypes.STRING,
+  membership_form_id: DataTypes.BIGINT,
+  type: DataTypes.ENUM
 });
 
 
-exports.model = chapterPersonnel;
-
+exports.model = User;
 
 
 
@@ -31,7 +32,7 @@ exports.model = chapterPersonnel;
 //   Model
 // } = require('sequelize');
 // module.exports = (sequelize, DataTypes) => {
-//   class chapter_personnel extends Model {
+//   class user extends Model {
 //     /**
 //      * Helper method for defining associations.
 //      * This method is not a part of Sequelize lifecycle.
@@ -41,12 +42,14 @@ exports.model = chapterPersonnel;
 //       // define association here
 //     }
 //   };
-//   chapter_personnel.init({
-//     chapter_id: DataTypes.BIGINT,
-//     position: DataTypes.ENUM
+//   user.init({
+//     username: DataTypes.STRING,
+//     password: DataTypes.STRING,
+//     membership_form_id: DataTypes.BIGINT,
+//     type: DataTypes.ENUM
 //   }, {
 //     sequelize,
-//     modelName: 'chapter_personnel',
+//     modelName: 'user',
 //   });
-//   return chapter_personnel;
+//   return user;
 // };

@@ -64,39 +64,19 @@ module.exports = {
         type: Sequelize.STRING
       },
       submitted_by_pres: {
-        type: Sequelize.BIGINT,
-        references: {
-          model: 'officers', 
-          key: 'id',
-        }
+        type: Sequelize.BIGINT
       },
       submitted_by_adv: {
-        type: Sequelize.BIGINT,
-        references: {
-          model: 'officers', 
-          key: 'id',
-        }
+        type: Sequelize.BIGINT
       },
       noted_by_chair: {
-        type: Sequelize.BIGINT,
-        references: {
-          model: 'officers', 
-          key: 'id',
-        }
+        type: Sequelize.BIGINT
       },
       noted_by_pres: {
-        type: Sequelize.BIGINT,
-        references: {
-          model: 'officers', 
-          key: 'id',
-        }
+        type: Sequelize.BIGINT
       },
       received_by: {
-        type: Sequelize.BIGINT,
-        references: {
-          model: 'chapter_personnels', 
-          key: 'id',
-        }
+        type: Sequelize.BIGINT
       },
       date_received: {
         type: Sequelize.DATE

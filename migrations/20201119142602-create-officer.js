@@ -15,13 +15,6 @@ module.exports = {
           key: 'id',
         }
       },
-      membership_form_id: {
-        type: Sequelize.BIGINT,
-        references: {
-          model: 'membership_forms', 
-          key: 'id',
-        }
-      },
       position: {
         type: Sequelize.ENUM('President', 'Vice President', 'Secretary', 'Assistant Secretary', 'Treasurer', 'Auditor', 'PRO Internal', 'PRO External', 'DRRM', 'Pledge 25', 'Trainings', 'Council Dev', 'YAPE', 'YPE', 'Health Services', 'Welfare', 'Awards and Recognition', 'Safety')
       },
