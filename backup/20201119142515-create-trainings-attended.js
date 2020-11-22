@@ -6,12 +6,12 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.BIGINT
       },
       membership_form_id: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'membership_form', 
+          model: 'membership_forms', 
           key: 'id',
         }
       },

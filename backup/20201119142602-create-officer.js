@@ -6,24 +6,24 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.BIGINT
+      },
+      user_id: {
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'users', 
+          key: 'id',
+        }
       },
       membership_form_id: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'membership_form', 
-          key: 'id',
-        }
-      },
-      committee_id: {
-        type: Sequelize.BIGINT,
-        references: {
-          model: 'committee', 
+          model: 'membership_forms', 
           key: 'id',
         }
       },
       position: {
-        type: Sequelize.STRING
+        type: Sequelize.ENUM('President', 'Vice President', 'Secretary', 'Assistant Secretary', 'Treasurer', 'Auditor', 'PRO Internal', 'PRO External', 'DRRM', 'Pledge 25', 'Trainings', 'Council Dev', 'YAPE', 'YPE', 'Health Services', 'Welfare', 'Awards and Recognition', 'Safety')
       },
       createdAt: {
         allowNull: false,

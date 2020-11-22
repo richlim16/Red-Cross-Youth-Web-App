@@ -6,26 +6,33 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.BIGINT
+      },
+      document_id: {
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'documents', 
+          key: 'id',
+        }
       },
       council_id: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'council', 
+          model: 'councils', 
           key: 'id',
         }
       },
       cyc_id: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'council', 
+          model: 'councils', 
           key: 'id',
         }
       },
       member_id: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'officer', 
+          model: 'officers', 
           key: 'id',
         }
       },
@@ -59,35 +66,35 @@ module.exports = {
       submitted_by_pres: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'officer', 
+          model: 'officers', 
           key: 'id',
         }
       },
       submitted_by_adv: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'officer', 
+          model: 'officers', 
           key: 'id',
         }
       },
       noted_by_chair: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'officer', 
+          model: 'officers', 
           key: 'id',
         }
       },
       noted_by_pres: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'officer', 
+          model: 'officers', 
           key: 'id',
         }
       },
       received_by: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'chapter_personnel', 
+          model: 'chapter_personnels', 
           key: 'id',
         }
       },

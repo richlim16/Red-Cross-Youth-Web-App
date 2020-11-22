@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('councils', {
+    await queryInterface.createTable('chapter_personnels', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -15,11 +15,8 @@ module.exports = {
           key: 'id',
         }
       },
-      category: {
-        type: Sequelize.ENUM('Junior Red Cross Youth', 'Senior Red Cross Youth', 'Senior Plus Red Cross Youth', 'College Red Cross Youth', 'Community Red Cross Youth')
-      },
-      name: {
-        type: Sequelize.STRING
+      position: {
+        type: Sequelize.ENUM('Chapter Admin', 'Chapter Youth Advisor')
       },
       createdAt: {
         allowNull: false,
@@ -32,6 +29,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('councils');
+    await queryInterface.dropTable('chapter_personnels');
   }
 };

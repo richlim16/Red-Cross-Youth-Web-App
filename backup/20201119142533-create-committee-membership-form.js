@@ -1,80 +1,64 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('activity_report_forms', {
+    await queryInterface.createTable('committee_membership_forms', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.BIGINT
       },
-      council_id: {
+      document_id: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'council', 
+          model: 'documents', 
           key: 'id',
         }
       },
-      activity_request_form_id: {
+      committee_id: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'activity_request_form', 
+          model: 'committees', 
           key: 'id',
         }
       },
-      output: {
-        type: Sequelize.TEXT
-      },
-      narrative_report: {
-        type: Sequelize.TEXT
-      },
-      resource_person_invited: {
-        type: Sequelize.STRING
-      },
-      cyc_representative_id: {
+      prepared_by: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'council', 
-          key: 'id',
-        }
-      },
-      no_of_recipients: {
-        type: Sequelize.INTEGER
-      },
-      no_of_participants: {
-        type: Sequelize.INTEGER
-      },
-      received_by: {
-        type: Sequelize.BIGINT,
-        references: {
-          model: 'chapter_personnel', 
-          key: 'id',
-        }
-      },
-      date_time: {
-        type: Sequelize.DATE
-      },
-      submitted_by: {
-        type: Sequelize.BIGINT,
-        references: {
-          model: 'officer', 
+          model: 'committees', 
           key: 'id',
         }
       },
       noted_by: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'council_advisor', 
+          model: 'council_advisors', 
           key: 'id',
         }
       },
-      council_pres_sig: {
+      submitted_by: {
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'officers', 
+          key: 'id',
+        }
+      },
+      date_filed: {
+        type: Sequelize.DATE
+      },
+      school_council_sec_sig: {
         type: Sequelize.BOOLEAN
       },
-      council_adv_sig: {
+      school_council_adv_sig: {
         type: Sequelize.BOOLEAN
       },
-      received_by_sig: {
+      school_council_pres_sig: {
+        type: Sequelize.BOOLEAN
+      },
+      chapter_service_rep_sig: {
+        type: Sequelize.BOOLEAN
+      },
+      chapter_admin_sig: {
         type: Sequelize.BOOLEAN
       },
       createdAt: {
@@ -88,6 +72,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('activity_report_forms');
+    await queryInterface.dropTable('committee_membership_forms');
   }
 };

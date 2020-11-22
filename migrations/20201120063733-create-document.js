@@ -1,32 +1,29 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('committees', {
+    await queryInterface.createTable('documents', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.BIGINT
+      },
+      type: {
+        type: Sequelize.ENUM('MEMBERSHIP', 'COMMITTEE_MEMBERSHIP', 'ACTIVITY_REQUEST', 'ACTIVITY_REPORT', 'UNIFORM_REQUEST', 'SERVICE_REQUEST', 'COUNCIL_MONTHLY_REPORT')
+      },
+      chapter_id: {
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'chapters', 
+          key: 'id',
+        }
       },
       council_id: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'council', 
+          model: 'councils', 
           key: 'id',
         }
-      },
-      type: {
-        type: Sequelize.STRING
-      },
-      chairperson_id: {
-        type: Sequelize.BIGINT,
-        references: {
-          model: 'officer', 
-          key: 'id',
-        }
-      },
-      no_of_members: {
-        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -39,6 +36,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('committees');
+    await queryInterface.dropTable('documents');
   }
 };

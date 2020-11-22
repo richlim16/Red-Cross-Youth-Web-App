@@ -6,12 +6,12 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.BIGINT
       },
-      document_id: {
+      documentId: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'document', 
+          model: 'documents', 
           key: 'id',
         }
       },
@@ -21,10 +21,10 @@ module.exports = {
       rcy_id: {
         type: Sequelize.BIGINT
       },
-      committee_membership_id: {
+      committeeMembershipId: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'committee', 
+          model: 'committees', 
           key: 'id',
         }
       },
@@ -47,7 +47,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       civil_satus: {
-        type: Sequelize.ENUM
+        type: Sequelize.ENUM('SINGLE', 'MARRIED')
       },
       height: {
         type: Sequelize.FLOAT

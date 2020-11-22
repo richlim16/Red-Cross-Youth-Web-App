@@ -1,25 +1,32 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('councils', {
+    await queryInterface.createTable('committees', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.BIGINT
       },
-      chapter_id: {
+      council_id: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'chapters', 
+          model: 'councils', 
           key: 'id',
         }
       },
-      category: {
-        type: Sequelize.ENUM('Junior Red Cross Youth', 'Senior Red Cross Youth', 'Senior Plus Red Cross Youth', 'College Red Cross Youth', 'Community Red Cross Youth')
+      type: {
+        type: Sequelize.ENUM('')
       },
-      name: {
-        type: Sequelize.STRING
+      chairperson_id: {
+        type: Sequelize.BIGINT,
+        references: {
+          model: 'officers', 
+          key: 'id',
+        }
+      },
+      no_of_members: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -32,6 +39,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('councils');
+    await queryInterface.dropTable('committees');
   }
 };

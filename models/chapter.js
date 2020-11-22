@@ -3,19 +3,26 @@ const {DataTypes, DATE} = require('sequelize');
 const connection = require('../dbconnection');
 
 
-const councilAdvisor = connection.sequelize.define('council_advisor', {
+const chapter = connection.sequelize.define('chapter', {
   id: {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
     type: DataTypes.BIGINT
   },
-  user_id: DataTypes.BIGINT,
-  council_id: DataTypes.BIGINT
+  region: DataTypes.STRING,
+  address: DataTypes.STRING,
+  contact_info: DataTypes.STRING,
+  name: DataTypes.STRING
 });
 
 
-exports.model = councilAdvisor;
+exports.model = chapter;
+
+
+
+
+
 
 
 
@@ -38,7 +45,7 @@ exports.model = councilAdvisor;
 //   Model
 // } = require('sequelize');
 // module.exports = (sequelize, DataTypes) => {
-//   class council_advisor extends Model {
+//   class chapter extends Model {
 //     /**
 //      * Helper method for defining associations.
 //      * This method is not a part of Sequelize lifecycle.
@@ -48,12 +55,14 @@ exports.model = councilAdvisor;
 //       // define association here
 //     }
 //   };
-//   council_advisor.init({
-//     user_id: DataTypes.BIGINT,
-//     council_id: DataTypes.BIGINT
+//   chapter.init({
+//     region: DataTypes.STRING,
+//     address: DataTypes.STRING,
+//     contact_info: DataTypes.STRING,
+//     name: DataTypes.STRING
 //   }, {
 //     sequelize,
-//     modelName: 'council_advisor',
+//     modelName: 'chapter',
 //   });
-//   return council_advisor;
+//   return chapter;
 // };

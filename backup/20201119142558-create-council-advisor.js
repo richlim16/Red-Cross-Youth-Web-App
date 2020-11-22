@@ -6,19 +6,19 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.BIGINT
       },
       user_id: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'user', 
+          model: 'users', 
           key: 'id',
         }
       },
       council_id: {
         type: Sequelize.BIGINT,
         references: {
-          model: 'council', 
+          model: 'councils', 
           key: 'id',
         }
       },

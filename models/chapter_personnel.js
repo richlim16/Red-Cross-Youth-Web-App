@@ -3,26 +3,19 @@ const {DataTypes, DATE} = require('sequelize');
 const connection = require('../dbconnection');
 
 
-const councilAdvisor = connection.sequelize.define('council_advisor', {
+const chapterPersonnel = connection.sequelize.define('chapter_personnel', {
   id: {
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
     type: DataTypes.BIGINT
   },
-  user_id: DataTypes.BIGINT,
-  council_id: DataTypes.BIGINT
+  chapter_id: DataTypes.BIGINT,
+  position: DataTypes.ENUM()
 });
 
 
-exports.model = councilAdvisor;
-
-
-
-
-
-
-
+exports.model = chapterPersonnel;
 
 
 
@@ -38,7 +31,7 @@ exports.model = councilAdvisor;
 //   Model
 // } = require('sequelize');
 // module.exports = (sequelize, DataTypes) => {
-//   class council_advisor extends Model {
+//   class chapter_personnel extends Model {
 //     /**
 //      * Helper method for defining associations.
 //      * This method is not a part of Sequelize lifecycle.
@@ -48,12 +41,12 @@ exports.model = councilAdvisor;
 //       // define association here
 //     }
 //   };
-//   council_advisor.init({
-//     user_id: DataTypes.BIGINT,
-//     council_id: DataTypes.BIGINT
+//   chapter_personnel.init({
+//     chapter_id: DataTypes.BIGINT,
+//     position: DataTypes.ENUM
 //   }, {
 //     sequelize,
-//     modelName: 'council_advisor',
+//     modelName: 'chapter_personnel',
 //   });
-//   return council_advisor;
+//   return chapter_personnel;
 // };
