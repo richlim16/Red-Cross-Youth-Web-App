@@ -11,7 +11,7 @@ const chapterPersonnel = connection.sequelize.define('chapter_personnel', {
     type: DataTypes.BIGINT
   },
   chapter_id: DataTypes.BIGINT,
-  position: DataTypes.ENUM()
+  position: DataTypes.ENUM('Chapter Admin', 'Chapter Youth Advisor')
 });
 
 

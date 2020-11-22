@@ -2,6 +2,10 @@ const port=3000;
 const express = require('express');
 const app = express();
 const ejs = require('ejs');
+const bodyParser = require("body-parser");
+const urlEncodedParser = bodyParser.urlencoded({extended: false});
+const Create = require('./controllers/createController');
+const Read = require('./controllers/readController');
 
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
@@ -52,6 +56,17 @@ app.get('/officerActivity', (req,res) =>{
 app.get('/adminActivity', (req,res) =>{
     res.render('adminActivity',{title: "Admin Activity"});
 });
+
+app.get('/adminCouncils', (req,res) =>{
+    res.render('adminCouncils',{title: "Admin Council"});
+});
+
+app.get('/addCouncil', async (req,res) =>{
+    let chapters = await Read.getAllChapters()
+    res.render('addCouncil',{title: "Add Council", chapters: chapters});
+});
+
+
 //DOCUMENTS START HERE
 app.get('/docs', (req,res)=>{
     res.render('docs', {title: "Documents"});
@@ -93,6 +108,17 @@ app.get('/serviceReq', (req,res)=>{
     res.render('serviceRequest', {title: "Service Request Form"});
 });
 //DOCUMENTS END HERE
+
+
+//POST requests
+app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{
+    console.log(req.body)
+    await Create.addCouncil(req)
+    res.redirect('/addCouncil');
+});
+
+
+//POST requests END HERE
 
 app.get('/admin',(req,res)=>{
     res.render('adminHome');

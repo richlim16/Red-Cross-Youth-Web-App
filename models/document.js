@@ -10,7 +10,7 @@ const document = connection.sequelize.define('document', {
     primaryKey: true,
     type: DataTypes.BIGINT
   },
-  type: DataTypes.ENUM(),
+  type: DataTypes.ENUM('MEMBERSHIP', 'COMMITTEE_MEMBERSHIP', 'ACTIVITY_REQUEST', 'ACTIVITY_REPORT', 'UNIFORM_REQUEST', 'SERVICE_REQUEST', 'COUNCIL_MONTHLY_REPORT'),
   chapter_id: DataTypes.BIGINT,
   council_id: DataTypes.BIGINT
 });
