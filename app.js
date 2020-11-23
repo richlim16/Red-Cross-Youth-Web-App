@@ -117,6 +117,16 @@ app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{
     res.redirect('/addCouncil');
 });
 
+app.post('/act/addMemberForm', urlEncodedParser, async (req,res) =>{
+    console.log(req.body)
+    let trainings = JSON.parse(req.body.trainings)
+    let organizations = JSON.parse(req.body.organizations)
+    console.log(trainings[1].place)
+    console.log(organizations[2].organization)
+
+    res.redirect('/membershipForm');
+});
+
 
 //POST requests END HERE
 
