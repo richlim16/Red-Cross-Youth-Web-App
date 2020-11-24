@@ -26,6 +26,10 @@ exports.getAllChapters = async (req, res) => {
 }
 
 exports.getCommitteesOfCouncil = async (req, res) => {
-    let ret = await Chapter.model.findAll();
+    let ret = await Committee.model.findAll({
+        where: {
+            council_id: 8   //get council_id from Session variable
+        }
+    });
     return ret;
 }

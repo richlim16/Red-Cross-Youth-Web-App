@@ -21,20 +21,37 @@ Council.model.belongsTo(Chapter.model, {foreignKey: 'chapter_id'});
 
 
 exports.addCouncil = async (req, res) => {
+    Council.model.hasMany(Committee.model, {foreignKey: 'council_id',sourceKey: 'id'});
+
     await Council.model.create({
         chapter_id: req.body.chapterId,
         category: req.body.category,
-        name: req.body.name
+        name: req.body.name,
+        committees: [
+            {type: 'DRRM', no_of_members:0},
+            {type: 'Pledge 25', no_of_members:0},
+            {type: 'Trainings', no_of_members:0},
+            {type: 'Council Dev', no_of_members:0},
+            {type: 'YAPE', no_of_members:0},
+            {type: 'YPE', no_of_members:0},
+            {type: 'Health Services', no_of_members:0},
+            {type: 'Welfare', no_of_members:0},
+            {type: 'Awards and Recognition', no_of_members:0},
+            {type: 'Safety', no_of_members:0}
+        ]
+    }, {
+        include: [Committee.model]
     })
 }
 
 
 exports.addMemberForm = async (req, res) => {
+    const Doc = MembershipForm.model.belongsTo(Document.model, {foreignKey:'document_id'});
+
     await MembershipForm.model.create({
-        document_id: 1, //supposedly get council->doctype from session
         blood_type: req.body.bloodType,
         rcy_id: req.body.rcyId,
-        committee_membership_id: 1,  //query select all 'committees' where 
+        committee_membership_id: req.body.committee,
         surname: req.body.surname,
         first_name: req.body.firstname,
         middle_name: req.body.middlename,
@@ -81,7 +98,14 @@ exports.addMemberForm = async (req, res) => {
         vocational_attainment: req.body.vocDate,
         member_sig: false,
         council_pres_sig: false,
-        council_adv_sig: false
+        council_adv_sig: false,
+        document:{
+            type: 'MEMBERSHIP',
+            chapter_id: 1,  //get from Session variable
+            council_id: 8  //get from Session variable
+        }
+    }, {
+        include: [ Doc ]
     })
 
     let trainings = JSON.parse(req.body.trainings)

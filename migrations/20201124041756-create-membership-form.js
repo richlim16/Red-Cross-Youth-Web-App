@@ -46,7 +46,7 @@ module.exports = {
       age: {
         type: Sequelize.INTEGER
       },
-      civil_satus: {
+      civil_status: {
         type: Sequelize.ENUM('SINGLE', 'MARRIED')
       },
       height: {

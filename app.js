@@ -80,8 +80,9 @@ app.get('/activityForm', (req,res)=>{
     res.render('addReport',{title: "Activity Form"});
 });
 
-app.get('/membershipForm', (req,res)=>{
-    res.render('membershipForm',{title: "Membership Form"});
+app.get('/membershipForm', async (req,res)=>{
+    let committees = await Read.getCommitteesOfCouncil()
+    res.render('membershipForm',{title: "Membership Form", committees: committees});
 });
 
 app.get('/committeeMembershipForm', (req,res)=>{
@@ -112,7 +113,6 @@ app.get('/serviceReq', (req,res)=>{
 
 //POST requests
 app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{
-    console.log(req.body)
     await Create.addCouncil(req)
     res.redirect('/addCouncil');
 });

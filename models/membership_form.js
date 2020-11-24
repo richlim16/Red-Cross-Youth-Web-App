@@ -20,7 +20,7 @@ const membershipForm = connection.sequelize.define('membership_form', {
   nickname: DataTypes.STRING,
   birthdate: DataTypes.DATE,
   age: DataTypes.INTEGER,
-  civil_satus: DataTypes.ENUM('SINGLE', 'MARRIED'),
+  civil_status: DataTypes.ENUM('SINGLE', 'MARRIED'),
   height: DataTypes.FLOAT,
   weight: DataTypes.FLOAT,
   nationality: DataTypes.STRING,

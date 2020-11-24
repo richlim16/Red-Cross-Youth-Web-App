@@ -47,16 +47,9 @@
                 <label for="committee">Committee Membership</label>
                 <select id="committee" class="form-control" name="committee">
                   <option disabled selected value>--select an option--</option>
-                  <option value="DRRM">DRRM</option>
-                  <option value="Pledge 25">Pledge 25</option>
-                  <option value="Trainings">Trainings</option>
-                  <option value="Council Dev">Council Dev</option>
-                  <option value="YAPE">YAPE</option>
-                  <option value="YPE">YPE</option>
-                  <option value="Health Services">Health Services</option>
-                  <option value="Welfare">Welfare</option>
-                  <option value="Awards and Recognition">Awards and Recognition</option>
-                  <option value="Safety">Safety</option>
+                  <% for (let i=0; i < committees.length; i++){%>
+                    <option value="<%= committees[i].id%>"><%= committees[i].type%></option>
+                  <%}%>
                 </select>
             </div>
 
@@ -105,8 +98,8 @@
                 <label for="civilStatus">Civil Status</label>
                 <select id="civilStatus" class="form-control" name="civilStatus">
                   <option disabled selected value> -- select an option -- </option>
-                  <option value="Single">Single</option>
-                  <option value="Married">Married</option>
+                  <option value="SINGLE">SINGLE</option>
+                  <option value="MARRIED">MARRIED</option>
                 </select>
               </div>
             </div>
