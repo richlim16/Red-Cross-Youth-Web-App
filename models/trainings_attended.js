@@ -10,9 +10,8 @@ const trainingsAttended = connection.sequelize.define('trainings_attended', {
     primaryKey: true,
     type: DataTypes.BIGINT
   },
-  membership_form_id: DataTypes.BIGINT,
+  rcy_id: DataTypes.BIGINT,
   certificate_no: DataTypes.STRING,
-  service: DataTypes.STRING,
   training_attended: DataTypes.STRING,
   place: DataTypes.STRING,
   start_date: DataTypes.DATE,

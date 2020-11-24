@@ -30,6 +30,8 @@
                   <option disabled selected value>-select type-</option>
                   <option value="A">A</option>
                   <option value="B">B</option>
+                  <option value="AB">AB</option>
+                  <option value="O">O</option>
                 </select>
             </div>
             <div class="row d-flex justify-content-end">
@@ -45,8 +47,16 @@
                 <label for="committee">Committee Membership</label>
                 <select id="committee" class="form-control" name="committee">
                   <option disabled selected value>--select an option--</option>
-                  <option value=""></option>
-                  <option value=""></option>
+                  <option value="DRRM">DRRM</option>
+                  <option value="Pledge 25">Pledge 25</option>
+                  <option value="Trainings">Trainings</option>
+                  <option value="Council Dev">Council Dev</option>
+                  <option value="YAPE">YAPE</option>
+                  <option value="YPE">YPE</option>
+                  <option value="Health Services">Health Services</option>
+                  <option value="Welfare">Welfare</option>
+                  <option value="Awards and Recognition">Awards and Recognition</option>
+                  <option value="Safety">Safety</option>
                 </select>
             </div>
 
@@ -311,10 +321,14 @@
             <!-- JS to add more lines for trainingList -->
             <div id="trainingsList">
                 <div class="row training">
-                    <div class="col-md-12 mb-1 trainingDiv">
+                    <div class="col-md-6 mb-1 trainingDiv">
                         <label for="training">Training Attended</label>
                         <input type="text" class="form-control trainingAttended" name="training" placeholder="Training Attended" value="" required="">
                     </div>
+                    <div class="col-md-6 mb-1 certDiv">
+                      <label for="cert">Certificate Number</label>
+                      <input type="text" class="form-control certificateNo" name="cert" placeholder="Certificate Number" value="" required="">
+                  </div>
                     <div class="col-md-6 mb-4 placeDiv">
                         <label for="place">Place</label>
                         <input type="text" class="form-control place" name="place" placeholder="Place" value="" required="">
@@ -362,7 +376,7 @@
             <button type="button" id="addOrg" class="col-md-4 btn btn-success">Add Another Organization</button>
 
             <hr class="my-4">          
-            <button type='button' id="test" class="btn btn-danger btn-lg btn-block text-white">Submit</button>        
+            <button type='submit' id="test" class="btn btn-danger btn-lg btn-block text-white">Submit</button>        
           </form>
             <a href="activities.php">Back</a>
         </div>

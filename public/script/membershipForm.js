@@ -1,14 +1,15 @@
 $(document).ready(function(){
-    $('#test').on('click', function(){
+    $('#addMemberForm').on('submit', function(){
         let trainings = [];
         let i=0;
         $( ".training" ).each(function() {
             trainingAttended = $( this ).children(".trainingDiv").children(".trainingAttended").val();
+            certNo = $( this ).children(".certDiv").children(".certificateNo").val();
             place = $( this ).children(".placeDiv").children(".place").val();
             startDate = $( this ).children(".startDiv").children(".startDate").val();
             endDate = $( this ).children(".endDiv").children(".endDate").val();
 
-            let entry = {trainingAttended: trainingAttended, place: place, startDate: startDate, endDate: endDate}
+            let entry = {trainingAttended: trainingAttended, certificateNumber: certNo, place: place, startDate: startDate, endDate: endDate}
             trainings[i] = entry;
             i++;
         })
@@ -83,21 +84,22 @@ $(document).ready(function(){
         }
         
   
-        // $.ajax({
-        //   type: 'POST',
-        //   url: '/act/addMemberForm',
-        //   data: entry,
-        //   success: function(data){
-        //     //do something with the data via front-end framework
-        //     location.reload()
-        //   }
-        // });
+        $.ajax({
+          type: 'POST',
+          url: '/act/addMemberForm',
+          data: entry,
+          success: function(data){
+            //do something with the data via front-end framework
+            location.reload()
+          }
+        });
     });
 
 
     $('#addTraining').on('click', function(){
         let training = $( ".training" ).first().clone();
         training.children(".trainingDiv").children(".trainingAttended").val("");
+        training.children(".certDiv").children(".certificateNo").val("");
         training.children(".placeDiv").children(".place").val("");
         training.appendTo( "#trainingsList" ); 
     });

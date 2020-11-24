@@ -24,3 +24,8 @@ exports.getAllChapters = async (req, res) => {
     let ret = await Chapter.model.findAll();
     return ret;
 }
+
+exports.getCommitteesOfCouncil = async (req, res) => {
+    let ret = await Chapter.model.findAll();
+    return ret;
+}

@@ -10,7 +10,7 @@ const otherOrganizationsAffiliations = connection.sequelize.define('other_organi
     primaryKey: true,
     type: DataTypes.BIGINT
   },
-  membership_form_id: DataTypes.BIGINT,
+  rcy_id: DataTypes.BIGINT,
   organization: DataTypes.STRING,
   position: DataTypes.STRING,
   council: DataTypes.STRING,

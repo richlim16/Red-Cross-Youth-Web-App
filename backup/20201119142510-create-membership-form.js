@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.BIGINT
       },
-      documentId: {
+      document_id: {
         type: Sequelize.BIGINT,
         references: {
           model: 'documents', 
@@ -21,7 +21,7 @@ module.exports = {
       rcy_id: {
         type: Sequelize.BIGINT
       },
-      committeeMembershipId: {
+      committee_membership_id: {
         type: Sequelize.BIGINT,
         references: {
           model: 'committees', 
@@ -40,7 +40,7 @@ module.exports = {
       nickname: {
         type: Sequelize.STRING
       },
-      bithdate: {
+      birthdate: {
         type: Sequelize.DATE
       },
       age: {
@@ -122,6 +122,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       guardians_tel: {
+        type: Sequelize.STRING
+      },
+      present_school: {
         type: Sequelize.STRING
       },
       course: {

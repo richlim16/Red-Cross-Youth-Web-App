@@ -16,7 +16,7 @@ module.exports = {
         }
       },
       type: {
-        type: Sequelize.ENUM('')
+        type: Sequelize.ENUM('DRRM', 'Pledge 25', 'Trainings', 'Council Dev', 'YAPE', 'YPE', 'Health Services', 'Welfare', 'Awards and Recognition', 'Safety')
       },
       chairperson_id: {
         type: Sequelize.BIGINT

@@ -27,3 +27,84 @@ exports.addCouncil = async (req, res) => {
         name: req.body.name
     })
 }
+
+
+exports.addMemberForm = async (req, res) => {
+    await MembershipForm.model.create({
+        document_id: 1, //supposedly get council->doctype from session
+        blood_type: req.body.bloodType,
+        rcy_id: req.body.rcyId,
+        committee_membership_id: 1,  //query select all 'committees' where 
+        surname: req.body.surname,
+        first_name: req.body.firstname,
+        middle_name: req.body.middlename,
+        nickname: req.body.nickname,
+        birthdate: req.body.birthdate,
+        age: req.body.age,
+        civil_status: req.body.civilStatus,
+        height: req.body.height,
+        weight: req.body.weight,
+        nationality: req.body.nationality,
+        religion: req.body.religion,
+        contact_no: req.body.contactNo,
+        city_address: req.body.cityAdd,
+        city_tel: req.body.cityTel,
+        provincial_address: req.body.provinceAdd,
+        provincial_tel: req.body.provinceTel,
+        ailments: req.body.ailments,
+        allergies: req.body.allergies,
+        hobbies: req.body.hobbies,
+        special_skills: req.body.specSkills,
+        fathers_name: req.body.fathersName,
+        fathers_occupation: req.body.fathersOcc,
+        fathers_address: req.body.fathersAdd,
+        fathers_tel: req.body.fathersTel,
+        mothers_name: req.body.mothersName,
+        mothers_occupation: req.body.mothersOcc,
+        mothers_address: req.body.mothersAdd,
+        mothers_tel: req.body.mothersTel,
+        guardians_name: req.body.guardiansName,
+        guardians_occupation: req.body.guardiansOcc,
+        guardians_address: req.body.guardiansAdd,
+        guardians_tel: req.body.guaridansTel,
+        present_school: req.body.presentSchool,
+        course: req.body.course,
+        year: req.body.year,
+        school_address: req.body.schoolAdd,
+        elementary_school: req.body.elemSchool,
+        elementary_attainment: req.body.elemDate,
+        secondary_school: req.body.secondarySchool,
+        secondary_attainment: req.body.secondaryDate,
+        college_school: req.body.collegeSchool,
+        college_attainment: req.body.collegeDate,
+        vocationsal_school: req.body.vocSchool,
+        vocational_attainment: req.body.vocDate,
+        member_sig: false,
+        council_pres_sig: false,
+        council_adv_sig: false
+    })
+
+    let trainings = JSON.parse(req.body.trainings)
+    let organizations = JSON.parse(req.body.organizations)
+    for(t in trainings) {
+        await TrainingsAttended.model.create({
+            rcy_id: req.body.rcyId,
+            certificate_no: trainings[t].certificateNumber,
+            training_attended: trainings[t].trainingAttended,
+            place: trainings[t].place,
+            start_date: trainings[t].startDate,
+            end_date: trainings[t].endDate
+        })
+    };
+
+    for(o in organizations) {
+        await OtherOrganizationsAffiliations.model.create({
+            rcy_id: req.body.rcyId,
+            organization: organizations[o].organization,
+            position: organizations[o].position,
+            council: organizations[o].council,
+            start_date: organizations[o].startDate,
+            end_date: organizations[o].endDate
+        })
+    };
+}
