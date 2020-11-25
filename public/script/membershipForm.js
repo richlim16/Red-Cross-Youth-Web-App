@@ -66,7 +66,7 @@ $(document).ready(function(){
             guardiansName : $("#guardiansName").val(),
             guardiansOcc : $("#guardiansOcc").val(),
             guardiansAdd : $("#guardiansAdd").val(),
-            guaridansTel : $("#guaridansTel").val(),
+            guardiansTel : $("#guardiansTel").val(),
             presentSchool : $("#presentSchool").val(),
             course : $("#course").val(),
             year : $("#year").val(),

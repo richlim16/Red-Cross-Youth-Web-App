@@ -160,9 +160,6 @@ module.exports = {
       vocational_attainment: {
         type: Sequelize.DATE
       },
-      date_filed: {
-        type: Sequelize.DATE
-      },
       member_sig: {
         type: Sequelize.BOOLEAN
       },

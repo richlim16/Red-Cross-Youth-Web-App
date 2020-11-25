@@ -59,7 +59,6 @@ const membershipForm = connection.sequelize.define('membership_form', {
   college_attainment: DataTypes.DATE,
   vocational_school: DataTypes.STRING,
   vocational_attainment: DataTypes.DATE,
-  date_filed: DataTypes.DATE,
   member_sig: DataTypes.BOOLEAN,
   council_pres_sig: DataTypes.BOOLEAN,
   council_adv_sig: DataTypes.BOOLEAN
