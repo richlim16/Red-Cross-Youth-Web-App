@@ -102,7 +102,7 @@ exports.addMemberForm = async (req, res) => {
         document:{
             type: 'MEMBERSHIP',
             chapter_id: 1,  //get from Session variable
-            council_id: 8  //get from Session variable
+            council_id: 10  //get from Session variable
         }
     }, {
         include: [ Doc ]
