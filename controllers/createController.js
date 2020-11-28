@@ -24,9 +24,9 @@ exports.addCouncil = async (req, res) => {
     Council.model.hasMany(Committee.model, {foreignKey: 'council_id',sourceKey: 'id'});
 
     await Council.model.create({
-        chapter_id: req.body.chapterId,
+        chapter_id: req.body.chapter,
         category: req.body.category,
-        name: req.body.name,
+        name: req.body.councilName,
         committees: [
             {type: 'DRRM', no_of_members:0},
             {type: 'Pledge 25', no_of_members:0},
