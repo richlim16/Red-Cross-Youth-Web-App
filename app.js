@@ -118,8 +118,9 @@ app.post('/addCouncil', urlEncodedParser, async (req,res) =>{
     res.redirect('/addCouncil');
 });
 
-app.post('/act/addMemberForm', urlEncodedParser, async (req,res) =>{
+app.post('/membershipForm', urlEncodedParser, async (req,res) =>{
     await Create.addMemberForm(req)
+    console.log("ADDING NEW FORM");
     res.redirect('/membershipForm');
 });
 

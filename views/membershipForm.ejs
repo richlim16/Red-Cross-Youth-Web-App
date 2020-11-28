@@ -22,7 +22,7 @@
 
       <div class="row">
         <div class="col-md-8 order-md-1">
-          <form id="addMemberForm" class="needs-validation" novalidate="">
+          <form id="addMemberForm" class="needs-validation" novalidate="" method="POST">
             <div class="row d-flex justify-content-end">
               <div class="col-md-2 mb-1">
                 <label for="bloodType">Blood Type</label>
@@ -64,14 +64,14 @@
               </div>
               <div class="col-md-4 mb-1">
                 <label for="firstName">First name</label>
-                <input type="text" class="form-control" id="firstName" name="firstName" placeholder="First Name" value="" required="">
+                <input type="text" class="form-control" id="firstName" name="firstname" placeholder="First Name" value="" required="">
                 <div class="invalid-feedback">
                   Valid first name is required.
                 </div>
               </div>
               <div class="col-md-4 mb-1">
                 <label for="middleName">Middle name</label>
-                <input type="text" class="form-control" id="middleName" name="middleName" placeholder="Middle Name" value="" required="">
+                <input type="text" class="form-control" id="middleName" name="middlename" placeholder="Middle Name" value="" required="">
                 <div class="invalid-feedback">
                   Valid middle name is required.
                 </div>
@@ -126,14 +126,14 @@
             <div class="row">
               <div class="col-md-4 mb-4">
                 <label for="contact">Contact Number</label>
-                <input type="text" class="form-control" id="contactNo" name="contact" placeholder="Contact No." value="" required="">
+                <input type="text" class="form-control" id="contactNo" name="contactNo" placeholder="Contact No." value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-8 mb-4">
                 <label for="cityAddress">City Address</label>
-                <input type="text" class="form-control" id="cityAdd" name="cityAddress" placeholder="City Address" value="" required="">
+                <input type="text" class="form-control" id="cityAdd" name="cityAdd" placeholder="City Address" value="" required="">
               </div>
               <div class="col-md-4 mb-4">
                 <label for="cityTel">City Telephone Number</label>
@@ -144,11 +144,11 @@
             <div class="row">
               <div class="col-md-8 mb-4">
                 <label for="provincialAddress">Provincial Address</label>
-                <input type="text" class="form-control" id="provinceAdd" name="provincialAddress" placeholder="Provincial Address" value="" required="">
+                <input type="text" class="form-control" id="provinceAdd" name="provinceAdd" placeholder="Provincial Address" value="" required="">
               </div>
               <div class="col-md-4 mb-4">
                 <label for="provincialTel">Provincial Telephone Number</label>
-                <input type="text" class="form-control" id="provinceTel" name="provincialTel" placeholder="Provincial Telephone No." value="" required="">
+                <input type="text" class="form-control" id="provinceTel" name="provinceTel" placeholder="Provincial Telephone No." value="" required="">
               </div>
             </div>
 
@@ -170,7 +170,7 @@
               </div>
               <div class="col-md-6 mb-4">
                 <label for="specialSkills">Special Skills (separate each with a comma)</label>
-                <input type="text" class="form-control" id="specSkills" name="specialSkills" placeholder="Special Skills" value="" required="">
+                <input type="text" class="form-control" id="specSkills" name="specSkills" placeholder="Special Skills" value="" required="">
               </div>
             </div>
 
@@ -182,14 +182,14 @@
               </div>
               <div class="col-md-4 mb-1">
                 <label for="fathersOccupation">Father's Occupation</label>
-                <input type="text" class="form-control" id="fathersOcc" name="fathersOccupation" placeholder="Father's Occupation" value="" required="">
+                <input type="text" class="form-control" id="fathersOcc" name="fathersOcc" placeholder="Father's Occupation" value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-8 mb-4">
                 <label for="fathersAddress">Father's Address</label>
-                <input type="text" class="form-control" id="fathersAdd" name="fathersAddress" placeholder="Father's Addresss" value="" required="">
+                <input type="text" class="form-control" id="fathersAdd" name="fathersAdd" placeholder="Father's Addresss" value="" required="">
               </div>
               <div class="col-md-4 mb-4">
                 <label for="fathersTel">Father's Telephone Number</label>
@@ -204,14 +204,14 @@
               </div>
               <div class="col-md-4 mb-1">
                 <label for="mothersOccupation">Mother's Occupation</label>
-                <input type="text" class="form-control" id="mothersOcc" name="mothersOccupation" placeholder="Mother's Occupation" value="" required="">
+                <input type="text" class="form-control" id="mothersOcc" name="mothersOcc" placeholder="Mother's Occupation" value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-8 mb-4">
                 <label for="mothersAddress">Mother's Address</label>
-                <input type="text" class="form-control" id="mothersAdd" name="mothersAddress" placeholder="Mother's Addresss" value="" required="">
+                <input type="text" class="form-control" id="mothersAdd" name="mothersAdd" placeholder="Mother's Addresss" value="" required="">
               </div>
               <div class="col-md-4 mb-4">
                 <label for="mothersTel">Mother's Telephone Number</label>
@@ -226,14 +226,14 @@
               </div>
               <div class="col-md-4 mb-1">
                 <label for="guardiansOccupation">Guardian's Occupation</label>
-                <input type="text" class="form-control" id="guardiansOcc" name="guardiansOccupation" placeholder="Guardian's Occupation" value="" required="">
+                <input type="text" class="form-control" id="guardiansOcc" name="guardiansOcc" placeholder="Guardian's Occupation" value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-8 mb-5">
                 <label for="guardiansAddress">Guardian's Address</label>
-                <input type="text" class="form-control" id="guardiansAdd" name="guardiansAddress" placeholder="Guardian's Addresss" value="" required="">
+                <input type="text" class="form-control" id="guardiansAdd" name="guardiansAdd" placeholder="Guardian's Addresss" value="" required="">
               </div>
               <div class="col-md-4 mb-5">
                 <label for="guardiansTel">Guardian's Telephone Number</label>
@@ -261,18 +261,18 @@
             <div class="row">
               <div class="col-md-8 mb-4">
                 <label for="schoolAddress">School Address</label>
-                <input type="text" class="form-control" id="schoolAdd" name="schoolAddress" placeholder="School Address" value="" required="">
+                <input type="text" class="form-control" id="schoolAdd" name="schoolAdd" placeholder="School Address" value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-8 mb-4">
                 <label for="elementarySchool">Elementary School</label>
-                <input type="text" class="form-control" id="elemSchool" name="elementarySchool" placeholder="Elementary School" value="" required="">
+                <input type="text" class="form-control" id="elemSchool" name="elemSchool" placeholder="Elementary School" value="" required="">
               </div>
               <div class="col-md-4 mb-4">
                 <label for="elementaryDate">Date</label>
-                <input type="date" class="form-control" id="elemDate" name="elementaryDate" placeholder="" value="" required="">
+                <input type="date" class="form-control" id="elemDate" name="elemDate" placeholder="" value="" required="">
               </div>
             </div>
 
@@ -301,11 +301,11 @@
             <div class="row">
               <div class="col-md-8 mb-5">
                 <label for="vocationalSchool">Vocational School</label>
-                <input type="text" class="form-control" id="vocSchool" name="vocationalSchool" placeholder="Vocational School" value="" required="">
+                <input type="text" class="form-control" id="vocSchool" name="vocSchool" placeholder="Vocational School" value="" required="">
               </div>
               <div class="col-md-4 mb-5">
                 <label for="vocationalDate">Date</label>
-                <input type="date" class="form-control" id="vocDate" name="vocationalDate" placeholder="" value="" required="">
+                <input type="date" class="form-control" id="vocDate" name="vocDate" placeholder="" value="" required="">
               </div>
             </div>
 
@@ -371,7 +371,7 @@
             <hr class="my-4">          
             <button type='submit' id="test" class="btn btn-danger btn-lg btn-block text-white">Submit</button>        
           </form>
-            <a href="activities.php">Back</a>
+            <!--<a href="activities.php">Back</a> -->
         </div>
       </div>
     </div>
