@@ -112,14 +112,15 @@ app.get('/serviceReq', (req,res)=>{
 
 
 //POST requests
-app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{
+app.post('/addCouncil', urlEncodedParser, async (req,res) =>{
     await Create.addCouncil(req)
+    console.log(req.body.councilName+" "+req.body.chapter);
     res.redirect('/addCouncil');
 });
 
-app.post('/act/addMemberForm', urlEncodedParser, async (req,res) =>{
+app.post('/membershipForm', urlEncodedParser, async (req,res) =>{
     await Create.addMemberForm(req)
-
+    console.log("ADDING NEW FORM");
     res.redirect('/membershipForm');
 });
 
