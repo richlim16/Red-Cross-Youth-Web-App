@@ -1,0 +1,95 @@
+===uniform_request_form===
+form_id BIGINT PRIMARY KEY
+document_id			BIGINT 	FK (document) id
+chapter_id FOREIGN KEY
+uniform_type ENUM(A,C);//idk why walay B
+date_requested DATETIME
+volunteer FOREIGN KEY //this will fill out the name of volunteer and which council they belong to together with the council pres,treasurer, and adviser sa approved by
+quantity: INT
+receipt_number VARCHAR or BIGINT//I will ask how they print receipts in a dm
+!!!claimslip portion below:
+date DATETIME
+or_number VARCHAR
+qty BIGINT
+claimed_on DATETIME
+released_by FOREIGN KEY
+council_pres_sig		BOOLEAN
+council_adv_sig			BOOLEAN
+chapter_bookkeeper_sig		BOOLEAN
+treasurer_sig			BOOLEAN
+
+===council_monthly_report===
+council FOREIGN KEY
+document_id			BIGINT 	FK (document) id
+for_the_month_of DATE//we can enum this siguro?
+nature_of_activity ENUM//this is where we put the services of red cross na i think
+accomplishments VARCHAR
+objective VARCHAR
+no_of_rcy_participants BIGINT
+remarks VARCHAR//sa chapter||admin side na ni
+prepared_by FOREIGN KEY
+submitted_by FOREIGN KEY
+noted_by VARCHAR//we get from the userSession variable kay chapter youth advisor na ani
+approved_by VARCHAR//userSession just like for the chapter youth advisor
+school_council_sec_sig		BOOLEAN
+school_council_pres_sig		BOOLEAN
+chapter_service_rep_sig		BOOLEAN
+chapter_admin_sig		BOOLEAN
+
+===service request form===
+document_id			BIGINT 	FK (document) id
+receiver VARCHAR
+name_of_activity FOREIGN KEY//from the activity request form
+council FOREIGN KEY//from the userSession na
+requesting_person FOREIGN KEY//from the act req form
+position FOREIGN KEY//from the userSession select from volunteers
+requesting_for VARCHAR//i forgot if sql can do an array of varchar?
+purposes VARHCHAR//key-value pair pina requesting_for[i]:purposes[i]
+date_and_time DATETIME
+venue FOREIGN KEY//from the activity request form
+submitted_by_pres FOREIGN KEY
+submitted_by_advisor FOREIGN KEY
+noted_by_cyc1 FOREIGN KEY
+noted_by_cyc2 FOREIGN KEY
+received_by FOREIGN KEY
+date_received DATETIME
+council_pres_sig		BOOLEAN
+cyc_chairperson_sig		BOOLEAN
+council_adv_sig			BOOLEAN
+cyc_pres_sig			BOOLEAN
+chapter_service_rep_sig		BOOLEAN
+chapter_admin_sig		BOOLEAN
+
+===things we forgot to consider lol hahaha===
+===chapter===
+chapter_id BIGINT PRIMARY KEY
+region VARCHAR
+address VARCHAR
+contact_info VARCHAR
+name VARCHAR
+
+===chapter_personnel===
+personnel_id BIGINT PRIMARY
+chapter_id BIGINT FOREIGN KEY
+position
+//then we ask the CYC unsay information ani
+
+===document===
+document_id PRIMARY KEY
+document_type ENUM
+form_id FOREIGN KEY
+chapter_id FOREIGN KEY
+council FOREIGN KEY
+
+//unif_req
+npx sequelize-cli model:generate --name uniform_request_form --attributes form_id:bigint,document_id:bigint,chapter_id:bigint,uniform_type:enum,date_requested:date,volunteer:bigint,quantity:integer,receipt_no:string,date:date,or_number:string,qty:bigint,claimed_on:date,released_by:bigint,council_pres_sig:boolean,council_adv_sig:boolean,chapter_bookkeeper_sig:boolean,treasurer_sig:boolean
+//council_month_rep
+npx sequelize-cli model:generate --name council_monthly_report --attributes council_id:bigint,document_id:bigint,for_the_month_of:date,nature_of_activity:string,accomplishments:string,objective:string,no_of_rcy_participants:bigint,remarks:string,prepared_by:bigint,submitted_by:bigint,noted_by:bigint,approved_by:bigint,school_council_sec_sig:boolean,school_council_pres_sig:boolean,chapter_service_rep_sig:boolean,chapter_admin_sig:boolean
+//service_req_form
+npx sequelize-cli model:generate --name service_request_form --attributes document_id:bigint,receiver:string,name_of_activity:string,council_id:bigint,requesting_person:bigint,position:string,requesting_for:string,purposes:string,date_and_time:date,venue:string,submitted_by_pres:bigint,submitted_by_advisor:bigint,noted_by_cyc1:bigint,noted_by_cyc2:bigint,received_by:bigint,date_received:date,council_pres_sig:boolean,cyc_chairperson_sig:boolean,council_adv_sig:boolean,cyc_pres_sig:boolean,chapter_service_rep_sig:boolean,chapter_admin_sig:boolean
+//chapter
+npx sequelize-cli model:generate --name chapter --attributes region:string,address:string,contact_info:string,name:string
+//chap_personnel
+npx sequelize-cli model:generate --name chapter_personnel--attributes chapter_id:bigint,position:string
+//document
+npx sequelize-cli model:generate --name document --attributes type:enum,form_id:bigint,chapter_id:bigint,council_id:bigint

@@ -2,7 +2,10 @@ const port=3000;
 const express = require('express');
 const app = express();
 const ejs = require('ejs');
-
+const bodyParser = require("body-parser");
+const urlEncodedParser = bodyParser.urlencoded({extended: false});
+const Create = require('./controllers/createController');
+const Read = require('./controllers/readController');
 
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
@@ -53,6 +56,17 @@ app.get('/officerActivity', (req,res) =>{
 app.get('/adminActivity', (req,res) =>{
     res.render('adminActivity',{title: "Admin Activity"});
 });
+
+app.get('/adminCouncils', (req,res) =>{
+    res.render('adminCouncils',{title: "Admin Council"});
+});
+
+app.get('/addCouncil', async (req,res) =>{
+    let chapters = await Read.getAllChapters()
+    res.render('addCouncil',{title: "Add Council", chapters: chapters});
+});
+
+
 //DOCUMENTS START HERE
 app.get('/docs', (req,res)=>{
     res.render('docs', {title: "Documents"});
@@ -66,8 +80,9 @@ app.get('/activityForm', (req,res)=>{
     res.render('addReport',{title: "Activity Form"});
 });
 
-app.get('/membershipForm', (req,res)=>{
-    res.render('membershipForm',{title: "Membership Form"});
+app.get('/membershipForm', async (req,res)=>{
+    let committees = await Read.getCommitteesOfCouncil()
+    res.render('membershipForm',{title: "Membership Form", committees: committees});
 });
 
 app.get('/committeeMembershipForm', (req,res)=>{
@@ -94,6 +109,23 @@ app.get('/serviceReq', (req,res)=>{
     res.render('serviceRequest', {title: "Service Request Form"});
 });
 //DOCUMENTS END HERE
+
+
+//POST requests
+app.post('/addCouncil', urlEncodedParser, async (req,res) =>{
+    await Create.addCouncil(req)
+    console.log(req.body.councilName+" "+req.body.chapter);
+    res.redirect('/addCouncil');
+});
+
+app.post('/membershipForm', urlEncodedParser, async (req,res) =>{
+    await Create.addMemberForm(req)
+    console.log("ADDING NEW FORM");
+    res.redirect('/membershipForm');
+});
+
+
+//POST requests END HERE
 
 app.get('/admin',(req,res)=>{
     res.render('adminHome');

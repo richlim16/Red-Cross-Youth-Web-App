@@ -22,26 +22,56 @@
 
       <div class="row">
         <div class="col-md-8 order-md-1">
-          <form class="needs-validation" novalidate="" action="/act/add" method="post">
+          <form id="addMemberForm" class="needs-validation" novalidate="" method="POST">
+            <div class="row d-flex justify-content-end">
+              <div class="col-md-2 mb-1">
+                <label for="bloodType">Blood Type</label>
+                <select id="bloodType" class="form-control" name="bloodType">
+                  <option disabled selected value>-select type-</option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="AB">AB</option>
+                  <option value="O">O</option>
+                </select>
+            </div>
+            <div class="row d-flex justify-content-end">
+              <div class="col-md-4 mb-1">
+                <label for="rcyId">RCY ID No.</label>
+                <input type="number" class="form-control" id="rcyId" name="rcyId" placeholder="RCY ID No." value="" required="">
+                <div class="invalid-feedback">
+                  Valid bloodtype is required.
+                </div>
+            </div>
+            <div class="row d-flex justify-content-end">
+              <div class="col-md-4 mb-4">
+                <label for="committee">Committee Membership</label>
+                <select id="committee" class="form-control" name="committee">
+                  <option disabled selected value>--select an option--</option>
+                  <% for (let i=0; i < committees.length; i++){%>
+                    <option value="<%= committees[i].id%>"><%= committees[i].type%></option>
+                  <%}%>
+                </select>
+            </div>
+
             <h4 class="my-3">PERSONAL DATA</h4>
             <div class="row">
               <div class="col-md-4 mb-1">
                 <label for="surName">Surname</label>
-                <input type="text" class="form-control" name="surName" placeholder="Surame" value="" required="">
+                <input type="text" class="form-control" id="surname" name="surname" placeholder="Surname" value="" required="">
                 <div class="invalid-feedback">
                   Valid surname is required.
                 </div>
               </div>
               <div class="col-md-4 mb-1">
                 <label for="firstName">First name</label>
-                <input type="text" class="form-control" name="firstName" placeholder="First Name" value="" required="">
+                <input type="text" class="form-control" id="firstName" name="firstname" placeholder="First Name" value="" required="">
                 <div class="invalid-feedback">
                   Valid first name is required.
                 </div>
               </div>
               <div class="col-md-4 mb-1">
                 <label for="middleName">Middle name</label>
-                <input type="text" class="form-control" name="middleName" placeholder="Middle Name" value="" required="">
+                <input type="text" class="form-control" id="middleName" name="middlename" placeholder="Middle Name" value="" required="">
                 <div class="invalid-feedback">
                   Valid middle name is required.
                 </div>
@@ -51,23 +81,25 @@
             <div class="row">
               <div class="col-md-3 mb-4">
                 <label for="nickname">Nickname</label>
-                <input type="text" class="form-control" name="nickname" placeholder="Nickame" value="" required="">
+                <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Nickame" value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6 mb-4">
                 <label for="birthdate">Birthdate</label>
-                <input type="date" class="form-control" name="birhtdate" placeholder="Birthdate" value="" required="">
+                <input type="date" class="form-control" id="birthdate" name="birthdate" placeholder="Birthdate" value="" required="">
               </div>
               <div class="col-md-3 mb-4">
                 <label for="age">Age</label>
-                <input type="number" class="form-control" name="age" placeholder="Age" value="">
+                <input type="number" class="form-control" id="age" name="age" placeholder="Age" value="">
               </div>
               <div class="col-md-3 mb-4">
                 <label for="civilStatus">Civil Status</label>
-                <select class="form-control" name="civilStatus">
-                  <option></option>
+                <select id="civilStatus" class="form-control" name="civilStatus">
+                  <option disabled selected value> -- select an option -- </option>
+                  <option value="SINGLE">SINGLE</option>
+                  <option value="MARRIED">MARRIED</option>
                 </select>
               </div>
             </div>
@@ -75,70 +107,70 @@
             <div class="row">
               <div class="col-md-2 mb-4">
                 <label for="height">Height</label>
-                <input type="number" class="form-control" name="height" placeholder="inches" value="" required=""> 
+                <input type="number" class="form-control" id="height" name="height" placeholder="inches" value="" required=""> 
               </div>
               <div class="col-md-2 mb-4">
                 <label for="weight">Weight</label>
-                <input type="number" class="form-control" name="weight" placeholder="kg" value="" required=""> 
+                <input type="number" class="form-control" id="weight" name="weight" placeholder="kg" value="" required=""> 
               </div>
               <div class="col-md-4 mb-4">
                 <label for="nationality">Nationality</label>
-                <input type="text" class="form-control" name="nationality" placeholder="Nationality" value="" required="">
+                <input type="text" class="form-control" id="nationality" name="nationality" placeholder="Nationality" value="" required="">
               </div>
               <div class="col-md-4 mb-4">
                 <label for="religion">Religion</label>
-                <input type="text" class="form-control" name="religion" placeholder="Religion" value="" required="">
+                <input type="text" class="form-control" id="religion" name="religion" placeholder="Religion" value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-4 mb-4">
                 <label for="contact">Contact Number</label>
-                <input type="text" class="form-control" name="contact" placeholder="Contact No." value="" required="">
+                <input type="text" class="form-control" id="contactNo" name="contactNo" placeholder="Contact No." value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-8 mb-4">
                 <label for="cityAddress">City Address</label>
-                <input type="text" class="form-control" name="cityAddress" placeholder="City Address" value="" required="">
+                <input type="text" class="form-control" id="cityAdd" name="cityAdd" placeholder="City Address" value="" required="">
               </div>
               <div class="col-md-4 mb-4">
                 <label for="cityTel">City Telephone Number</label>
-                <input type="text" class="form-control" name="cityTel" placeholder="City Telephone No." value="" required="">
+                <input type="text" class="form-control" id="cityTel" name="cityTel" placeholder="City Telephone No." value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-8 mb-4">
                 <label for="provincialAddress">Provincial Address</label>
-                <input type="text" class="form-control" name="provincialAddress" placeholder="Provincial Address" value="" required="">
+                <input type="text" class="form-control" id="provinceAdd" name="provinceAdd" placeholder="Provincial Address" value="" required="">
               </div>
               <div class="col-md-4 mb-4">
                 <label for="provincialTel">Provincial Telephone Number</label>
-                <input type="text" class="form-control" name="provincialTel" placeholder="Provincial Telephone No." value="" required="">
+                <input type="text" class="form-control" id="provinceTel" name="provinceTel" placeholder="Provincial Telephone No." value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6 mb-4">
                 <label for="ailments">Ailments (separate each with a comma)</label>
-                <input type="text" class="form-control" name="ailments" placeholder="Ailments" value="" required="">
+                <input type="text" class="form-control" id="ailments" name="ailments" placeholder="Ailments" value="" required="">
               </div>
               <div class="col-md-6 mb-4">
                 <label for="allergies">Allergies (separate each with a comma)</label>
-                <input type="text" class="form-control" name="allergies" placeholder="Allergies" value="" required="">
+                <input type="text" class="form-control" id="allergies" name="allergies" placeholder="Allergies" value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6 mb-4">
                 <label for="hobbies">Hobbies (separate each with a comma)</label>
-                <input type="text" class="form-control" name="hobbies" placeholder="Hobbies" value="" required="">
+                <input type="text" class="form-control" id="hobbies" name="hobbies" placeholder="Hobbies" value="" required="">
               </div>
               <div class="col-md-6 mb-4">
                 <label for="specialSkills">Special Skills (separate each with a comma)</label>
-                <input type="text" class="form-control" name="specialSkills" placeholder="Special Skills" value="" required="">
+                <input type="text" class="form-control" id="specSkills" name="specSkills" placeholder="Special Skills" value="" required="">
               </div>
             </div>
 
@@ -146,66 +178,66 @@
             <div class="row">
               <div class="col-md-8 mb-1">
                 <label for="fathersName">Father's Name</label>
-                <input type="text" class="form-control" name="fathersName" placeholder="Father's Name" value="" required="">
+                <input type="text" class="form-control" id="fathersName" name="fathersName" placeholder="Father's Name" value="" required="">
               </div>
               <div class="col-md-4 mb-1">
                 <label for="fathersOccupation">Father's Occupation</label>
-                <input type="text" class="form-control" name="fathersOccupation" placeholder="Father's Occupation" value="" required="">
+                <input type="text" class="form-control" id="fathersOcc" name="fathersOcc" placeholder="Father's Occupation" value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-8 mb-4">
                 <label for="fathersAddress">Father's Address</label>
-                <input type="text" class="form-control" name="fathersAddress" placeholder="Father's Addresss" value="" required="">
+                <input type="text" class="form-control" id="fathersAdd" name="fathersAdd" placeholder="Father's Addresss" value="" required="">
               </div>
               <div class="col-md-4 mb-4">
                 <label for="fathersTel">Father's Telephone Number</label>
-                <input type="text" class="form-control" name="fathersTel" placeholder="Father's Telephone No." value="" required="">
+                <input type="text" class="form-control" id="fathersTel" name="fathersTel" placeholder="Father's Telephone No." value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-8 mb-1">
                 <label for="mothersName">Mother's Name</label>
-                <input type="text" class="form-control" name="mothersName" placeholder="Mother's Name" value="" required="">
+                <input type="text" class="form-control" id="mothersName" name="mothersName" placeholder="Mother's Name" value="" required="">
               </div>
               <div class="col-md-4 mb-1">
                 <label for="mothersOccupation">Mother's Occupation</label>
-                <input type="text" class="form-control" name="mothersOccupation" placeholder="Mother's Occupation" value="" required="">
+                <input type="text" class="form-control" id="mothersOcc" name="mothersOcc" placeholder="Mother's Occupation" value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-8 mb-4">
                 <label for="mothersAddress">Mother's Address</label>
-                <input type="text" class="form-control" name="mothersAddress" placeholder="Mother's Addresss" value="" required="">
+                <input type="text" class="form-control" id="mothersAdd" name="mothersAdd" placeholder="Mother's Addresss" value="" required="">
               </div>
               <div class="col-md-4 mb-4">
                 <label for="mothersTel">Mother's Telephone Number</label>
-                <input type="text" class="form-control" name="mothersTel" placeholder="Mother's Telephone No." value="" required="">
+                <input type="text" class="form-control" id="mothersTel" name="mothersTel" placeholder="Mother's Telephone No." value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-8 mb-1">
                 <label for="guardiansName">Guardian's Name</label>
-                <input type="text" class="form-control" name="guardiansName" placeholder="Guardian's Name" value="" required="">
+                <input type="text" class="form-control" id="guardiansName" name="guardiansName" placeholder="Guardian's Name" value="" required="">
               </div>
               <div class="col-md-4 mb-1">
                 <label for="guardiansOccupation">Guardian's Occupation</label>
-                <input type="text" class="form-control" name="guardiansOccupation" placeholder="Guardian's Occupation" value="" required="">
+                <input type="text" class="form-control" id="guardiansOcc" name="guardiansOcc" placeholder="Guardian's Occupation" value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-8 mb-5">
                 <label for="guardiansAddress">Guardian's Address</label>
-                <input type="text" class="form-control" name="guardiansAddress" placeholder="Guardian's Addresss" value="" required="">
+                <input type="text" class="form-control" id="guardiansAdd" name="guardiansAdd" placeholder="Guardian's Addresss" value="" required="">
               </div>
               <div class="col-md-4 mb-5">
                 <label for="guardiansTel">Guardian's Telephone Number</label>
-                <input type="text" class="form-control" name="guardiansTel" placeholder="Guardian's Telephone No." value="" required="">
+                <input type="text" class="form-control" id="guardiansTel" name="guardiansTel" placeholder="Guardian's Telephone No." value="" required="">
               </div>
             </div>
 
@@ -214,66 +246,66 @@
             <div class="row">
               <div class="col-md-6 mb-1">
                 <label for="presentSchool">Present School</label>
-                <input type="text" class="form-control" name="presentSchool" placeholder="Present School" value="" required="">
+                <input type="text" class="form-control" id="presentSchool" name="presentSchool" placeholder="Present School" value="" required="">
               </div>
               <div class="col-md-3 mb-1">
                 <label for="course">Course</label>
-                <input type="text" class="form-control" name="course" placeholder="Course" value="" required="">
+                <input type="text" class="form-control" id="course" name="course" placeholder="Course" value="" required="">
               </div>
               <div class="col-md-3 mb-1">
                 <label for="year">Year</label>
-                <input type="text" class="form-control" name="year" placeholder="Year" value="" required="">
+                <input type="text" class="form-control" id="year" name="year" placeholder="Year" value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-8 mb-4">
                 <label for="schoolAddress">School Address</label>
-                <input type="text" class="form-control" name="schoolAddress" placeholder="School Address" value="" required="">
+                <input type="text" class="form-control" id="schoolAdd" name="schoolAdd" placeholder="School Address" value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-8 mb-4">
                 <label for="elementarySchool">Elementary School</label>
-                <input type="text" class="form-control" name="elementarySchool" placeholder="Elementary School" value="" required="">
+                <input type="text" class="form-control" id="elemSchool" name="elemSchool" placeholder="Elementary School" value="" required="">
               </div>
               <div class="col-md-4 mb-4">
                 <label for="elementaryDate">Date</label>
-                <input type="date" class="form-control" name="elementaryDate" placeholder="" value="" required="">
+                <input type="date" class="form-control" id="elemDate" name="elemDate" placeholder="" value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-8 mb-4">
                 <label for="secondarySchool">Secondary School</label>
-                <input type="text" class="form-control" name="secondarySchool" placeholder="Secondary School" value="" required="">
+                <input type="text" class="form-control" id="secondarySchool" name="secondarySchool" placeholder="Secondary School" value="" required="">
               </div>
               <div class="col-md-4 mb-4">
                 <label for="secondaryDate">Date</label>
-                <input type="date" class="form-control" name="secondaryDate" placeholder="" value="" required="">
+                <input type="date" class="form-control" id="secondaryDate" name="secondaryDate" placeholder="" value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-8 mb-4">
                 <label for="collegeSchool">College School</label>
-                <input type="text" class="form-control" name="collegeSchool" placeholder="College School" value="" required="">
+                <input type="text" class="form-control" id="collegeSchool" name="collegeSchool" placeholder="College School" value="" required="">
               </div>
               <div class="col-md-4 mb-4">
                 <label for="collegeDate">Date</label>
-                <input type="date" class="form-control" name="collegeDate" placeholder="" value="" required="">
+                <input type="date" class="form-control" id="collegeDate" name="collegeDate" placeholder="" value="" required="">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-8 mb-5">
                 <label for="vocationalSchool">Vocational School</label>
-                <input type="text" class="form-control" name="vocationalSchool" placeholder="Vocational School" value="" required="">
+                <input type="text" class="form-control" id="vocSchool" name="vocSchool" placeholder="Vocational School" value="" required="">
               </div>
               <div class="col-md-4 mb-5">
                 <label for="vocationalDate">Date</label>
-                <input type="date" class="form-control" name="vocationalDate" placeholder="" value="" required="">
+                <input type="date" class="form-control" id="vocDate" name="vocDate" placeholder="" value="" required="">
               </div>
             </div>
 
@@ -281,65 +313,65 @@
             <h4 class="mb-3">RED CROSS TRAININGS ATTENDED</h4>
             <!-- JS to add more lines for trainingList -->
             <div id="trainingsList">
-                <div id="training" class="row">
-                    <div class="col-md-12 mb-1">
+                <div class="row training">
+                    <div class="col-md-6 mb-1 trainingDiv">
                         <label for="training">Training Attended</label>
-                        <input type="text" class="form-control" name="training" placeholder="Training Attended" value="" required="">
+                        <input type="text" class="form-control trainingAttended" name="training" placeholder="Training Attended" value="" required="">
                     </div>
-                    <div class="col-md-6 mb-4">
+                    <div class="col-md-6 mb-1 certDiv">
+                      <label for="cert">Certificate Number</label>
+                      <input type="text" class="form-control certificateNo" name="cert" placeholder="Certificate Number" value="" required="">
+                  </div>
+                    <div class="col-md-6 mb-4 placeDiv">
                         <label for="place">Place</label>
-                        <input type="text" class="form-control" name="place" placeholder="Place" value="" required="">
+                        <input type="text" class="form-control place" name="place" placeholder="Place" value="" required="">
                     </div>
-                    <div class="col-md-3 mb-4">
+                    <div class="col-md-3 mb-4 startDiv">
                         <label for="startDate">Start Date</label>
-                        <input type="date" class="form-control" name="startDate" placeholder="" value="" required="">
+                        <input type="date" class="form-control startDate" name="startDate" placeholder="" value="" required="">
                     </div>
-                    <div class="col-md-3 mb-4">
+                    <div class="col-md-3 mb-4 endDiv">
                         <label for="endDate">End Date</label>
-                        <input type="date" class="form-control" name="endDate" placeholder="" value="" required="">
+                        <input type="date" class="form-control endDate" name="endDate" placeholder="" value="" required="">
                     </div>
                 </div>
             </div>
-            <svg id="addTraining" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-            </svg>
+            <button type="button" id="addTraining" class="col-md-3 btn btn-success">Add Another Training</button>
+
+
 
             <h4 class="mt-5 mb-3">AFFILIATION WITH OTHER ORGANIZATIONS</h4>
             <!-- JS to add more lines for orgAffiliations -->
             <div id="organizations">
-                <div id="organization" class="row">
-                    <div class="col-md-6 mb-1">
+                <div class="row organization">
+                    <div class="col-md-6 mb-1 orgDiv">
                       <label for="organization">Organization</label>
-                      <input type="text" class="form-control" name="organization" placeholder="Organization" value="" required="">
+                      <input type="text" class="form-control org" name="organization" placeholder="Organization" value="" required="">
                     </div>
-                    <div class="col-md-3 mb-1">
+                    <div class="col-md-3 mb-1 startDiv">
                       <label for="startDate">Start Date</label>
-                      <input type="date" class="form-control" name="startDate" placeholder="" value="" required="">
+                      <input type="date" class="form-control startDate" name="startDate" placeholder="" value="" required="">
                     </div>
-                    <div class="col-md-3 mb-1">
+                    <div class="col-md-3 mb-1 endDiv">
                       <label for="endDate">End Date</label>
-                      <input type="date" class="form-control" name="endDate" placeholder="" value="" required="">
+                      <input type="date" class="form-control endDate" name="endDate" placeholder="" value="" required="">
                     </div>
-                    <div class="col-md-6 mb-4">
+                    <div class="col-md-6 mb-4 posDiv">
                       <label for="position">Position</label>
-                      <input type="text" class="form-control" name="position" placeholder="Position" value="" required="">
+                      <input type="text" class="form-control position" name="position" placeholder="Position" value="" required="">
                     </div>
-                    <div class="col-md-6 mb-4">
+                    <div class="col-md-6 mb-4 councilDiv">
                       <label for="council">Council</label>
-                      <input type="text" class="form-control" name="council" placeholder="Council" value="" required="">
+                      <input type="text" class="form-control council" name="council" placeholder="Council" value="" required="">
                     </div>
                   </div>
             </div>
-            <svg id="addOrg" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-plus-circle md-5" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-            </svg>
+            <button type="button" id="addOrg" class="col-md-4 btn btn-success">Add Another Organization</button>
 
-            <hr class="my-4">        
-            <button type='submit' class="btn btn-danger btn-lg btn-block text-white">Submit</button>        
+            <hr class="my-4">          
+            <button type='submit' id="test" class="btn btn-danger btn-lg btn-block text-white">Submit</button>        
           </form>
-            <a href="activities.php">Back</a>
+            <!--<a href="activities.php">Back</a> -->
         </div>
       </div>
     </div>
