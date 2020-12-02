@@ -24,9 +24,9 @@ exports.addCouncil = async (req, res) => {
     Council.model.hasMany(Committee.model, {foreignKey: 'council_id',sourceKey: 'id'});
 
     await Council.model.create({
-        chapter_id: req.body.chapter,
+        chapter_id: req.body.chapterId,
         category: req.body.category,
-        name: req.body.councilName,
+        name: req.body.name,
         committees: [
             {type: 'DRRM', no_of_members:0},
             {type: 'Pledge 25', no_of_members:0},
@@ -102,11 +102,13 @@ exports.addMemberForm = async (req, res) => {
         document:{
             type: 'MEMBERSHIP',
             chapter_id: 1,  //get from Session variable
-            council_id: 2  //get from Session variable
+            council_id: 10  //get from Session variable
         }
     }, {
         include: [ Doc ]
     })
+
+    console.log(req.body.trainings)
 
     let trainings = JSON.parse(req.body.trainings)
     let organizations = JSON.parse(req.body.organizations)

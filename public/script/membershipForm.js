@@ -1,5 +1,7 @@
 $(document).ready(function(){
-    $('#addMemberForm').on('submit', function(){
+    $('#addMemberForm').on('submit', function(event){
+        event.preventDefault();
+        
         let trainings = [];
         let i=0;
         $( ".training" ).each(function() {
