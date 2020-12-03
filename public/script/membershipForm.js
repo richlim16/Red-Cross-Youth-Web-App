@@ -1,7 +1,7 @@
 $(document).ready(function(){
     $('#addMemberForm').on('submit', function(event){
         event.preventDefault();
-        
+
         let trainings = [];
         let i=0;
         $( ".training" ).each(function() {
@@ -36,7 +36,7 @@ $(document).ready(function(){
         let entry = {
             bloodType : $("#bloodType").val(),
             rcyId : $("#rcyId").val(),
-            committee : $("#committee").val(),
+            committee : 0,
             surname : $("#surname").val(),
             firstname : $('#firstName').val(),
             middlename : $('#middleName').val(),

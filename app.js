@@ -81,13 +81,24 @@ app.get('/activityForm', (req,res)=>{
 });
 
 app.get('/membershipForm', async (req,res)=>{
-    let committees = await Read.getCommitteesOfCouncil()
-    res.render('membershipForm',{title: "Membership Form", committees: committees});
+    res.render('membershipForm',{title: "Membership Form"});
 });
 
 app.get('/committeeMembershipForm', (req,res)=>{
+    // let councilName = await Read.getCouncilName(sessionId)
     res.render('committeeMembershipForm',{title: "Committee Membership Form"});
 });
+//When a specific committee is selected
+app.get('/generatedCommitteeMembershipForm/:type', urlEncodedParser, async (req,res)=>{
+    let members = await Read.getMembersOfCommittee(req)
+    res.send(members);
+});
+//When a adding members to a committee, show all members of that council without a committee yet
+app.get('/getNoneCommitteeMembers', urlEncodedParser, async (req,res)=>{
+    let members = await Read.getNoneCommitteeMembers()
+    res.send(members);
+});
+
 
 app.get('/activityRequestForm', (req,res)=>{
     res.render('activityRequestForm',{title: "Activity Request Form"});
@@ -122,6 +133,11 @@ app.post('/act/addMemberForm', urlEncodedParser, async (req,res) =>{
     await Create.addMemberForm(req)
     console.log("ADDING NEW FORM");
     res.redirect('/membershipForm');
+});
+
+app.post('/act/addCommitteeMember', urlEncodedParser, async (req,res) =>{
+    await Create.addCommitteeMember(req)
+    res.send('success');
 });
 
 

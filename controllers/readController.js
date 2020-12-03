@@ -20,16 +20,50 @@ Chapter.model.hasMany(Council.model, {foreignKey: 'chapter_id',sourceKey: 'id'})
 Council.model.belongsTo(Chapter.model, {foreignKey: 'chapter_id'});
 
 
+//Used in creating a council
 exports.getAllChapters = async (req, res) => {
     let ret = await Chapter.model.findAll();
     return ret;
 }
 
+//so far not used anymore
 exports.getCommitteesOfCouncil = async (req, res) => {
     let ret = await Committee.model.findAll({
         where: {
-            council_id: 10 //get council_id from Session variable
+            council_id: 10      //get council_id from Session variable
         }
     });
+    return ret;
+}
+
+//Used in Committee Membership Form
+exports.getMembersOfCommittee = async(req, res) => {
+    let committee = await Committee.model.findOne({
+        where: {
+            council_id: 10,     //get council_id from Session variable
+            type: req.params.type
+        }
+    });
+
+    let ret = await MembershipForm.model.findAll({
+        where: {
+            committee_membership_id: committee.id
+        }
+    });
+    return ret;
+}
+
+// Used in Committee Membership Form when adding a member to a committee
+exports.getNoneCommitteeMembers = async(req, res) => {
+    const Doc = MembershipForm.model.belongsTo(Document.model, {foreignKey:'document_id'});
+
+    let ret = await MembershipForm.model.findAll({
+        where: {
+            committee_membership_id: null,
+        },
+        include: [ Doc ]
+    }
+    );
+    
     return ret;
 }

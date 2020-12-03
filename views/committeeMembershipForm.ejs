@@ -31,8 +31,18 @@
           <div class="row d-flex justify-content-center">
             <div class="col-md-3 mb-5">
               <label for="committee">Committee</label>
-              <select type="text" class="form-control" name="committee" value="" required="">
-                <option></option>
+              <select id="committeeType" type="text" class="form-control" name="committee" required="">
+                <option disabled selected value>-select type-</option>
+                <option value="DRRM">DRRM</option>
+                <option value="Pledge 25">Pledge 25</option>
+                <option value="Trainings">Trainings</option>
+                <option value="Council Dev">Council Dev</option>
+                <option value="YAPE">YAPE</option>
+                <option value="YPE">YPE</option>
+                <option value="Health and Services">Health and Services</option>
+                <option value="Welfare">Welfare</option>
+                <option value="Awards and Recognition">Awards and Recognition</option>
+                <option value="Safety">Safety</option>
               </select>
             </div>
           </div>
@@ -65,19 +75,15 @@
                 <th>TEL #</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <th>1</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
+            <tbody id="memberTable">
             </tbody>
           </table>
 
+
+          <!-- Button trigger modal -->
+          <div class="d-flex justify-content-center">
+            <button type="button" id="showMembers" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Add a Member</button>
+          </div>
 
 
           <div class="row mt-5 mb-3">
@@ -145,4 +151,39 @@
   </section>
 
 
+
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Available Members</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered text-center">
+          <thead>
+            <tr>
+              <th></th>
+              <th>SURNAME</th>
+              <th>FIRST NAME</th>
+              <th>MIDDLE INITIAL  </th>
+              <th>NICKNAME</th>
+              <th>CEL #</th>
+              <th>TEL #</th>
+            </tr>
+          </thead>
+          <tbody id="availMemberTable">
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button id="closeModal" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <%-include ('partials/footer.ejs') %> 
