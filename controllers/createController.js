@@ -16,6 +16,7 @@ const OtherOrganizationsAffiliations = require('../models/other_organizations_af
 const TrainingsAttended = require('../models/trainings_attended');
 const User = require('../models/user');
 
+
 Chapter.model.hasMany(Council.model, {foreignKey: 'chapter_id',sourceKey: 'id'});
 Council.model.belongsTo(Chapter.model, {foreignKey: 'chapter_id'});
 
@@ -43,6 +44,11 @@ exports.addCouncil = async (req, res) => {
     }, {
         include: [Committee.model]
     })
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
 }
 
 

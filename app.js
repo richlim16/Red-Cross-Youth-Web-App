@@ -6,6 +6,10 @@ const bodyParser = require("body-parser");
 const urlEncodedParser = bodyParser.urlencoded({extended: false});
 const Create = require('./controllers/createController');
 const Read = require('./controllers/readController');
+app.use(cors())
+// const routes = require ('./routes/routes')
+
+
 
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
