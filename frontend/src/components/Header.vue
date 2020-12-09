@@ -3,7 +3,7 @@
     <header id="header" class="fixed-top">
         <div class="container d-flex align-items-center">
 
-            <a href="/" class="logo mr-auto"><img src="Red-Cross-Youth-Web-App\public\images\1.png" alt="logo"> councilName councilType</a>
+            <a href="/" class="logo mr-auto"><img src="..\..\public\images\1.png" alt="logo"> councilName councilType</a>
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                 
