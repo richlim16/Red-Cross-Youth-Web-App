@@ -6,7 +6,8 @@ const bodyParser = require("body-parser");
 const urlEncodedParser = bodyParser.urlencoded({extended: false});
 const Create = require('./controllers/createController');
 const Read = require('./controllers/readController');
-app.use(cors())
+const cors = require("cors");
+app.use(cors());
 // const routes = require ('./routes/routes')
 
 
@@ -128,9 +129,9 @@ app.get('/serviceReq', (req,res)=>{
 
 //POST requests
 app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{
+    console.log(req.query)
     await Create.addCouncil(req)
-    console.log(req.body.councilName+" "+req.body.chapter);
-    res.redirect('/addCouncil');
+    // res.redirect('/addCouncil');
 });
 
 app.post('/act/addMemberForm', urlEncodedParser, async (req,res) =>{

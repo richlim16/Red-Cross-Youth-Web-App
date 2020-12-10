@@ -21,13 +21,29 @@
                 </ul>
             </nav><!-- .nav-menu -->
         </div>
+
+        <button v-on:click="postData">SUBMIT</button>
     </header><!-- End Header -->
 
 </template>
 
 <script>
+import axios from 'axios'
 export default {
-    name: 'head'
+    name: 'head',
+    methods: {
+      postData: function(){
+        axios({
+          method: 'POST',
+          url: 'http://localhost:3000/act/addCouncil',
+          data: {
+            name: 'something',
+            chapterId: 1,
+            category: 'College Red Cross Youth'
+          }
+        })
+      }
+    }
 }
 </script>
 

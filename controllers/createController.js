@@ -24,7 +24,7 @@ Council.model.belongsTo(Chapter.model, {foreignKey: 'chapter_id'});
 //For adding a council
 exports.addCouncil = async (req, res) => {
     Council.model.hasMany(Committee.model, {foreignKey: 'council_id',sourceKey: 'id'});
-
+    console.log(req.body)
     await Council.model.create({
         chapter_id: req.body.chapterId,
         category: req.body.category,
@@ -44,11 +44,6 @@ exports.addCouncil = async (req, res) => {
     }, {
         include: [Committee.model]
     })
-
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
 }
 
 
@@ -139,6 +134,12 @@ exports.addMemberForm = async (req, res) => {
             end_date: organizations[o].endDate
         })
     };
+
+
+    // res.setHeader('Access-Control-Allow-Origin', '*');
+    // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
+    // res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    // res.setHeader('Access-Control-Allow-Credentials', true);
 }
 
 
@@ -158,4 +159,9 @@ exports.addCommitteeMember = async (req, res) => {
             id: req.body.memberId
           }
     });
+
+    // res.setHeader('Access-Control-Allow-Origin', '*');
+    // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
+    // res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    // res.setHeader('Access-Control-Allow-Credentials', true);
 }
