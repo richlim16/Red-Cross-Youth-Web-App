@@ -1,20 +1,26 @@
 <template>
   <div id="app">
+    <!-- <add/> -->
     <T/>
     <H/>
+    <M/>
   </div>
 </template>
 
 <script>
-
+// import addcouncil from './components/addCouncil.vue'
 import header from './components/Header.vue'
 import topbar from './components/Topbar.vue'
+import membershipform from './components/membershipForm.vue'
+
 
 export default {
   name: 'App',
   components: {
+    // 'add': addcouncil,
     'H': header,
-    'T': topbar
+    'T': topbar,
+    'M': membershipform
   }
 }
 </script>
