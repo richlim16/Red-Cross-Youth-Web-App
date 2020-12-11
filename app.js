@@ -119,7 +119,8 @@ app.get('/officerActivity', (req,res) =>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('officerActivity',{title: "Officers Activity"});
+        // res.render('officerActivity',{title: "Officers Activity"});
+        res.render('masterlist',{title: "Officers Activity"});
     }
 });
 
@@ -227,9 +228,15 @@ app.get('/unifRequest', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        connection.query("SELECT id, name FROM `chapters`",(err,result)=>{
-            res.render('uniformRequest', {
-                title: "Uniform Request"
+        connection.query("SELECT id, name FROM `councils`",(err,result)=>{
+            let council=result;
+            connection.query("SELECT id, username as name FROM `users`",(err,result)=>{
+                let people=result;
+                res.render('uniformRequest', {
+                    title: "Uniform Request",
+                    councils: council,
+                    peoples: people
+                });
             });
         });
     }
@@ -271,6 +278,11 @@ app.post('/act/addCommitteeMember', urlEncodedParser, async (req,res) =>{
     res.send('success');
 });
 
+
+app.post('/act/add', urlEncodedParser, (req,res) =>{ //unif req 
+    //design: 0 is RCY, 1 is Advisor; as per Derek's instructions
+    console.log("INSERT INTO `users` (`date_requested`, `volunteer`, `type`, `qty`, `size`, `design`, `or_number`) VALUES ('"+req.body.dateReceived+"', '"+req.body.volunteer+"','"+req.body.type+"','"+req.body.qty+"','"+req.body.size+"','"+req.body.design+"','"+req.body.Receipt+"')");
+});
 
 //POST requests END HERE
 

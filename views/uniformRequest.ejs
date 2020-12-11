@@ -28,14 +28,20 @@
           <div class="row d-flex mb-4">
             <div class="col-md">
               <label for="committee">Name of Requesting Volunteer</label>
-              <select type="text" class="form-control" name="committee" value="" required="">
-                <option></option>
+              <select type="text" class="form-control" name="volunteer" required>
+                <option style="display:none"></option>
+                <% peoples.forEach( aa => { %>
+                  <option value="<%= aa.id%>"><%= aa.name %> </option>
+                <% }) %>
               </select>
             </div>
             <div class="col-md">
               <label for="activity">Name of Council</label>
-              <select type="text" class="form-control" name="activity" value="" required="">
-                <option></option>
+              <select type="text" class="form-control" name="council" required>
+                <option style="display:none"></option>
+                <% councils.forEach( aa => { %>
+                  <option value="<%= aa.id%>"><%= aa.name %> </option>
+                <% }) %>
               </select>
             </div>
           </div>
@@ -43,39 +49,39 @@
           <div class="row mb-4">
             <div class="col-md-1">
               <label for="rcys">Type</label>
-              <select class="form-control">
-                <option>A</option>
-                <option>C</option>
+              <select class="form-control" name="type">
+                <option value="A">A</option>
+                <option value="C">C</option>
               </select>
             </div>
             <div class="col-md-2">
               <label for="rcys">Quantity</label>
-              <input type="number" class="form-control" name="unifQty" placeholder="" value="" required="">
+              <input type="number" class="form-control" name="qty" placeholder="" value="" required>
             </div>
             <div class="col-md-1">
               <label for="rcys">Size</label>            
-              <select class="form-control">
-                <option>XS</option>
-                <option>S</option>
-                <option>M</option>
-                <option>L</option>
-                <option>XL</option>
+              <select class="form-control" name="size">
+                <option value="XS">XS</option>
+                <option value="S">S</option>
+                <option value="M">M</option>
+                <option value="L">L</option>
+                <option value="XL">XL</option>
               </select>
             </div>
             <div class="col-md-1">
               <label for="rcys">RCY</label>
-              <input type="radio" name="rcyCheck" placeholder="" value="" required="">              
+              <input type="radio" name="design" placeholder="" value="0" required>              
             </div>
             <div class="col-md-1">
               <label for="rcys">Advisor</label>
-              <input type="radio" name="advCheck" placeholder="" value="" required="">
+              <input type="radio" name="design" placeholder="" value="1" required>
             </div>
           </div>
           
             <div class="row mb-4">
               <div class="col-md-4">
                 <label for="rcys">Receipt Number:</label>
-                <input type="text" class="form-control" name="unifReceipt" placeholder="" value="" required="">
+                <input type="text" class="form-control" name="Receipt" placeholder="" value="" required>
               </div>
             </div>
 
@@ -119,7 +125,7 @@
           <hr class="mb-4">        
           <button type='submit' class="btn btn-danger btn-lg btn-block text-white">Post</button>        
         </form>
-          <a href="activities.php">Back</a>
+          <a href="/docs">Back</a>
         </div>
       </div>
     </div>
