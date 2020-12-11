@@ -76,15 +76,37 @@ app.get('/logout', (req,res)=>{ //no persistent
 });
 
 app.get('/signup', (req,res)=>{ //no persistent
-    res.render('signup', {title: "Sign Up"});
+    connection.query("SELECT id, name FROM `councils`",(err,result)=>{
+        let council=result;
+        connection.query("SELECT id, name FROM `chapters`",(err,result)=>{
+            let chapter=result;
+            res.render('signup', {
+                title: "Sign Up",
+                councils: council,
+                chapters: chapter
+            });
+        });
+    });
     //I think it's better if an admin makes the accounts, pina ISMIS.
 });
 
 app.post('/signup', urlEncodedParser, (req,res)=>{
     let salt= bcrypt.genSaltSync(saltR);
     let pass= bcrypt.hashSync(req.body.pass, salt);
-    connection.query("INSERT INTO `users` (`username`, `password`) VALUES ('"+req.body.username+"', '"+pass+"')",(err,result)=>{
-        res.redirect('/')
+    connection.query("INSERT INTO `users` (`username`, `password`, `type`) VALUES ('"+req.body.username+"', '"+pass+"', '"+req.body.type+"')",(err,result)=>{
+        if(req.body.type == 'Chapter Admin' || req.body.type == 'Chapter Youth Advisor'){
+            connection.query("INSERT INTO `chapter_personnels` (user_id`, `chapter_id`, `position`) VALUES ('"+result.insertId+"', '"+req.body.chapter+"', '"+req.body.type+"');",(err,result)=>{
+                res.redirect('/');
+            });
+        }else if(req.body.type == 'Council'){ //addCouncil right?
+            connection.query("INSERT INTO `councils` (`chapter_id`, `category`, `name`) VALUES ('"+req.body.chapter+"', '"+req.body.category+"', '"+req.body.username+"');",(err,result)=>{
+                res.redirect('/');
+            });
+        }else{
+            connection.query("INSERT INTO `council_advisors` (`user_id`, `council_id`) VALUES ('"+result.insertId+"', '"+req.body.council+"');",(err,result)=>{
+                res.redirect('/');
+            });
+        }
     });
 });
 
@@ -93,7 +115,13 @@ app.post('/login', urlEncodedParser, (req,res)=>{
         if (bcrypt.compareSync(req.body.pass, result[0]['password'])){
             req.session.loggedIn=true;
             req.session.user=result[0]['id'];
-            res.redirect('/');
+            req.session.type=result[0]['type'];
+            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
+                res.redirect('/admin')
+            }
+            else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
+                res.redirect('/')
+            }  
         }else{
             console.log("login failed");
             res.redirect('/login'); //idk ideal redirect
@@ -170,11 +198,16 @@ app.get('/activityForm', (req,res)=>{
 });
 
 app.get('/membershipForm', async (req,res)=>{
+    res.render('membershipForm',{title: "Membership Form", session: req.session});
+});
+
+app.get('/committeeMembershipForm', async (req,res)=>{
+    // let councilName = await Read.getCouncilName(sessionId)
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
         let committees = await Read.getCommitteesOfCouncil()
-        res.render('membershipForm',{title: "Membership Form", committees: committees});
+        res.render('committeeMembershipForm',{title: "Membership Form", committees: committees, session: req.session});
     }
 });
 
@@ -185,6 +218,19 @@ app.get('/committeeMembershipForm', (req,res)=>{
         res.render('committeeMembershipForm',{title: "Committee Membership Form"});
     }
 });
+
+//When a specific committee is selected
+app.get('/generatedCommitteeMembershipForm/:type', urlEncodedParser, async (req,res)=>{
+    let members = await Read.getMembersOfCommittee(req)
+    res.send(members);
+});
+
+//When a adding members to a committee, show all members of that council without a committee yet
+app.get('/getNoneCommitteeMembers', urlEncodedParser, async (req,res)=>{
+    let members = await Read.getNoneCommitteeMembers()
+    res.send(members);
+});
+
 
 app.get('/activityRequestForm', (req,res)=>{
     if(req.session.loggedIn!=true){
@@ -239,16 +285,21 @@ app.get('/serviceReq', (req,res)=>{
 
 
 //POST requests
-app.post('/addCouncil', urlEncodedParser, async (req,res) =>{
+app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{
     await Create.addCouncil(req)
     console.log(req.body.councilName+" "+req.body.chapter);
     res.redirect('/addCouncil');
 });
 
-app.post('/membershipForm', urlEncodedParser, async (req,res) =>{
+app.post('/act/addMemberForm', urlEncodedParser, async (req,res) =>{
     await Create.addMemberForm(req)
     console.log("ADDING NEW FORM");
     res.redirect('/membershipForm');
+});
+
+app.post('/act/addCommitteeMember', urlEncodedParser, async (req,res) =>{
+    await Create.addCommitteeMember(req)
+    res.send('success');
 });
 
 
