@@ -113,7 +113,8 @@ app.get('/officerActivity', (req,res) =>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('officerActivity',{title: "Officers Activity"});
+        // res.render('officerActivity',{title: "Officers Activity"});
+        res.render('masterlist',{title: "Officers Activity"});
     }
 });
 
