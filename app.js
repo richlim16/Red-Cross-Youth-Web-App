@@ -93,7 +93,13 @@ app.post('/login', urlEncodedParser, (req,res)=>{
         if (bcrypt.compareSync(req.body.pass, result[0]['password'])){
             req.session.loggedIn=true;
             req.session.user=result[0]['id'];
-            res.redirect('/');
+            req.session.type=result[0]['type'];
+            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
+                res.redirect('/admin')
+            }
+            else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
+                res.redirect('/')
+            }  
         }else{
             console.log("login failed");
             res.redirect('/login'); //idk ideal redirect
@@ -169,17 +175,16 @@ app.get('/activityForm', (req,res)=>{
 });
 
 app.get('/membershipForm', async (req,res)=>{
-    res.render('membershipForm',{title: "Membership Form"});
+    res.render('membershipForm',{title: "Membership Form", session: req.session});
 });
 
-app.get('/committeeMembershipForm', (req,res)=>{
+app.get('/committeeMembershipForm', async (req,res)=>{
     // let councilName = await Read.getCouncilName(sessionId)
-    res.render('committeeMembershipForm',{title: "Committee Membership Form"});
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
         let committees = await Read.getCommitteesOfCouncil()
-        res.render('membershipForm',{title: "Membership Form", committees: committees});
+        res.render('committeeMembershipForm',{title: "Membership Form", committees: committees, session: req.session});
     }
 });
 

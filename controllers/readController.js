@@ -67,3 +67,14 @@ exports.getNoneCommitteeMembers = async(req, res) => {
     
     return ret;
 }
+
+
+exports.getAllCommitteeMembershipForms = async (req, res) => {
+    console.log(req.session.user)
+    // let ret = await CommitteeMembershipForm.model.findAll({
+    //     where: {
+
+    //     }
+    // });
+    // return ret;
+}

@@ -114,7 +114,82 @@ $(document).ready(function(){
         org.appendTo( "#organizations" ); 
     });
 
-    // $('#addCommittee').on('click', function(){
-    //     $( "#committee" ).clone().appendTo( "#committeesList" ); 
-    // });
+
+    $('#presApprove').on('click', function(){
+        let id = $('#memFormId').val()
+        $.ajax({
+            type: 'POST',
+            url: '/memForm/presApprove',
+            data: {id: id},
+            success: function(data){
+              //do something with the data via front-end framework
+              location.reload()
+            }
+          });
+    });
+
+    $('#presReject').on('click', function(){
+        let id = $('#memFormId').val()
+        $.ajax({
+            type: 'POST',
+            url: '/memForm/presReject',
+            data: {id: id},
+            success: function(data){
+              //do something with the data via front-end framework
+              location.reload()
+            }
+          });
+    });
+
+    $('#memApprove').on('click', function(){
+        let id = $('#memFormId').val()
+        $.ajax({
+            type: 'POST',
+            url: '/memForm/memApprove',
+            data: {id: id},
+            success: function(data){
+              //do something with the data via front-end framework
+              location.reload()
+            }
+          });
+    });
+
+    $('#memReject').on('click', function(){
+        let id = $('#memFormId').val()
+        $.ajax({
+            type: 'POST',
+            url: '/memForm/memReject',
+            data: {id: id},
+            success: function(data){
+              //do something with the data via front-end framework
+              location.reload()
+            }
+          });
+    });
+
+    $('#advApprove').on('click', function(){
+        let id = $('#memFormId').val()
+        $.ajax({
+            type: 'POST',
+            url: '/memForm/advApprove',
+            data: {id: id},
+            success: function(data){
+              //do something with the data via front-end framework
+              location.reload()
+            }
+          });
+    });
+
+    $('#advReject').on('click', function(){
+        let id = $('#memFormId').val()
+        $.ajax({
+            type: 'POST',
+            url: '/memForm/advReject',
+            data: {id: id},
+            success: function(data){
+              //do something with the data via front-end framework
+              location.reload()
+            }
+          });
+    });
 })
