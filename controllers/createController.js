@@ -20,13 +20,14 @@ Chapter.model.hasMany(Council.model, {foreignKey: 'chapter_id',sourceKey: 'id'})
 Council.model.belongsTo(Chapter.model, {foreignKey: 'chapter_id'});
 
 
+//For adding a council
 exports.addCouncil = async (req, res) => {
     Council.model.hasMany(Committee.model, {foreignKey: 'council_id',sourceKey: 'id'});
 
     await Council.model.create({
-        chapter_id: req.body.chapter,
+        chapter_id: req.body.chapterId,
         category: req.body.category,
-        name: req.body.councilName,
+        name: req.body.name,
         committees: [
             {type: 'DRRM', no_of_members:0},
             {type: 'Pledge 25', no_of_members:0},
@@ -45,13 +46,13 @@ exports.addCouncil = async (req, res) => {
 }
 
 
+//For adding a member in Membership Form
 exports.addMemberForm = async (req, res) => {
     const Doc = MembershipForm.model.belongsTo(Document.model, {foreignKey:'document_id'});
 
     await MembershipForm.model.create({
         blood_type: req.body.bloodType,
         rcy_id: req.body.rcyId,
-        committee_membership_id: req.body.committee,
         surname: req.body.surname,
         first_name: req.body.firstname,
         middle_name: req.body.middlename,
@@ -102,12 +103,13 @@ exports.addMemberForm = async (req, res) => {
         document:{
             type: 'MEMBERSHIP',
             chapter_id: 1,  //get from Session variable
-            council_id: 2  //get from Session variable
+            council_id: 10  //get from Session variable
         }
     }, {
         include: [ Doc ]
     })
 
+    // Adding the member's trainings attended
     let trainings = JSON.parse(req.body.trainings)
     let organizations = JSON.parse(req.body.organizations)
     for(t in trainings) {
@@ -120,7 +122,7 @@ exports.addMemberForm = async (req, res) => {
             end_date: trainings[t].endDate
         })
     };
-
+    // Adding the member's other organizations affiliations
     for(o in organizations) {
         await OtherOrganizationsAffiliations.model.create({
             rcy_id: req.body.rcyId,
@@ -131,4 +133,23 @@ exports.addMemberForm = async (req, res) => {
             end_date: organizations[o].endDate
         })
     };
+}
+
+
+//For adding a member to a committee
+exports.addCommitteeMember = async (req, res) => {
+    let committee = await Committee.model.findOne({
+        where: {
+            council_id: 10,     //get council_id from Session variable
+            type: req.body.type
+        }
+    });
+
+    await MembershipForm.model.update({ 
+        committee_membership_id: committee.id, 
+    },  {
+        where: {
+            id: req.body.memberId
+          }
+    });
 }

@@ -12,14 +12,18 @@
           <div class="ml-auto col-md-4 col-sm-4 col-xs-12 text-white">
             <div class="m-3 p-3 bg-danger rounded-lg">
                 <h2 class="text-center text-white">Log In</h2>
-                <form action="" method="POST">
-                    <div class="form-group">
+                <form action="/login" method="POST">
+                    <!-- <div class="form-group">
                       <label for="email">Email address</label>
                       <input type="email" class="form-control" id="email" required>
+                    </div><br> -->
+                    <div class="form-group">
+                      <label for="username">Username</label>
+                      <input type="text" class="form-control" id="username" name="username" required>
                     </div><br>
                     <div class="form-group">
                       <label for="pass">Password</label>
-                      <input type="password" class="form-control" id="pass" required>
+                      <input type="password" class="form-control" id="pass" name="pass" required>
                     </div><br>
                     <div class="form-group form-check">
                       <input type="checkbox" class="form-check-input" id="remember">
