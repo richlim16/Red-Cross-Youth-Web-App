@@ -21,11 +21,11 @@
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
                 
-                    <li class="active"><a href="/"><router-link to="/">Home</router-link></a></li>
+                    <li><a href="/"><router-link to="/">Home</router-link></a></li> <!--class="active"-->
                     <li><a href="/#about">About</a></li>
                     <li><a href="/#team">Team</a></li>
                     <li><a href="/#contact">Contact</a></li>
-                    <li><a href="/docs">Forms</a></li>
+                    <li><a href="/docs"><router-link :to="{name: 'docs'}">Forms</router-link></a></li>
                     <li class="drop-down"><a href="#">Profile</a>
                     <ul>
                         <li><a href="/login">Login</a></li>
@@ -38,9 +38,9 @@
     </header><!-- End Header -->
 
 
-    <home/>
+    <router-view/> <!-- <-This is the place where the Template is added -->
     
-
+    
 
     <!-- ======= Footer ======= -->
     <footer id="footer">
@@ -102,7 +102,7 @@
 // import membershipform from './components/membershipForm.vue'
 // import rolecard from './components/roleCard/vue'
 // import committee from './components/committeeForm.vue'
-import home from './views/Home.vue'
+// import home from './views/Home.vue'
 
 
 
@@ -112,7 +112,7 @@ export default {
   components: {
     // 'add': addcouncil,
     // 'FN': formnav,
-    home,
+    // home,
     // 'M': membershipform
     // 'C': committee,
 

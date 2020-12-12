@@ -68,7 +68,7 @@ app.get('/adminCouncils', (req,res) =>{
 
 app.get('/addCouncil', async (req,res) =>{
     let chapters = await Read.getAllChapters()
-    res.render('addCouncil',{title: "Add Council", chapters: chapters});
+    res.render('addCouncil',{title: "Add Council", chapters: chapters});//
 });
 
 

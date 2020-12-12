@@ -1,6 +1,5 @@
 <template>
     <div id="membershipForm">
-        
         <!-- ======= Breadcrumbs ======= -->
         <section class="breadcrumbs">
             <div class="container">
