@@ -5,6 +5,7 @@ const ejs = require('ejs');
 const bodyParser = require("body-parser");
 const urlEncodedParser = bodyParser.urlencoded({extended: false});
 const Create = require('./controllers/createController');
+const Update = require('./controllers/updateController');
 const Read = require('./controllers/readController');
 
 const session = require("express-session");
@@ -32,7 +33,7 @@ app.get('/', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('home', {title: "Home"});
+        res.render('home', {title: "Home",councilName:"USC",councilType:"College Council"});
     }
 });
 
@@ -66,7 +67,7 @@ app.get('/login', (req,res)=>{ //inverse persistent
     if(req.session.loggedIn==true){
         res.redirect("/");
     }else{
-        res.render('login', {title: "Login"});
+        res.render('login', {title: "Login",councilName:"USC",councilType:"College Council"});
     }
 });
 
@@ -76,20 +77,21 @@ app.get('/logout', (req,res)=>{ //no persistent
 });
 
 app.get('/signup', (req,res)=>{ //no persistent
-    res.render('signup', {title: "Sign Up"});
+    res.render('signup', {title: "Sign Up",councilName:"USC",councilType:"College Council"});
     //I think it's better if an admin makes the accounts, pina ISMIS.
 });
 
 app.post('/signup', urlEncodedParser, (req,res)=>{
     let salt= bcrypt.genSaltSync(saltR);
     let pass= bcrypt.hashSync(req.body.pass, salt);
-    connection.query("INSERT INTO `users` (`username`, `password`) VALUES ('"+req.body.username+"', '"+pass+"')",(err,result)=>{
+    connection.query("INSERT INTO `users` (`username`, `password`, `createdAt`, `updatedAt`) VALUES ('"+req.body.username+"', '"+pass+"',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)",(err,result)=>{
         res.redirect('/')
     });
 });
 
 app.post('/login', urlEncodedParser, (req,res)=>{
     connection.query("SELECT * FROM `users` WHERE username='"+req.body.username+"'",(err,result)=>{
+        if(err)throw(err);
         if (bcrypt.compareSync(req.body.pass, result[0]['password'])){
             req.session.loggedIn=true;
             req.session.user=result[0]['id'];
@@ -111,25 +113,26 @@ app.get('/about', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('about', {title: "About"});
+        res.render('about', {title: "About",councilName:"USC",councilType:"College Council"});
     }
 });
 
-app.get('/officerActivity', async (req,res) =>{
+app.get('/officerActivity', (req,res) =>{    
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        let pendingMemForms = await Read.getPendingMemForms(req)
-        // res.render('officerActivity',{title: "Officers Activity"});
-        res.render('masterlist',{title: "Officers Activity", memForms: pendingMemForms});
+        connection.query("SELECT * FROM membership_forms",(err,result)=>{
+            let forms=result;
+            res.render('masterlist',{ title:"Testing", memForm:result,councilName:"USC",councilType:"College Council"});
+        })
     }
 });
 
-app.get('/adminActivity', (req,res) =>{
+app.get('/adminForms', (req,res) =>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('adminActivity',{title: "Admin Activity"});
+        res.render('adminActivity',{title: "Forms",councilName:"USC",councilType:"College Council"});
     }
 });
 
@@ -137,7 +140,7 @@ app.get('/adminCouncils', (req,res) =>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('adminCouncils',{title: "Admin Council"});
+        res.render('adminCouncils',{title: "Admin Council",councilName:"USC",councilType:"College Council"});
     }
 });
 
@@ -146,7 +149,7 @@ app.get('/addCouncil', async (req,res) =>{
         res.redirect("/login");
     }else{
        let chapters = await Read.getAllChapters()
-       res.render('addCouncil',{title: "Add Council", chapters: chapters});
+       res.render('addCouncil',{title: "Add Council", chapters: chapters,councilName:"USC",councilType:"College Council"});
     }
 });
 
@@ -156,7 +159,7 @@ app.get('/docs', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('docs', {title: "Documents"});
+        res.render('docs', {title: "Documents",councilName:"USC",councilType:"College Council"});
     }
 });
 
@@ -164,7 +167,7 @@ app.get('/addReport', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('addReport', {title: "Add Report"});
+        res.render('addReport', {title: "Add Report",councilName:"USC",councilType:"College Council"});
     }
 });
 
@@ -172,12 +175,12 @@ app.get('/activityForm', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{ 
-        res.render('addReport',{title: "Activity Form"});
+        res.render('addReport',{title: "Activity Form",councilName:"USC",councilType:"College Council"});
     }
 });
 
 app.get('/membershipForm', async (req,res)=>{
-    res.render('membershipForm',{title: "Membership Form", session: req.session});
+    res.render('membershipForm',{title: "Membership Form", session:req.session,councilName:"USC",councilType:"College Council"});
 });
 
 app.get('/committeeMembershipForm', async (req,res)=>{
@@ -186,7 +189,7 @@ app.get('/committeeMembershipForm', async (req,res)=>{
         res.redirect("/login");
     }else{
         let committees = await Read.getCommitteesOfCouncil()
-        res.render('committeeMembershipForm',{title: "Membership Form", committees: committees, session: req.session});
+        res.render('committeeMembershipForm',{title: "Membership Form", committees: committees, session: req.session,councilName:"USC",councilType:"College Council"});
     }
 });
 
@@ -194,7 +197,7 @@ app.get('/committeeMembershipForm', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('committeeMembershipForm',{title: "Committee Membership Form"});
+        res.render('committeeMembershipForm',{title: "Committee Membership Form",councilName:"USC",councilType:"College Council"});
     }
 });
 //When a specific committee is selected
@@ -213,7 +216,7 @@ app.get('/activityRequestForm', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('activityRequestForm',{title: "Activity Request Form"});
+        res.render('activityRequestForm',{title: "Activity Request Form",councilName:"USC",councilType:"College Council"});
     }
 });
 
@@ -221,7 +224,7 @@ app.get('/activityReportForm', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('activityReportForm',{title: "Activity Report Form"});
+        res.render('activityReportForm',{title: "Activity Report Form",councilName:"USC",councilType:"College Council"});
     }
 });
 
@@ -233,7 +236,7 @@ app.get('/unifRequest', (req,res)=>{
             let council=result;
             connection.query("SELECT id, username as name FROM `users`",(err,result)=>{
                 let people=result;
-                res.render('uniformRequest', {
+                res.render('uniformRequest',{
                     title: "Uniform Request",
                     councils: council,
                     peoples: people
@@ -247,7 +250,7 @@ app.get('/unifClaim', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('uniformClaimSlip', {title: "Uniform Claim Slip"});
+        res.render('uniformClaimSlip', {title: "Uniform Claim Slip",councilName:"USC",councilType:"College Council"});
     }
 });
 
@@ -255,11 +258,10 @@ app.get('/serviceReq', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('serviceRequest', {title: "Service Request Form"});
+        res.render('serviceRequest', {title: "Service Request Form",councilName:"USC",councilType:"College Council"});
     }
 });
 //DOCUMENTS END HERE
-
 
 //POST requests
 app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{
@@ -302,6 +304,54 @@ app.get('/adminProfile',(req,res)=>{
         res.render('adminEditProf');
     }
 });
+
+app.get('/test',(req,res)=>{
+    connection.query("SELECT * FROM membership_forms",(err,result)=>{
+        let forms=result;
+        res.render('masterlist', {
+            title:"Testing",
+            memForm:result
+        });    
+    });
+});
+
+app.get('/filledMemForm/:id', async (req,res)=>{
+    let member = await Read.getFilledMemForm(req);
+    let trainings = await Read.getMemTrainings(member);
+    let orgs = await Read.getMemOrgs(member);
+    res.render('filledMembershipForm', {title: "Membership Form", session:req.session, mem: member, trainings: trainings, orgs: orgs});    
+});
+
+
+
+
+// For approval/rejection of forms
+app.post('/memForm/presApprove/:id', async (req,res)=>{
+    await Update.memFormPresApprove(req);  
+    res.redirect('/filledMemForm/' + req.params.id)
+});
+app.post('/memForm/presReject/:id', async (req,res)=>{
+    await Update.memFormPresReject(req);  
+    res.redirect('/filledMemForm/' + req.params.id)
+});
+app.post('/memForm/memApprove/:id', async (req,res)=>{
+    await Update.memFormMemApprove(req);  
+    res.redirect('/filledMemForm/' + req.params.id)
+});
+app.post('/memForm/memReject/:id', async (req,res)=>{
+    await Update.memFormMemReject(req);  
+    res.redirect('/filledMemForm/' + req.params.id) 
+});
+app.post('/memForm/advApprove/:id', async (req,res)=>{
+    await Update.memFormAdvApprove(req);  
+    res.redirect('/filledMemForm/' + req.params.id)
+});
+app.post('/memForm/advReject/:id', async (req,res)=>{
+    await Update.memFormAdvReject(req);  
+    res.redirect('/filledMemForm/' + req.params.id) 
+});
+
+
 
 app.listen(port,()=>{
     console.log("Server is running");

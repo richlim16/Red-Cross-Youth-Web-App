@@ -69,12 +69,29 @@ exports.getNoneCommitteeMembers = async(req, res) => {
 }
 
 
-exports.getAllCommitteeMembershipForms = async (req, res) => {
-    console.log(req.session.user)
-    // let ret = await CommitteeMembershipForm.model.findAll({
-    //     where: {
+exports.getFilledMemForm = async (req, res) => {
+    let ret = await MembershipForm.model.findOne({
+        where: {
+            id: req.params.id
+        }
+    })
+    return ret;
+}
 
-    //     }
-    // });
-    // return ret;
+exports.getMemTrainings = async (req, res) => {
+    let ret = await TrainingsAttended.model.findAll({
+        where: {
+            rcy_id: req.rcy_id
+        }
+    })
+    return ret;
+}
+
+exports.getMemOrgs = async (req, res) => {
+    let ret = await OtherOrganizationsAffiliations.model.findAll({
+        where: {
+            rcy_id: req.rcy_id
+        }
+    })
+    return ret;
 }

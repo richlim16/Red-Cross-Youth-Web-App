@@ -27,7 +27,6 @@ async function getCouncilId(userId){
             user_id: userId
         }
     })
-    console.log(ret)
     return ret
 }
 
@@ -36,6 +35,7 @@ exports.addCouncil = async (req, res) => {
     Council.model.hasMany(Committee.model, {foreignKey: 'council_id',sourceKey: 'id'});
 
     await Council.model.create({
+        user_id: 1,
         chapter_id: req.body.chapterId,
         category: req.body.category,
         name: req.body.name,
@@ -61,8 +61,6 @@ exports.addCouncil = async (req, res) => {
 exports.addMemberForm = async (req, res) => {
     const Doc = MembershipForm.model.belongsTo(Document.model, {foreignKey:'document_id'});
     let council = await getCouncilId(req.session.user)
-    console.log(council.chapter_id)
-    console.log(council.id)
 
     await MembershipForm.model.create({
         blood_type: req.body.bloodType,
@@ -154,7 +152,7 @@ exports.addMemberForm = async (req, res) => {
 exports.addCommitteeMember = async (req, res) => {
     let committee = await Committee.model.findOne({
         where: {
-            council_id: 10,     //get council_id from Session variable
+            council_id: 1,     //get council_id from Session variable
             type: req.body.type
         }
     });

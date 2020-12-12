@@ -115,12 +115,13 @@ $(document).ready(function(){
     });
 
 
+
+    let memId = $('#memFormId').val()
+
     $('#presApprove').on('click', function(){
-        let id = $('#memFormId').val()
         $.ajax({
             type: 'POST',
-            url: '/memForm/presApprove',
-            data: {id: id},
+            url: '/memForm/presApprove/' + memId,
             success: function(data){
               //do something with the data via front-end framework
               location.reload()
@@ -129,11 +130,9 @@ $(document).ready(function(){
     });
 
     $('#presReject').on('click', function(){
-        let id = $('#memFormId').val()
         $.ajax({
             type: 'POST',
-            url: '/memForm/presReject',
-            data: {id: id},
+            url: '/memForm/presReject/' + memId,
             success: function(data){
               //do something with the data via front-end framework
               location.reload()
@@ -142,11 +141,9 @@ $(document).ready(function(){
     });
 
     $('#memApprove').on('click', function(){
-        let id = $('#memFormId').val()
         $.ajax({
             type: 'POST',
-            url: '/memForm/memApprove',
-            data: {id: id},
+            url: '/memForm/memApprove/' + memId,
             success: function(data){
               //do something with the data via front-end framework
               location.reload()
@@ -155,11 +152,9 @@ $(document).ready(function(){
     });
 
     $('#memReject').on('click', function(){
-        let id = $('#memFormId').val()
         $.ajax({
             type: 'POST',
-            url: '/memForm/memReject',
-            data: {id: id},
+            url: '/memForm/memReject/' + memId,
             success: function(data){
               //do something with the data via front-end framework
               location.reload()
@@ -168,11 +163,9 @@ $(document).ready(function(){
     });
 
     $('#advApprove').on('click', function(){
-        let id = $('#memFormId').val()
         $.ajax({
             type: 'POST',
-            url: '/memForm/advApprove',
-            data: {id: id},
+            url: '/memForm/advApprove/' + memId,
             success: function(data){
               //do something with the data via front-end framework
               location.reload()
@@ -181,11 +174,9 @@ $(document).ready(function(){
     });
 
     $('#advReject').on('click', function(){
-        let id = $('#memFormId').val()
         $.ajax({
             type: 'POST',
-            url: '/memForm/advReject',
-            data: {id: id},
+            url: '/memForm/advReject/' + memId,
             success: function(data){
               //do something with the data via front-end framework
               location.reload()
