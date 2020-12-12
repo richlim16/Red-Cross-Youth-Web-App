@@ -20,6 +20,17 @@ Chapter.model.hasMany(Council.model, {foreignKey: 'chapter_id',sourceKey: 'id'})
 Council.model.belongsTo(Chapter.model, {foreignKey: 'chapter_id'});
 
 
+//get council id from session variable 'user'
+async function getCouncilId(userId){
+    let ret = await Council.model.findOne({
+        where: {
+            user_id: userId
+        }
+    })
+    console.log(ret)
+    return ret
+}
+
 //For adding a council
 exports.addCouncil = async (req, res) => {
     Council.model.hasMany(Committee.model, {foreignKey: 'council_id',sourceKey: 'id'});
@@ -49,6 +60,9 @@ exports.addCouncil = async (req, res) => {
 //For adding a member in Membership Form
 exports.addMemberForm = async (req, res) => {
     const Doc = MembershipForm.model.belongsTo(Document.model, {foreignKey:'document_id'});
+    let council = await getCouncilId(req.session.user)
+    console.log(council.chapter_id)
+    console.log(council.id)
 
     await MembershipForm.model.create({
         blood_type: req.body.bloodType,
@@ -102,8 +116,8 @@ exports.addMemberForm = async (req, res) => {
         council_adv_sig: false,
         document:{
             type: 'MEMBERSHIP',
-            chapter_id: 1,  //get from Session variable
-            council_id: 10  //get from Session variable
+            chapter_id: council.chapter_id,  //get from Session variable
+            council_id: council.id  //get from Session variable
         }
     }, {
         include: [ Doc ]

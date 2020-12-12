@@ -115,12 +115,13 @@ app.get('/about', (req,res)=>{
     }
 });
 
-app.get('/officerActivity', (req,res) =>{
+app.get('/officerActivity', async (req,res) =>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
+        let pendingMemForms = await Read.getPendingMemForms(req)
         // res.render('officerActivity',{title: "Officers Activity"});
-        res.render('masterlist',{title: "Officers Activity"});
+        res.render('masterlist',{title: "Officers Activity", memForms: pendingMemForms});
     }
 });
 
