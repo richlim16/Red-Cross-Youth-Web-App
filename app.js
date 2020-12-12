@@ -5,6 +5,7 @@ const ejs = require('ejs');
 const bodyParser = require("body-parser");
 const urlEncodedParser = bodyParser.urlencoded({extended: false});
 const Create = require('./controllers/createController');
+const Update = require('./controllers/updateController');
 const Read = require('./controllers/readController');
 
 const session = require("express-session");
@@ -313,6 +314,43 @@ app.get('/test',(req,res)=>{
         });    
     });
 });
+
+app.get('/filledMemForm/:id', async (req,res)=>{
+    let member = await Read.getFilledMemForm(req);
+    let trainings = await Read.getMemTrainings(member);
+    let orgs = await Read.getMemOrgs(member);
+    res.render('filledMembershipForm', {title: "Membership Form", session:req.session, mem: member, trainings: trainings, orgs: orgs});    
+});
+
+
+
+
+// For approval/rejection of forms
+app.post('/memForm/presApprove/:id', async (req,res)=>{
+    await Update.memFormPresApprove(req);  
+    res.redirect('/filledMemForm/' + req.params.id)
+});
+app.post('/memForm/presReject/:id', async (req,res)=>{
+    await Update.memFormPresReject(req);  
+    res.redirect('/filledMemForm/' + req.params.id)
+});
+app.post('/memForm/memApprove/:id', async (req,res)=>{
+    await Update.memFormMemApprove(req);  
+    res.redirect('/filledMemForm/' + req.params.id)
+});
+app.post('/memForm/memReject/:id', async (req,res)=>{
+    await Update.memFormMemReject(req);  
+    res.redirect('/filledMemForm/' + req.params.id) 
+});
+app.post('/memForm/advApprove/:id', async (req,res)=>{
+    await Update.memFormAdvApprove(req);  
+    res.redirect('/filledMemForm/' + req.params.id)
+});
+app.post('/memForm/advReject/:id', async (req,res)=>{
+    await Update.memFormAdvReject(req);  
+    res.redirect('/filledMemForm/' + req.params.id) 
+});
+
 
 
 app.listen(port,()=>{
