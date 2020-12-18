@@ -6,9 +6,10 @@
             <img class='card-img-top' src='<%= person.pic%>' alt='NO IMAGE FOUND' width=100% height=300>
             <div class='card-body'>
                 <form method='GET' action=''>
-                    <input type='hidden' name='ID' value='{<%= person.id%>'>
+                    <input type='hidden' name='ID' value='{ <%= person.id%>'>
                     <strong></strong>
                     <!-- originally supposed to be LName -->
+                    <!--  -->
                     <br>
                     <span class='text-muted'>ID: </span>
                     <br>
@@ -33,3 +34,4 @@ export default {
     name: 'rolecard'
 }
 </script>
+
