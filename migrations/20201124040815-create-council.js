@@ -8,6 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.BIGINT
       },
+      user_id: {
+        type: Sequelize.BIGINT
+      },
       chapter_id: {
         type: Sequelize.BIGINT,
         references: {

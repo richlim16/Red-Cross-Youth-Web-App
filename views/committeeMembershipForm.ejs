@@ -88,13 +88,21 @@
 
           <div class="row mt-5 mb-3">
             <div class="col-md-2 text-right">Prepared by: </div>
-            <div class="col-md-4 text-center">            
+            <div class="col-md-4 text-center">     
+              <% if (session.type == 'Council') { %>
+                <button type="button" id="secApprove" class="btn btn-success">Approve</button>
+                <button type="button" id="secReject" class="btn btn-danger">Reject</button>
+              <% } %>         
               <h5 name="councilSec" id="councilSec"></h5>
               <hr class="my-1">  
               <p>School Council Secretary</p>
             </div>
             <div class="col-md-2 text-right">Submitted by: </div>
             <div class="col-md-4 text-center">
+              <% if (session.type == 'Council') { %>
+                <button type="button" id="presApprove" class="btn btn-success">Approve</button>
+                <button type="button" id="presReject" class="btn btn-danger">Reject</button>
+              <% } %>  
               <h5 name="councilPres" id="councilPres"></h5>
               <hr class="my-1">  
               <p>School Council President</p>
@@ -103,7 +111,11 @@
 
           <div class="row mt-3 mb-3">
             <div class="col-md-2 text-right">Noted by: </div>
-            <div class="col-md-4 text-center">            
+            <div class="col-md-4 text-center">           
+              <% if (session.type == 'Council Advisor') { %>
+                <button type="button" id="councilAdvApprove" class="btn btn-success">Approve</button>
+                <button type="button" id="councilAdvReject" class="btn btn-danger">Reject</button>
+              <% } %>   
               <h5 name="councilAdv" id="councilAdv"></h5>
               <hr class="my-1">  
               <p>School Council Adviser</p>
@@ -128,12 +140,20 @@
           </div>
 
           <div class="row mt-5 mb-3 justify-content-center">
-            <div class="col-md-4 text-center">            
+            <div class="col-md-4 text-center">        
+              <% if (session.type == 'Chapter Youth Advisor') { %>
+                <button type="button" id="chapterAdvApprove" class="btn btn-success">Approve</button>
+                <button type="button" id="chapterAdvReject" class="btn btn-danger">Reject</button>
+              <% } %>      
               <h5 name="cyc1" id="cyc1"></h5>
               <hr class="my-1">  
               <p>Chapter Service Representative - RCY</p>
             </div>
             <div class="col-md-4 text-center">
+              <% if (session.type == 'Chapter Admin') { %>
+                <button type="button" id="adminApprove" class="btn btn-success">Approve</button>
+                <button type="button" id="adminReject" class="btn btn-danger">Reject</button>
+              <% } %>   
               <h5 name="cyc2" id="cyc2"></h5>
               <hr class="my-1">  
               <p>Chapter Administrator</p>

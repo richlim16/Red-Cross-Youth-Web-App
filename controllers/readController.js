@@ -85,4 +85,33 @@ exports.getNoneCommitteeMembers = async(req, res) => {
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.send(ret);
+    return ret;
+}
+
+
+exports.getFilledMemForm = async (req, res) => {
+    let ret = await MembershipForm.model.findOne({
+        where: {
+            id: req.params.id
+        }
+    })
+    return ret;
+}
+
+exports.getMemTrainings = async (req, res) => {
+    let ret = await TrainingsAttended.model.findAll({
+        where: {
+            rcy_id: req.rcy_id
+        }
+    })
+    return ret;
+}
+
+exports.getMemOrgs = async (req, res) => {
+    let ret = await OtherOrganizationsAffiliations.model.findAll({
+        where: {
+            rcy_id: req.rcy_id
+        }
+    })
+    return ret;
 }

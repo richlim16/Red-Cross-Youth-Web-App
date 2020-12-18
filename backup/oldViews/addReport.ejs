@@ -1,0 +1,144 @@
+<%-include ("partials/header.ejs") %> 
+<%-include ("partials/formsNav.ejs") %> 
+    <!-- ======= Breadcrumbs ======= -->
+    <section class="breadcrumbs">
+        <div class="container">
+  
+          <div class="d-flex justify-content-between align-items-center">
+            <h2>Add Report</h2>
+            <ol>
+              <li><a href="/adminActivity">Back To Activity Page</a></li>
+              <li>Adding Report</li>
+            </ol>
+          </div>
+  
+        </div>
+      </section><!-- End Breadcrumbs -->
+  
+      <section class="inner-page">
+        <div class="container">
+          <p>Fill out the following fields to create a new report</p>
+
+          <div class="row">
+            <div class="col-md-8 order-md-1">
+              <form class="needs-validation" novalidate="" action="/act/add" method="post">
+                <h4 class="mb-3">Account Details</h4>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="firstName">First name</label>
+                    <input type="text" class="form-control" name="firstName" placeholder="First Name" value="" required="">
+                    <div class="invalid-feedback">
+                      Valid first name is required.
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="lastName">Last name</label>
+                    <input type="text" class="form-control" name="lastName" placeholder="Last Name" value="" required="">
+                    <div class="invalid-feedback">
+                      Valid last name is required.
+                    </div>
+                  </div>
+                </div>
+                <h4 class="mb-3">Post Details</h4>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="title">Title</label>
+                    <input type="text" class="form-control" name="title" placeholder="Title of Activity" value="" required="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="title">Image URL</label>
+                    <input type="text" class="form-control" name="image" placeholder="https://" value="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="form-group col-md-3">
+                  <label for="month">Month</label>
+                  <select class="form-control" name="month">
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <option value="March">March</option>
+                    <option value="April">April</option>
+                    <option value="May">May</option>
+                    <option value="June">June</option>
+                    <option value="July">July</option>
+                    <option value="August">August</option>
+                    <option value="September">September</option>
+                    <option value="October">October</option>
+                    <option value="November">November</option>
+                    <option value="December">December</option>
+                  </select>
+                  </div>
+                  <div class="form-group col-md-2">
+                  <label for="day">Day</label>
+                  <select class="form-control" name="day">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                    <option value="31">31</option>
+                  </select>
+                  </div>
+                  <div class="form-group col-md-3">
+                  <label for="year">Year</label>
+                  <select class="form-control" name="year">
+                    <option>2019</option>
+                    <option>2018</option>
+                    <option>2017</option>
+                    <option>2016</option>
+                    <option>2015</option>
+                    <option>2014</option>
+                    <option>2013</option>
+                    <option>2012</option>
+                    <option>2011</option>
+                    <option>2010</option>
+                    <option>2009</option>
+                    <option>2008</option>
+                    <option>2007</option>
+                    <option>2006</option>
+                    <option>2005</option>
+                  </select>
+                  </div>
+                </div>
+                <div class="form-group mb-3">
+                  <label for="content">Content</label>
+                  <textarea class="form-control" name="content" rows="12"></textarea>
+                </div>
+                <hr class="mb-4">        
+                <button type='submit' class="btn btn-danger btn-lg btn-block text-white">Post</button>        
+              </form>
+                <a href="activities.php">Back</a>
+            </div>
+          </div>
+        </div>
+        </div>
+      </section>
+
+<%-include ('partials/footer.ejs') %> 
