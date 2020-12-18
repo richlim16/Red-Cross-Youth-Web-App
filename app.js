@@ -29,37 +29,29 @@ app.use(session({
     resave: true
 }));
 
+//GETS START HERE
+
+app.get('/admin',(req,res)=>{
+    if(req.session.loggedIn!=true){
+        res.redirect("/login");
+    }else{
+        res.render('adminHome');
+    }
+});
+
+app.get('/adminProfile',(req,res)=>{
+    if(req.session.loggedIn!=true){
+        res.redirect("/login");
+    }else{
+        res.render('adminEditProf');
+    }
+});
+
 app.get('/', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
         res.render('home', {title: "Home",councilName:"USC",councilType:"College Council"});
-    }
-});
-
-app.get('/members', (req,res)=>{
-    if(req.session.loggedIn!=true){
-        res.redirect("/login");
-    }else{
-        ads=[
-            {name:"Nakano Miku", pic: "http://imgur.com/hRst2bwh.jpg", id:1},
-            {name: "Rory Mercury", pic: "http://imgur.com/GaBdGdz.png", id:2}
-        ];
-        ads2=[
-            {name:"Nakano Miku", pic: "http://imgur.com/hRst2bwh.jpg", id:1},
-            {name: "Rory Mercury", pic: "http://imgur.com/GaBdGdz.png", id:2},
-            {name: "Dlanor A. Knox", pic: "https://i.imgur.com/ztUVQBU.jpg", id:3},
-            {name: "Kiryuu Minazuki", pic: "http://imgur.com/TiHTR8N.jpg", id:4},
-            {name: "Kushina Anna", pic: "http://imgur.com/5Pz32yG.jpg", id:5}
-        ];
-        // console.log(ads);
-        res.render('members',{
-            title: "Members",
-            sysAds: ads,
-            appAds: ads,
-            couAdv: ads2,
-            couOff: ads2
-        });
     }
 });
 
@@ -79,34 +71,6 @@ app.get('/logout', (req,res)=>{ //no persistent
 app.get('/signup', (req,res)=>{ //no persistent
     res.render('signup', {title: "Sign Up",councilName:"USC",councilType:"College Council"});
     //I think it's better if an admin makes the accounts, pina ISMIS.
-});
-
-app.post('/signup', urlEncodedParser, (req,res)=>{
-    let salt= bcrypt.genSaltSync(saltR);
-    let pass= bcrypt.hashSync(req.body.pass, salt);
-    connection.query("INSERT INTO `users` (`username`, `password`, `createdAt`, `updatedAt`) VALUES ('"+req.body.username+"', '"+pass+"',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)",(err,result)=>{
-        res.redirect('/')
-    });
-});
-
-app.post('/login', urlEncodedParser, (req,res)=>{
-    connection.query("SELECT * FROM `users` WHERE username='"+req.body.username+"'",(err,result)=>{
-        if(err)throw(err);
-        if (bcrypt.compareSync(req.body.pass, result[0]['password'])){
-            req.session.loggedIn=true;
-            req.session.user=result[0]['id'];
-            req.session.type=result[0]['type'];
-            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
-                res.redirect('/admin')
-            }
-            else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
-                res.redirect('/')
-            }  
-        }else{
-            console.log("login failed");
-            res.redirect('/login'); //idk ideal redirect
-        }
-    });
 });
 
 app.get('/about', (req,res)=>{
@@ -261,9 +225,47 @@ app.get('/serviceReq', (req,res)=>{
         res.render('serviceRequest', {title: "Service Request Form",councilName:"USC",councilType:"College Council"});
     }
 });
+
+
+app.get('/filledMemForm/:id', async (req,res)=>{
+    let member = await Read.getFilledMemForm(req);
+    let trainings = await Read.getMemTrainings(member);
+    let orgs = await Read.getMemOrgs(member);
+    res.render('filledMembershipForm', {title: "Membership Form", session:req.session, mem: member, trainings: trainings, orgs: orgs});    
+});
+
 //DOCUMENTS END HERE
+//GETS END HERE
 
 //POST requests
+app.post('/signup', urlEncodedParser, (req,res)=>{
+    let salt= bcrypt.genSaltSync(saltR);
+    let pass= bcrypt.hashSync(req.body.pass, salt);
+    connection.query("INSERT INTO `users` (`username`, `password`, `createdAt`, `updatedAt`) VALUES ('"+req.body.username+"', '"+pass+"',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)",(err,result)=>{
+        res.redirect('/')
+    });
+});
+
+app.post('/login', urlEncodedParser, (req,res)=>{
+    connection.query("SELECT * FROM `users` WHERE username='"+req.body.username+"'",(err,result)=>{
+        if(err)throw(err);
+        if (bcrypt.compareSync(req.body.pass, result[0]['password'])){
+            req.session.loggedIn=true;
+            req.session.user=result[0]['id'];
+            req.session.type=result[0]['type'];
+            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
+                res.redirect('/admin')
+            }
+            else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
+                res.redirect('/')
+            }  
+        }else{
+            console.log("login failed");
+            res.redirect('/login'); //idk ideal redirect
+        }
+    });
+});
+
 app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{
     await Create.addCouncil(req)
     console.log(req.body.councilName+" "+req.body.chapter);
@@ -281,49 +283,10 @@ app.post('/act/addCommitteeMember', urlEncodedParser, async (req,res) =>{
     res.send('success');
 });
 
-
 app.post('/act/add', urlEncodedParser, (req,res) =>{ //unif req 
     //design: 0 is RCY, 1 is Advisor; as per Derek's instructions
     console.log("INSERT INTO `users` (`date_requested`, `volunteer`, `type`, `qty`, `size`, `design`, `or_number`) VALUES ('"+req.body.dateReceived+"', '"+req.body.volunteer+"','"+req.body.type+"','"+req.body.qty+"','"+req.body.size+"','"+req.body.design+"','"+req.body.Receipt+"')");
 });
-
-//POST requests END HERE
-
-app.get('/admin',(req,res)=>{
-    if(req.session.loggedIn!=true){
-        res.redirect("/login");
-    }else{
-        res.render('adminHome');
-    }
-});
-
-app.get('/adminProfile',(req,res)=>{
-    if(req.session.loggedIn!=true){
-        res.redirect("/login");
-    }else{
-        res.render('adminEditProf');
-    }
-});
-
-app.get('/test',(req,res)=>{
-    connection.query("SELECT * FROM membership_forms",(err,result)=>{
-        let forms=result;
-        res.render('masterlist', {
-            title:"Testing",
-            memForm:result
-        });    
-    });
-});
-
-app.get('/filledMemForm/:id', async (req,res)=>{
-    let member = await Read.getFilledMemForm(req);
-    let trainings = await Read.getMemTrainings(member);
-    let orgs = await Read.getMemOrgs(member);
-    res.render('filledMembershipForm', {title: "Membership Form", session:req.session, mem: member, trainings: trainings, orgs: orgs});    
-});
-
-
-
 
 // For approval/rejection of forms
 app.post('/memForm/presApprove/:id', async (req,res)=>{
@@ -350,8 +313,17 @@ app.post('/memForm/advReject/:id', async (req,res)=>{
     await Update.memFormAdvReject(req);  
     res.redirect('/filledMemForm/' + req.params.id) 
 });
+//POST requests END HERE
 
-
+app.get('/test',(req,res)=>{//Derek uses this to test some stuff because eye yam dumdum
+    connection.query("SELECT * FROM membership_forms",(err,result)=>{
+        let forms=result;
+        res.render('masterlist', {
+            title:"Testing",
+            memForm:result
+        });    
+    });
+});
 
 app.listen(port,()=>{
     console.log("Server is running");
