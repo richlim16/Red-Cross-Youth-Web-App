@@ -81,32 +81,27 @@ app.get('/signup', (req,res)=>{ //no persistent
     //I think it's better if an admin makes the accounts, pina ISMIS.
 });
 
-app.post('/signup', urlEncodedParser, (req,res)=>{
-    let salt= bcrypt.genSaltSync(saltR);
-    let pass= bcrypt.hashSync(req.body.pass, salt);
-    connection.query("INSERT INTO `users` (`username`, `password`, `createdAt`, `updatedAt`) VALUES ('"+req.body.username+"', '"+pass+"',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)",(err,result)=>{
-        res.redirect('/')
-    });
+app.post('/signup', urlEncodedParser, async (req,res)=>{
+    await Create.signUp(req);
+    res.redirect('/login');
 });
 
-app.post('/login', urlEncodedParser, (req,res)=>{
-    connection.query("SELECT * FROM `users` WHERE username='"+req.body.username+"'",(err,result)=>{
-        if(err)throw(err);
-        if (bcrypt.compareSync(req.body.pass, result[0]['password'])){
-            req.session.loggedIn=true;
-            req.session.user=result[0]['id'];
-            req.session.type=result[0]['type'];
-            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
-                res.redirect('/admin')
-            }
-            else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
-                res.redirect('/')
-            }  
-        }else{
-            console.log("login failed");
-            res.redirect('/login'); //idk ideal redirect
+app.post('/login', urlEncodedParser, async (req,res)=>{
+    let result = await Read.getUser(req)
+    if (bcrypt.compareSync(req.body.pass, result['password'])){
+        req.session.loggedIn=true;
+        req.session.user=result['id'];
+        req.session.type=result['type'];
+        if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
+            res.redirect('/admin')
         }
-    });
+        else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
+            res.redirect('/')
+        }  
+    }else{
+        console.log("login failed");
+        res.redirect('/login'); //idk ideal redirect
+    }
 });
 
 app.get('/about', (req,res)=>{

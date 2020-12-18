@@ -368,19 +368,11 @@
             
             <div class="row mt-3 mb-3 justify-content-center">
               <div class="col-md-6 text-center">         
-                <% if (session.type == 'Council') { %>
-                  <button type="button" id="presApprove" class="btn btn-success">Approve</button>
-                  <button type="button" id="presReject" class="btn btn-danger">Reject</button>
-                <% } %>   
                 <h5 name="cyc1" id="cyc1"></h5>
                 <hr class="my-1">  
                 <p>Council President</p>
               </div>
               <div class="col-md-6 text-center">
-                <% if (session.type == 'Council') { %>
-                  <button type="button" id="memApprove" class="btn btn-success">Approve</button>
-                  <button type="button" id="memReject" class="btn btn-danger">Reject</button>
-                <% } %>  
                 <h5 name="cyc2" id="cyc2"></h5>
                 <hr class="my-1">  
                 <p>Signature of Member</p>
@@ -389,8 +381,6 @@
 
             <div class="row mt-5 mb-3 justify-content-center">
               <div class="col-md-6 text-center">            
-                <input type="date" class="form-control" name="dateFiled" placeholder="" value="" required="">
-                <p>Date Filed</p>
               </div>
               <div class="col-md-6 text-center">
                 <% if (session.type == 'Council Advisor') { %>
