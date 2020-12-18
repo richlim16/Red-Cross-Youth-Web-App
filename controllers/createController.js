@@ -16,10 +16,22 @@ const OtherOrganizationsAffiliations = require('../models/other_organizations_af
 const TrainingsAttended = require('../models/trainings_attended');
 const User = require('../models/user');
 
+const bcrypt = require("bcrypt");
+const saltR = 10;
 
 Chapter.model.hasMany(Council.model, {foreignKey: 'chapter_id',sourceKey: 'id'});
 Council.model.belongsTo(Chapter.model, {foreignKey: 'chapter_id'});
 
+
+
+exports.signUp = async (req, res) => {
+    let salt= bcrypt.genSaltSync(saltR);
+    let pass= bcrypt.hashSync(req.body.pass, salt);
+    await User.model.create({
+        username: req.body.username,
+        password: pass
+    })
+}
 
 //get council id from session variable 'user'
 async function getCouncilId(userId){

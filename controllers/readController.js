@@ -20,6 +20,17 @@ Chapter.model.hasMany(Council.model, {foreignKey: 'chapter_id',sourceKey: 'id'})
 Council.model.belongsTo(Chapter.model, {foreignKey: 'chapter_id'});
 
 
+
+exports.getUser = async (req, res) => {
+    let ret = await User.model.findOne({
+        where: {
+            username: req.body.username
+        }
+    })
+    return ret;
+}
+
+
 //Used in creating a council
 exports.getAllChapters = async (req, res) => {
     let ret = await Chapter.model.findAll();
