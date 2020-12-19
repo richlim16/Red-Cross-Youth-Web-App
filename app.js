@@ -69,8 +69,52 @@ app.get('/logout', (req,res)=>{ //no persistent
 });
 
 app.get('/signup', (req,res)=>{ //no persistent
-    res.render('signup', {title: "Sign Up",councilName:"USC",councilType:"College Council"});
-    //I think it's better if an admin makes the accounts, pina ISMIS.
+    connection.query("SELECT id, name FROM `councils`",(err,result)=>{
+        let council=result;
+        connection.query("SELECT id, name FROM `chapters`",(err,result)=>{
+            let chapter=result;
+            res.render('signup', {title: "Sign Up",councils: council,chapters: chapter});
+        });
+    });    
+});
+
+app.post('/signup', urlEncodedParser, (req,res)=>{
+    let salt= bcrypt.genSaltSync(saltR);
+    let pass= bcrypt.hashSync(req.body.pass, salt);
+    connection.query("INSERT INTO `users` (`username`, `password`, `type`) VALUES ('"+req.body.username+"', '"+pass+"', '"+req.body.type+"')",(err,result)=>{
+        if(req.body.type == 'Chapter Admin' || req.body.type == 'Chapter Youth Advisor'){
+            connection.query("INSERT INTO `chapter_personnels` (user_id`, `chapter_id`, `position`) VALUES ('"+result.insertId+"', '"+req.body.chapter+"', '"+req.body.type+"');",(err,result)=>{
+                res.redirect('/');
+            });
+        }else if(req.body.type == 'Council'){ //addCouncil right?
+            connection.query("INSERT INTO `councils` (`chapter_id`, `category`, `name`) VALUES ('"+req.body.chapter+"', '"+req.body.category+"', '"+req.body.username+"');",(err,result)=>{
+                res.redirect('/');
+            });
+        }else{
+            connection.query("INSERT INTO `council_advisors` (`user_id`, `council_id`) VALUES ('"+result.insertId+"', '"+req.body.council+"');",(err,result)=>{
+                res.redirect('/');
+            });
+        }
+    });
+});
+
+app.post('/login', urlEncodedParser, (req,res)=>{
+    connection.query("SELECT * FROM `users` WHERE username='"+req.body.username+"'",(err,result)=>{
+        if (bcrypt.compareSync(req.body.pass, result[0]['password'])){
+            req.session.loggedIn=true;
+            req.session.user=result[0]['id'];
+            req.session.type=result[0]['type'];
+            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
+                res.redirect('/admin')
+            }
+            else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
+                res.redirect('/')
+            }  
+        }else{
+            console.log("login failed");
+            res.redirect('/login'); //idk ideal redirect
+        }
+    });
 });
 
 app.get('/about', (req,res)=>{
@@ -169,6 +213,19 @@ app.get('/generatedCommitteeMembershipForm/:type', urlEncodedParser, async (req,
     let members = await Read.getMembersOfCommittee(req)
     res.send(members);
 });
+//When a adding members to a committee, show all members of that council without a committee yet
+app.get('/getNoneCommitteeMembers', urlEncodedParser, async (req,res)=>{
+    let members = await Read.getNoneCommitteeMembers()
+    res.send(members);
+});
+
+
+//When a specific committee is selected
+app.get('/generatedCommitteeMembershipForm/:type', urlEncodedParser, async (req,res)=>{
+    let members = await Read.getMembersOfCommittee(req)
+    res.send(members);
+});
+
 //When a adding members to a committee, show all members of that council without a committee yet
 app.get('/getNoneCommitteeMembers', urlEncodedParser, async (req,res)=>{
     let members = await Read.getNoneCommitteeMembers()
