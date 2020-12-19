@@ -31,8 +31,18 @@
           <div class="row d-flex justify-content-center">
             <div class="col-md-3 mb-5">
               <label for="committee">Committee</label>
-              <select type="text" class="form-control" name="committee" value="" required="">
-                <option></option>
+              <select id="committeeType" type="text" class="form-control" name="committee" required="">
+                <option disabled selected value>-select type-</option>
+                <option value="DRRM">DRRM</option>
+                <option value="Pledge 25">Pledge 25</option>
+                <option value="Trainings">Trainings</option>
+                <option value="Council Dev">Council Dev</option>
+                <option value="YAPE">YAPE</option>
+                <option value="YPE">YPE</option>
+                <option value="Health and Services">Health and Services</option>
+                <option value="Welfare">Welfare</option>
+                <option value="Awards and Recognition">Awards and Recognition</option>
+                <option value="Safety">Safety</option>
               </select>
             </div>
           </div>
@@ -65,30 +75,34 @@
                 <th>TEL #</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <th>1</th>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
+            <tbody id="memberTable">
             </tbody>
           </table>
 
 
+          <!-- Button trigger modal -->
+          <div class="d-flex justify-content-center">
+            <button type="button" id="showMembers" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Add a Member</button>
+          </div>
+
 
           <div class="row mt-5 mb-3">
             <div class="col-md-2 text-right">Prepared by: </div>
-            <div class="col-md-4 text-center">            
+            <div class="col-md-4 text-center">     
+              <% if (session.type == 'Council') { %>
+                <button type="button" id="secApprove" class="btn btn-success">Approve</button>
+                <button type="button" id="secReject" class="btn btn-danger">Reject</button>
+              <% } %>         
               <h5 name="councilSec" id="councilSec"></h5>
               <hr class="my-1">  
               <p>School Council Secretary</p>
             </div>
             <div class="col-md-2 text-right">Submitted by: </div>
             <div class="col-md-4 text-center">
+              <% if (session.type == 'Council') { %>
+                <button type="button" id="presApprove" class="btn btn-success">Approve</button>
+                <button type="button" id="presReject" class="btn btn-danger">Reject</button>
+              <% } %>  
               <h5 name="councilPres" id="councilPres"></h5>
               <hr class="my-1">  
               <p>School Council President</p>
@@ -97,7 +111,11 @@
 
           <div class="row mt-3 mb-3">
             <div class="col-md-2 text-right">Noted by: </div>
-            <div class="col-md-4 text-center">            
+            <div class="col-md-4 text-center">           
+              <% if (session.type == 'Council Advisor') { %>
+                <button type="button" id="councilAdvApprove" class="btn btn-success">Approve</button>
+                <button type="button" id="councilAdvReject" class="btn btn-danger">Reject</button>
+              <% } %>   
               <h5 name="councilAdv" id="councilAdv"></h5>
               <hr class="my-1">  
               <p>School Council Adviser</p>
@@ -122,12 +140,20 @@
           </div>
 
           <div class="row mt-5 mb-3 justify-content-center">
-            <div class="col-md-4 text-center">            
+            <div class="col-md-4 text-center">        
+              <% if (session.type == 'Chapter Youth Advisor') { %>
+                <button type="button" id="chapterAdvApprove" class="btn btn-success">Approve</button>
+                <button type="button" id="chapterAdvReject" class="btn btn-danger">Reject</button>
+              <% } %>      
               <h5 name="cyc1" id="cyc1"></h5>
               <hr class="my-1">  
               <p>Chapter Service Representative - RCY</p>
             </div>
             <div class="col-md-4 text-center">
+              <% if (session.type == 'Chapter Admin') { %>
+                <button type="button" id="adminApprove" class="btn btn-success">Approve</button>
+                <button type="button" id="adminReject" class="btn btn-danger">Reject</button>
+              <% } %>   
               <h5 name="cyc2" id="cyc2"></h5>
               <hr class="my-1">  
               <p>Chapter Administrator</p>
@@ -145,4 +171,39 @@
   </section>
 
 
+
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Available Members</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-bordered text-center">
+          <thead>
+            <tr>
+              <th></th>
+              <th>SURNAME</th>
+              <th>FIRST NAME</th>
+              <th>MIDDLE INITIAL  </th>
+              <th>NICKNAME</th>
+              <th>CEL #</th>
+              <th>TEL #</th>
+            </tr>
+          </thead>
+          <tbody id="availMemberTable">
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button id="closeModal" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 <%-include ('partials/footer.ejs') %> 

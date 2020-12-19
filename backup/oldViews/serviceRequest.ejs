@@ -1,0 +1,140 @@
+<%-include ("partials/header.ejs") %> 
+<%-include ("partials/formsNav.ejs") %> 
+<!-- ======= Breadcrumbs ======= -->
+  <section class="breadcrumbs">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">        
+        <ol>
+          <li><a href="/">Back To Activity Page</a></li>
+          <li>Adding Report</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+<!-- End Breadcrumbs -->
+
+  <section class="inner-page">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 order-md-1">
+        <form class="needs-validation" novalidate="" action="/act/add" method="post">
+        <h2>Service Request Form</h2>
+          <div class="row d-flex mb-4">
+            <div class="col-md-6">
+              <p>To: <input type="text" name="chapAdmin" placeholder="Chapter Administrator"></p>
+              <p>Date Filed:<input type="date" name="dateFiled" placeholder="" value="" required=""></p>
+              <p>Name of Activity <input type="text" name="activity" placeholder="Activity Name"></p>
+              <p>Requesting Council <input type="text" name="activity" placeholder="Council Primary Key from userSession"></p>
+            </div>                    
+          </div>
+          
+          <div class="row d-flex mb-4">            
+            <div class="col-md-6">
+              <p>Requesting Person: <input type="text" name="chapAdmin" placeholder="Requesting Person"></p>
+              <p>Position: <input type="text" name="chapAdmin" placeholder="Position in Council"></p>
+            </div>                    
+          </div>
+
+          <!-- We can add a button that add another field for item-purpose below -->
+          <div class="row d-flex mb-4">
+            <div class="col-md-6">
+              <h5>Requesting For:</h5>
+              <p>Item/Personnel: <input type="text" name="itemPerson" placeholder=" "></p>
+              <p>Purpose: <input type="text" name="purpose" placeholder="Put purpose here"></p>
+            </div>
+          </div>
+
+          <div class="row mb-1 d-flex">
+            <div class="col-md-6">
+              <label for="receivedBy">Received by:</label>
+              <select type="text" class="form-control" name="receivedBy" value="" required="">
+                <option></option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-4 d-flex">
+            <div class="col-md-6">
+              <label for="dateReceived">Date Received:</label>
+              <input type="date" class="form-control" name="dateReceived" placeholder="" value="" required="">
+            </div>
+          </div>
+
+          <div class="row mb-3 text-center">
+         <h6 class="mt-5">Submitted by: </h6>
+            <div class="col-md-6 mt-5">
+              <h5 name="councilPres" id="councilPres"></h5>
+              !!!councilPresHere!!!
+              <hr class="my-1">  
+              <p>Council President</p>
+            </div>
+            <div class="col-md-6 mt-5">
+              <h5 name="councilAdv" id="councilAdv"></h5>
+              !!!councilAdviHere!!!
+              <hr class="my-1">
+              <p>Council Adviser</p>
+            </div>
+          </div>
+
+          <div class="row mb-4 text-center">
+          <h6>Noted by: </h6>
+            <div class="col-md-6 mt-5">
+              <h5 name="cycChair" id="cycChair"></h5>
+              !!!cycUser1Here!!!
+              <hr class="my-1">  
+              <p>CYC Chairperson</p>
+            </div>
+            <div class="col-md-6 mt-5">
+              <h5 name="cycPres" id="cycPres"></h5>
+              !!!cycPresHere!!!
+              <hr class="my-1">  
+              <p>CYC President</p>
+            </div>
+          </div>
+
+          <div class="row mb-4 d-flex">                            
+              <h6>Recommending Approval: </h6>              
+              <div class="row mb-3 text-center">          
+                <div class="col-md-6 mt-5">
+                  <h5 name="chapterRep" id="chapterRep"></h5>
+                  !!!rcyAdviHere!!!
+                  <hr class="my-1">  
+                  <p class="mb-1">Chapter Service Representative</p>
+                  <p>Red Cross Youth</p>
+                </div>              
+              </div>
+          </div>
+
+          <div class="row mb-4 d-flex">                            
+              <h6>Appoved By: </h6>              
+              <div class="row mb-3 text-center">          
+                <div class="col-md-6 mt-5">
+                  <h5 name="chapterRep" id="chapterRep"></h5>
+                  !!!chapAdminHere!!!
+                  <hr class="my-1">  
+                  <p class="mb-1">Chapter Administrator</p>
+                  <p>Red Cross <i>chapterHere</i></p>
+                </div>              
+              </div>
+          </div>
+<!--            <h6>Approved By: </h6>
+            <div class="row mb-3 text-center">
+              <div class="col-md-6 mt-5">
+                <h5 name="chapterAdmin" id="chapterAdmin"></h5>
+                <hr class="my-1">  
+                <p class="mb-1">Chapter Administrator</p>
+                <p>Red Cross insertChapterHere</p>
+              </div>
+            </div>-->
+
+          <hr class="mb-4">        
+          <button type='submit' class="btn btn-danger btn-lg btn-block text-white">Post</button>        
+        </form>
+          <a href="activities.php">Back</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+<%-include ('partials/footer.ejs') %>

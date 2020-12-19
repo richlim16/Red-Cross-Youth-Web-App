@@ -1,0 +1,152 @@
+<%-include ('partials/header.ejs')%>
+<%-include ('partials/navbar.ejs')%>
+<!-- ======= Hero Section ======= -->
+<section id="hero" class="d-flex align-items-center" style="height:100%;padding-bottom:0;">
+    <!-- https://stackoverflow.com/questions/16244821/how-to-stop-sticky-footer-from-covering-content -->
+    <div class="container" data-aos="zoom-out" data-aos-delay="100">
+        <h1>Documents</h1>
+        <nav class="navbar navbar-expand-lg navbar-light">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <button class="btn btn-light active" onclick="filterSelection('all')">Show all</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn" onclick="filterSelection('cebu')">Cebu</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn" onclick="filterSelection('mandaue')">Mandaue</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn" onclick="filterSelection('talisay')">Talisay</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn" onclick="filterSelection('lapu')">Lapu-lapu</button>
+                    </li>
+                </ul>
+                <ul class="navbar-nav justify-content-end">
+                    <li class="nav-item">
+                        <button class="btn btn-light active" onclick="listView()">List</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn" onclick="gridView()">Grid</button>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+            <!-- https://www.w3schools.com/howto/howto_js_list_grid_view.asp -->
+            <!-- Load Font Awesome Icon Library -->
+            <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
+
+            <!-- Buttons to choose list or grid view -->
+            <!-- <button class="btn btn-primary" onclick="listView()"><i class="fa fa-bars"></i> List</button> -->
+            <!-- <button class="btn btn-primary" onclick="gridView()"><i class="fa fa-th-large"></i> Grid</button> -->
+            <div class="row">
+                <div class="col-2">
+                    <div class="card m-2">
+                        <img src="https://www.carigamers.com/blog/wp-content/uploads/2017/06/blue-sq.jpg"
+                            class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Membership Forms</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of the
+                                card's content.</p>
+                            <a href="membershipForm" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="card m-2">
+                        <img src="https://www.carigamers.com/blog/wp-content/uploads/2017/06/blue-sq.jpg"
+                            class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Committee Membership Forms</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of the
+                                card's content.</p>
+                            <a href="committeeMembershipForm" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="card m-2">
+                        <img src="https://www.carigamers.com/blog/wp-content/uploads/2017/06/blue-sq.jpg"
+                            class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Activity Request Forms</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of the
+                                card's content.</p>
+                            <a href="activityRequestForm" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="card m-2">
+                        <img src="https://www.carigamers.com/blog/wp-content/uploads/2017/06/blue-sq.jpg"
+                            class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Activity Report Forms</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of the
+                                card's content.</p>
+                            <a href="activityReportForm" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="card m-2">
+                        <img src="https://www.carigamers.com/blog/wp-content/uploads/2017/06/blue-sq.jpg"
+                            class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Uniform Request Forms</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of the
+                                card's content.</p>
+                            <a href="unifRequest" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="card m-2">
+                        <img src="https://www.carigamers.com/blog/wp-content/uploads/2017/06/blue-sq.jpg"
+                            class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Service Request Forms</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of the
+                                card's content.</p>
+                            <a href="serviceReq" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="card m-2">
+                        <img src="https://www.carigamers.com/blog/wp-content/uploads/2017/06/blue-sq.jpg"
+                            class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Council Monthly Reports</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of the
+                                card's content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-2">
+                    <div class="card m-2">
+                        <img src="https://www.carigamers.com/blog/wp-content/uploads/2017/06/blue-sq.jpg"
+                            class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Card title</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk
+                                of the
+                                card's content.</p>
+                            <a href="#" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</section>
+<%-include ('partials/footer.ejs')%>

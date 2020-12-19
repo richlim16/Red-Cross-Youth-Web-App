@@ -1,34 +1,17 @@
 <%-include ('partials/header.ejs')%>
 <%-include ('partials/navbar.ejs')%>
-<!-- ======= Hero Section ======= -->
-<section id="hero" class="d-flex align-items-center" style="height:100%;padding-bottom:0;" >
-  <!-- https://stackoverflow.com/questions/16244821/how-to-stop-sticky-footer-from-covering-content -->
+<section id="hero" class="d-flex align-items-center" style="height:100%;padding-bottom:0;" >  
   <div class="container" data-aos="zoom-out" data-aos-delay="100">
     <div class="row">
       <div class="col-md-8 col-sm-8 col-xs-12">
         <h1>Welcome to <span>Red Cross Youth Chapter</span></h1>
-        <h2>BLAH BLAH BLAH BLAH BLAH but Clyde now</h2>
+        <h2>Sign up now!</h2>
       </div>
       <div class="ml-auto col-md-4 col-sm-4 col-xs-12 text-white">
         <div class="m-3 p-3 bg-danger rounded-lg">
           <h2 class="text-center text-white">Sign Up</h2>
           <form action="/signup" method="POST">
             <div class="form-group">
-              <!-- <label for="Fname">First Name</label>
-              <input type="text" class="form-control" id="Fname" required>
-            </div><br>
-            <div class="form-group">
-              <label for="Lname">Last Name</label>
-              <input type="text" class="form-control" id="lname" required>
-            </div><br>
-            <div class="form-group">
-              <label for="email">Email address</label>
-              <input type="email" class="form-control" id="email" required>
-            </div><br>
-            <div class="form-group">
-              <label for="contact">Contact Number</label>
-              <input type="number" class="form-control" id="contact" required>
-            </div><br> -->
             <div class="form-group">
               <label for="username">Username</label>
               <input type="text" class="form-control" id="username" name="username" required>
@@ -37,6 +20,7 @@
               <label for="pass">Password</label>
               <input type="password" class="form-control" id="pass" name="pass" required>
             </div><br>
+            
             <div class="form-group">
               <label for="rcys">User Type</label>            
               <select class="form-control" name="type" required>
@@ -47,6 +31,7 @@
                 <option value="Chapter Admin">Chapter Admin</option>
               </select>
             </div><br>
+            
             <div class="form-group">
               <label for="committee">Chapter</label>
               <select type="text" class="form-control" name="chapter">
@@ -75,16 +60,12 @@
                 <option value="College Red Cross Youth">College Red Cross Youth</option>
                 <option value="Community Red Cross Youth">Community Red Cross Youth</option>
               </select>
-            </div><br>
-            <!-- <div class="form-group form-check">
-              <input type="checkbox" class="form-check-input" id="remember">
-              <label class="form-check-label" for="remember">I agree to the TOC, TOE, MOA, etc.</label>
-            </div><br> -->
+            </div><br>           
             <button type="submit" class="btn btn-light">Sign Up</button>
           </form>
         </div>
       </div>
     </div>
   </div><br>
-</section><!-- End Hero -->
+</section>
 <%-include ('partials/footer.ejs')%>

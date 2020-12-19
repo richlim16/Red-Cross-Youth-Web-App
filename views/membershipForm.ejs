@@ -1,6 +1,8 @@
 <%-include ("partials/header.ejs") %> 
 <%-include ("partials/formsNav.ejs") %> 
 
+
+
 <!-- ======= Breadcrumbs ======= -->
 <section class="breadcrumbs">
     <div class="container">
@@ -8,13 +10,12 @@
       <div class="d-flex justify-content-between align-items-center">
         <h2>Membership Form</h2>
         <ol>
-          <li><a href="index.html">Back To Activity Page</a></li>
-          <li>Adding Report</li>
+          <li><a href="/docs">Go Back</a></li>
+          <li>Adding Form</li>
         </ol>
       </div>
-
     </div>
-  </section><!-- End Breadcrumbs -->
+  </section>
 
   <section class="inner-page">
     <div class="container">
@@ -22,7 +23,7 @@
 
       <div class="row">
         <div class="col-md-8 order-md-1">
-          <form id="addMemberForm" class="needs-validation" novalidate="" method="POST">
+          <form id="addMemberForm" class="needs-validation">
             <div class="row d-flex justify-content-end">
               <div class="col-md-2 mb-1">
                 <label for="bloodType">Blood Type</label>
@@ -41,16 +42,6 @@
                 <div class="invalid-feedback">
                   Valid bloodtype is required.
                 </div>
-            </div>
-            <div class="row d-flex justify-content-end">
-              <div class="col-md-4 mb-4">
-                <label for="committee">Committee Membership</label>
-                <select id="committee" class="form-control" name="committee">
-                  <option disabled selected value>--select an option--</option>
-                  <% for (let i=0; i < committees.length; i++){%>
-                    <option value="<%= committees[i].id%>"><%= committees[i].type%></option>
-                  <%}%>
-                </select>
             </div>
 
             <h4 class="my-3">PERSONAL DATA</h4>
@@ -367,6 +358,50 @@
                   </div>
             </div>
             <button type="button" id="addOrg" class="col-md-4 btn btn-success">Add Another Organization</button>
+
+            
+            <div class="row mt-5 mb-2">
+              <div class="d-flex justify-content-center">
+                <h6>I hereby certify to the correctness of the foregoing information</h6>
+              </div>
+            </div>
+            
+            <div class="row mt-3 mb-3 justify-content-center">
+              <div class="col-md-6 text-center">         
+                <% if (session.type == 'Council') { %>
+                  <button type="button" id="presApprove" class="btn btn-success">Approve</button>
+                  <button type="button" id="presReject" class="btn btn-danger">Reject</button>
+                <% } %>   
+                <h5 name="cyc1" id="cyc1"></h5>
+                <hr class="my-1">  
+                <p>Council President</p>
+              </div>
+              <div class="col-md-6 text-center">
+                <% if (session.type == 'Council') { %>
+                  <button type="button" id="memApprove" class="btn btn-success">Approve</button>
+                  <button type="button" id="memReject" class="btn btn-danger">Reject</button>
+                <% } %>  
+                <h5 name="cyc2" id="cyc2"></h5>
+                <hr class="my-1">  
+                <p>Signature of Member</p>
+              </div>
+            </div>
+
+            <div class="row mt-5 mb-3 justify-content-center">
+              <div class="col-md-6 text-center">            
+                <input type="date" class="form-control" name="dateFiled" placeholder="" value="" required="">
+                <p>Date Filed</p>
+              </div>
+              <div class="col-md-6 text-center">
+                <% if (session.type == 'Council Advisor') { %>
+                  <button type="button" id="advApprove" class="btn btn-success">Approve</button>
+                  <button type="button" id="advReject" class="btn btn-danger">Reject</button>
+                <% } %>  
+                <h5 name="cyc2" id="cyc2"></h5>
+                <hr class="my-1">  
+                <p>Council Advisor</p>
+              </div>
+            </div>
 
             <hr class="my-4">          
             <button type='submit' id="test" class="btn btn-danger btn-lg btn-block text-white">Submit</button>        

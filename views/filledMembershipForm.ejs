@@ -1,0 +1,453 @@
+<%-include ("partials/header.ejs") %> 
+<%-include ("partials/formsNav.ejs") %> 
+
+<input hidden id="memFormId" value="<%=mem.id%>">
+
+<!-- ======= Breadcrumbs ======= -->
+<section class="breadcrumbs">
+    <div class="container">
+
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>Membership Form</h2>
+        <ol>
+          <li><a href="/docs">Go Back</a></li>
+          <li>Adding Form</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="inner-page">
+    <div class="container">
+      <p>Fill out the following fields to apply for membership</p>
+
+      <div class="row">
+        <div class="col-md-8 order-md-1">
+          <form id="addMemberForm" class="needs-validation">
+            <div class="row d-flex justify-content-end">
+              <div class="col-md-2 mb-1">
+                <label for="bloodType">Blood Type</label>
+                <select id="bloodType" class="form-control" name="bloodType">
+                  <option value="<%=mem.blood_type%>" selected><%=mem.blood_type%></option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="AB">AB</option>
+                  <option value="O">O</option>
+                </select>
+            </div>
+            <div class="row d-flex justify-content-end">
+              <div class="col-md-4 mb-1">
+                <label for="rcyId">RCY ID No.</label>
+                <input type="number" class="form-control" id="rcyId" name="rcyId" placeholder="RCY ID No." value="<%=mem.rcy_id%>" required="">
+                <div class="invalid-feedback">
+                  Valid bloodtype is required.
+                </div>
+            </div>
+
+            <h4 class="my-3">PERSONAL DATA</h4>
+            <div class="row">
+              <div class="col-md-4 mb-1">
+                <label for="surName">Surname</label>
+                <input type="text" class="form-control" id="surname" name="surname" placeholder="Surname" value="<%=mem.surname%>" required="">
+                <div class="invalid-feedback">
+                  Valid surname is required.
+                </div>
+              </div>
+              <div class="col-md-4 mb-1">
+                <label for="firstName">First name</label>
+                <input type="text" class="form-control" id="firstName" name="firstname" placeholder="First Name" value="<%=mem.first_name%>" required="">
+                <div class="invalid-feedback">
+                  Valid first name is required.
+                </div>
+              </div>
+              <div class="col-md-4 mb-1">
+                <label for="middleName">Middle name</label>
+                <input type="text" class="form-control" id="middleName" name="middlename" placeholder="Middle Name" value="<%=mem.middle_name%>" required="">
+                <div class="invalid-feedback">
+                  Valid middle name is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-3 mb-4">
+                <label for="nickname">Nickname</label>
+                <input type="text" class="form-control" id="nickname" name="nickname" placeholder="Nickame" value="<%=mem.nickname%>" required="">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <label for="birthdate">Birthdate</label>
+                <input type="date" class="form-control" id="birthdate" name="birthdate" placeholder="Birthdate" value=<%=formatDate(mem.birthdate)%> required="">
+              </div>
+              <div class="col-md-3 mb-4">
+                <label for="age">Age</label>
+                <input type="number" class="form-control" id="age" name="age" placeholder="Age" value="<%=mem.age%>">
+              </div>
+              <div class="col-md-3 mb-4">
+                <label for="civilStatus">Civil Status</label>
+                <select id="civilStatus" class="form-control" name="civilStatus">
+                  <option value="<%=mem.civil_status%>" selected><%=mem.civil_status%></option>
+                  <option value="SINGLE">SINGLE</option>
+                  <option value="MARRIED">MARRIED</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-2 mb-4">
+                <label for="height">Height</label>
+                <input type="number" class="form-control" id="height" name="height" placeholder="inches" value="<%=mem.height%>" required=""> 
+              </div>
+              <div class="col-md-2 mb-4">
+                <label for="weight">Weight</label>
+                <input type="number" class="form-control" id="weight" name="weight" placeholder="kg" value="<%=mem.weight%>" required=""> 
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="nationality">Nationality</label>
+                <input type="text" class="form-control" id="nationality" name="nationality" placeholder="Nationality" value="<%=mem.nationality%>" required="">
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="religion">Religion</label>
+                <input type="text" class="form-control" id="religion" name="religion" placeholder="Religion" value="<%=mem.religion%>" required="">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 mb-4">
+                <label for="contact">Contact Number</label>
+                <input type="text" class="form-control" id="contactNo" name="contactNo" placeholder="Contact No." value="<%=mem.contact_no%>" required="">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8 mb-4">
+                <label for="cityAddress">City Address</label>
+                <input type="text" class="form-control" id="cityAdd" name="cityAdd" placeholder="City Address" value="<%=mem.city_address%>" required="">
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="cityTel">City Telephone Number</label>
+                <input type="text" class="form-control" id="cityTel" name="cityTel" placeholder="City Telephone No." value="<%=mem.city_tel%>" required="">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8 mb-4">
+                <label for="provincialAddress">Provincial Address</label>
+                <input type="text" class="form-control" id="provinceAdd" name="provinceAdd" placeholder="Provincial Address" value="<%=mem.provincial_address%>" required="">
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="provincialTel">Provincial Telephone Number</label>
+                <input type="text" class="form-control" id="provinceTel" name="provinceTel" placeholder="Provincial Telephone No." value="<%=mem.provincial_tel%>" required="">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <label for="ailments">Ailments (separate each with a comma)</label>
+                <input type="text" class="form-control" id="ailments" name="ailments" placeholder="Ailments" value="<%=mem.ailments%>" required="">
+              </div>
+              <div class="col-md-6 mb-4">
+                <label for="allergies">Allergies (separate each with a comma)</label>
+                <input type="text" class="form-control" id="allergies" name="allergies" placeholder="Allergies" value="<%=mem.allergies%>" required="">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-4">
+                <label for="hobbies">Hobbies (separate each with a comma)</label>
+                <input type="text" class="form-control" id="hobbies" name="hobbies" placeholder="Hobbies" value="<%=mem.hobbies%>" required="">
+              </div>
+              <div class="col-md-6 mb-4">
+                <label for="specialSkills">Special Skills (separate each with a comma)</label>
+                <input type="text" class="form-control" id="specSkills" name="specSkills" placeholder="Special Skills" value="<%=mem.special_skills%>" required="">
+              </div>
+            </div>
+
+
+            <div class="row">
+              <div class="col-md-8 mb-1">
+                <label for="fathersName">Father's Name</label>
+                <input type="text" class="form-control" id="fathersName" name="fathersName" placeholder="Father's Name" value="<%=mem.fathers_name%>" required="">
+              </div>
+              <div class="col-md-4 mb-1">
+                <label for="fathersOccupation">Father's Occupation</label>
+                <input type="text" class="form-control" id="fathersOcc" name="fathersOcc" placeholder="Father's Occupation" value="<%=mem.fathers_occupation%>" required="">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8 mb-4">
+                <label for="fathersAddress">Father's Address</label>
+                <input type="text" class="form-control" id="fathersAdd" name="fathersAdd" placeholder="Father's Addresss" value="<%=mem.fathers_address%>" required="">
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="fathersTel">Father's Telephone Number</label>
+                <input type="text" class="form-control" id="fathersTel" name="fathersTel" placeholder="Father's Telephone No." value="<%=mem.fathers_tel%>" required="">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8 mb-1">
+                <label for="mothersName">Mother's Name</label>
+                <input type="text" class="form-control" id="mothersName" name="mothersName" placeholder="Mother's Name" value="<%=mem.mothers_name%>" required="">
+              </div>
+              <div class="col-md-4 mb-1">
+                <label for="mothersOccupation">Mother's Occupation</label>
+                <input type="text" class="form-control" id="mothersOcc" name="mothersOcc" placeholder="Mother's Occupation" value="<%=mem.mothers_occupation%>" required="">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8 mb-4">
+                <label for="mothersAddress">Mother's Address</label>
+                <input type="text" class="form-control" id="mothersAdd" name="mothersAdd" placeholder="Mother's Addresss" value="<%=mem.mothers_address%>" required="">
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="mothersTel">Mother's Telephone Number</label>
+                <input type="text" class="form-control" id="mothersTel" name="mothersTel" placeholder="Mother's Telephone No." value="<%=mem.mothers_tel%>" required="">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8 mb-1">
+                <label for="guardiansName">Guardian's Name</label>
+                <input type="text" class="form-control" id="guardiansName" name="guardiansName" placeholder="Guardian's Name" value="<%=mem.guardians_name%>" required="">
+              </div>
+              <div class="col-md-4 mb-1">
+                <label for="guardiansOccupation">Guardian's Occupation</label>
+                <input type="text" class="form-control" id="guardiansOcc" name="guardiansOcc" placeholder="Guardian's Occupation" value="<%=mem.guardians_occupation%>" required="">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8 mb-5">
+                <label for="guardiansAddress">Guardian's Address</label>
+                <input type="text" class="form-control" id="guardiansAdd" name="guardiansAdd" placeholder="Guardian's Addresss" value="<%=mem.guardians_address%>" required="">
+              </div>
+              <div class="col-md-4 mb-5">
+                <label for="guardiansTel">Guardian's Telephone Number</label>
+                <input type="text" class="form-control" id="guardiansTel" name="guardiansTel" placeholder="Guardian's Telephone No." value="<%=mem.guardians_tel%>" required="">
+              </div>
+            </div>
+
+
+            <h4 class="mb-3">EDUCATIONAL BACKGROUND</h4>
+            <div class="row">
+              <div class="col-md-6 mb-1">
+                <label for="presentSchool">Present School</label>
+                <input type="text" class="form-control" id="presentSchool" name="presentSchool" placeholder="Present School" value="<%=mem.present_school%>" required="">
+              </div>
+              <div class="col-md-3 mb-1">
+                <label for="course">Course</label>
+                <input type="text" class="form-control" id="course" name="course" placeholder="Course" value="<%=mem.course%>" required="">
+              </div>
+              <div class="col-md-3 mb-1">
+                <label for="year">Year</label>
+                <input type="text" class="form-control" id="year" name="year" placeholder="Year" value="<%=mem.year%>" required="">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8 mb-4">
+                <label for="schoolAddress">School Address</label>
+                <input type="text" class="form-control" id="schoolAdd" name="schoolAdd" placeholder="School Address" value="<%=mem.school_address%>" required="">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8 mb-4">
+                <label for="elementarySchool">Elementary School</label>
+                <input type="text" class="form-control" id="elemSchool" name="elemSchool" placeholder="Elementary School" value="<%=mem.elementary_school%>" required="">
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="elementaryDate">Date</label>
+                <input type="date" class="form-control" id="elemDate" name="elemDate" placeholder="" value=<%=formatDate(mem.elementary_attainment)%> required="">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8 mb-4">
+                <label for="secondarySchool">Secondary School</label>
+                <input type="text" class="form-control" id="secondarySchool" name="secondarySchool" placeholder="Secondary School" value="<%=mem.secondary_school%>" required="">
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="secondaryDate">Date</label>
+                <input type="date" class="form-control" id="secondaryDate" name="secondaryDate" placeholder="" value=<%=formatDate(mem.secondary_attainment)%> required="">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8 mb-4">
+                <label for="collegeSchool">College School</label>
+                <input type="text" class="form-control" id="collegeSchool" name="collegeSchool" placeholder="College School" value="<%=mem.college_school%>" required="">
+              </div>
+              <div class="col-md-4 mb-4">
+                <label for="collegeDate">Date</label>
+                <input type="date" class="form-control" id="collegeDate" name="collegeDate" placeholder="" value=<%=formatDate(mem.college_attainment)%> required="">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-8 mb-5">
+                <label for="vocationalSchool">Vocational School</label>
+                <input type="text" class="form-control" id="vocSchool" name="vocSchool" placeholder="Vocational School" value="<%=mem.vocational_school%>" required="">
+              </div>
+              <div class="col-md-4 mb-5">
+                <label for="vocationalDate">Date</label>
+                <input type="date" class="form-control" id="vocDate" name="vocDate" placeholder="" value=<%=formatDate(mem.vocational_attainment)%> required="">
+              </div>
+            </div>
+
+
+            <h4 class="mb-3">RED CROSS TRAININGS ATTENDED</h4>
+            <!-- JS to add more lines for trainingList -->
+            <div id="trainingsList">
+                <% trainings.forEach( training=>{%>  
+                    <div class="row training">
+                        <div class="col-md-6 mb-1 trainingDiv">
+                            <label for="training">Training Attended</label>
+                            <input type="text" class="form-control trainingAttended" name="training" placeholder="Training Attended" value="<%=training.training_attended%>" required="">
+                        </div>
+                        <div class="col-md-6 mb-1 certDiv">
+                        <label for="cert">Certificate Number</label>
+                        <input type="text" class="form-control certificateNo" name="cert" placeholder="Certificate Number" value="<%=training.certificate_no%>" required="">
+                    </div>
+                        <div class="col-md-6 mb-4 placeDiv">
+                            <label for="place">Place</label>
+                            <input type="text" class="form-control place" name="place" placeholder="Place" value="<%=training.place%>" required="">
+                        </div>
+                        <div class="col-md-3 mb-4 startDiv">
+                            <label for="startDate">Start Date</label>
+                            <input type="date" class="form-control startDate" name="startDate" placeholder="" value=<%=formatDate(training.start_date)%> required="">
+                        </div>
+                        <div class="col-md-3 mb-4 endDiv">
+                            <label for="endDate">End Date</label>
+                            <input type="date" class="form-control endDate" name="endDate" placeholder="" value=<%=formatDate(training.end_date)%> required="">
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+            <button type="button" id="addTraining" class="col-md-3 btn btn-success">Add Another Training</button>
+
+
+
+            <h4 class="mt-5 mb-3">AFFILIATION WITH OTHER ORGANIZATIONS</h4>
+            <!-- JS to add more lines for orgAffiliations -->
+            <div id="organizations">
+                <% orgs.forEach( org=>{%>  
+                    <div class="row organization">
+                        <div class="col-md-6 mb-1 orgDiv">
+                        <label for="organization">Organization</label>
+                        <input type="text" class="form-control org" name="organization" placeholder="Organization" value="<%=org.organization%>" required="">
+                        </div>
+                        <div class="col-md-3 mb-1 startDiv">
+                        <label for="startDate">Start Date</label>
+                        <input type="date" class="form-control startDate" name="startDate" placeholder="" value=<%=formatDate(org.end_date)%> required="">
+                        </div>
+                        <div class="col-md-3 mb-1 endDiv">
+                        <label for="endDate">End Date</label>
+                        <input type="date" class="form-control endDate" name="endDate" placeholder="" value=<%=formatDate(org.end_date)%> required="">
+                        </div>
+                        <div class="col-md-6 mb-4 posDiv">
+                        <label for="position">Position</label>
+                        <input type="text" class="form-control position" name="position" placeholder="Position" value="<%=org.position%>" required="">
+                        </div>
+                        <div class="col-md-6 mb-4 councilDiv">
+                        <label for="council">Council</label>
+                        <input type="text" class="form-control council" name="council" placeholder="Council" value="<%=org.council%>" required="">
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+            <button type="button" id="addOrg" class="col-md-4 btn btn-success">Add Another Organization</button>
+
+            
+            <div class="row mt-5 mb-2">
+              <div class="d-flex justify-content-center">
+                <h6>I hereby certify to the correctness of the foregoing information</h6>
+              </div>
+            </div>
+            
+            <div class="row mt-3 mb-3 justify-content-center">
+              <div class="col-md-6 text-center">   
+                <% if (mem.council_pres_sig==1) { %>
+                    <button class="btn btn-success">Approved</button>
+                <% } %>   
+                <% if (mem.council_pres_sig==2) { %>
+                    <button class="btn btn-success">Rejected</button>
+                <% } %>   
+                <% if (mem.council_pres_sig==0 && session.type=='Council') { %>
+                        <button type="button" id="presApprove" class="btn btn-success">Approve</button>
+                        <button type="button" id="presReject" class="btn btn-danger">Reject</button>
+                <% } %>   
+                <h5 name="cyc1" id="cyc1"></h5>
+                <hr class="my-1">  
+                <p>Council President</p>
+              </div>
+              <div class="col-md-6 text-center">
+                <% if (mem.member_sig==1) { %>
+                    <button class="btn btn-success">Approved</button>
+                <% } %>   
+                <% if (mem.member_sig==2) { %>
+                    <button class="btn btn-danger">Rejected</button>
+                <% } %>  
+                <% if (mem.member_sig==0 && session.type == 'Council') { %>
+                  <button type="button" id="memApprove" class="btn btn-success">Approve</button>
+                  <button type="button" id="memReject" class="btn btn-danger">Reject</button>
+                <% } %>  
+                <h5 name="cyc2" id="cyc2"></h5>
+                <hr class="my-1">  
+                <p>Signature of Member</p>
+              </div>
+            </div>
+
+            <div class="row mt-5 mb-3 justify-content-center">
+              <div class="col-md-6 text-center">            
+                <input type="date" class="form-control" name="dateFiled" placeholder="" value="" required="">
+                <p>Date Filed</p>
+              </div>
+              <div class="col-md-6 text-center">
+                <% if (mem.council_adv_sig==1) { %>
+                    <button class="btn btn-success">Approved</button>
+                <% } %>   
+                <% if (mem.council_adv_sig==2) { %>
+                    <button class="btn btn-danger">Rejected</button>
+                <% } %>  
+                <% if (mem.council_adv_sig==0 && session.type == 'Council Advisor') { %>
+                  <button type="button" id="advApprove" class="btn btn-success">Approve</button>
+                  <button type="button" id="advReject" class="btn btn-danger">Reject</button>
+                <% } %>  
+                <h5 name="cyc2" id="cyc2"></h5>
+                <hr class="my-1">  
+                <p>Council Advisor</p>
+              </div>
+            </div>
+
+            <hr class="my-4">          
+            <button type='submit' id="test" class="btn btn-danger btn-lg btn-block text-white">Submit</button>        
+          </form>
+            <!--<a href="activities.php">Back</a> -->
+        </div>
+      </div>
+    </div>
+    </div>
+  </section>
+
+
+
+
+<%function formatDate(date){
+    let month = (date.getMonth()+1).toString()
+    let year = date.getFullYear()
+    let day = (date.getDate()).toString()
+    if (month.length < 2) 
+        month = '0' + month;
+    if (day.length < 2) 
+        day = '0' + day;
+  
+    let ret = year + "-" + month + "-" + day
+    return ret
+  }%>
+<%-include ('partials/footer.ejs') %> 
