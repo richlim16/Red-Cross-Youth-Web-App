@@ -1,4 +1,4 @@
-const port=6969;
+const port=3000;
 const express = require('express');
 const app = express();
 const ejs = require('ejs');
@@ -102,7 +102,7 @@ app.post('/signup', urlEncodedParser, (req,res)=>{
 app.post('/login', urlEncodedParser, async(req,res)=>{    
     let result = await Read.getUser(req)
     if (bcrypt.compareSync(req.body.pass, result['password'])){
-        console.log(req.body.pass);
+        // console.log(result['id']);
         req.session.loggedIn=true;
         req.session.user=result['id'];
         req.session.type=result['type'];
@@ -110,7 +110,13 @@ app.post('/login', urlEncodedParser, async(req,res)=>{
             res.redirect('/admin')
         }
         else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
-            res.redirect('/')
+            connection.query("SELECT  * from councils WHERE user_id='"+req.session.user+"'",(err,result)=>{
+                req.session.council={};
+                req.session.council.id=result[0]['id'];
+                req.session.council.name=result[0]['name'];
+                req.session.council.type=result[0]['category'];
+                res.redirect('/')
+            });
         }  
     }else{
         console.log("login failed");
@@ -292,10 +298,16 @@ app.get('/serviceReq', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('serviceRequest', {title: "Service Request Form",councilName:"USC",councilType:"College Council"});
+        connection.query("SELECT chapter_personnels.id, users.username FROM `councils` inner join `chapter_personnels` on councils.chapter_id=chapter_personnels.chapter_id inner join users on users.type=\"Chapter Admin\" WHERE councils.user_id='"+req.session.user+"'",(err,result)=>{
+            res.render('serviceRequest', {
+                title: "Service Request Form",
+                CHname: result[0].username,
+                CHid: result[0].id,
+                reqCou: req.session.council
+            });
+        });
     }
 });
-
 
 app.get('/filledMemForm/:id', async (req,res)=>{
     let member = await Read.getFilledMemForm(req);
@@ -361,6 +373,11 @@ app.post('/act/addCommitteeMember', urlEncodedParser, async (req,res) =>{
 app.post('/act/add', urlEncodedParser, (req,res) =>{ //unif req 
     //design: 0 is RCY, 1 is Advisor; as per Derek's instructions
     console.log("INSERT INTO `users` (`date_requested`, `volunteer`, `type`, `qty`, `size`, `design`, `or_number`) VALUES ('"+req.body.dateReceived+"', '"+req.body.volunteer+"','"+req.body.type+"','"+req.body.qty+"','"+req.body.size+"','"+req.body.design+"','"+req.body.Receipt+"')");
+});
+
+app.post('/act/addSerReq',urlEncodedParser,(req,res)=>{    
+    console.log("INSERT INTO `service_request_forms`(`reciever`, `date_and_time`, `name_of_activity`,`council_id`, `requesting_person`, `position`) VALUES ('"+req.body.chapAdmin+"', '"+req.body.dateFiled+"', '"+req.body.activity+"', '"+req.body.reqCouncil+"', '"+req.body.reqPerson+"', '"+req.body.position+"', '"+req.body.itemPerson+"', '"+req.body.purpose+"')")
+    res.redirect('/docs');
 });
 
 app.post('/act/addUnifReq',urlEncodedParser,async(req,res)=>{    

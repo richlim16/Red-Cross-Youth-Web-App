@@ -17,21 +17,27 @@
     <div class="container">
       <div class="row">
         <div class="col-md-8 order-md-1">
-        <form class="needs-validation" novalidate="" action="/act/add" method="post">
+        <form class="needs-validation" novalidate="" action="/act/addSerReq" method="post">
         <h2>Service Request Form</h2>
           <div class="row d-flex mb-4">
             <div class="col-md-6">
-              <p>To: <input type="text" name="chapAdmin" placeholder="Chapter Administrator"></p>
+              <!-- <p>To: <input type="text" name="chapAdmin" placeholder="Chapter Administrator" value="<%= CHname%>"></p> -->
+              <p>To:<select type="text" class="form-control" name="chapAdmin">
+                <option value="<%= CHid%>"><%= CHname %></option>
+              </select></p>
               <p>Date Filed:<input type="date" name="dateFiled" placeholder="" value="" required=""></p>
               <p>Name of Activity <input type="text" name="activity" placeholder="Activity Name"></p>
-              <p>Requesting Council <input type="text" name="activity" placeholder="Council Primary Key from userSession"></p>
+              <!-- <p>Requesting Council <input type="text" name="reqCouncil" placeholder="Council Primary Key from userSession"></p> -->
+              <p>Requesting Council <select type="text" class="form-control" name="reqCouncil">
+                <option value="<%= reqCou.id%>"><%= reqCou.name %></option>
+              </select></p>
             </div>                    
           </div>
           
           <div class="row d-flex mb-4">            
             <div class="col-md-6">
-              <p>Requesting Person: <input type="text" name="chapAdmin" placeholder="Requesting Person"></p>
-              <p>Position: <input type="text" name="chapAdmin" placeholder="Position in Council"></p>
+              <p>Requesting Person: <input type="text" name="reqPerson" placeholder="Requesting Person"></p>
+              <p>Position: <input type="text" name="position" placeholder="Position in Council"></p>
             </div>                    
           </div>
 
@@ -44,7 +50,7 @@
             </div>
           </div>
 
-          <div class="row mb-1 d-flex">
+          <!-- <div class="row mb-1 d-flex">
             <div class="col-md-6">
               <label for="receivedBy">Received by:</label>
               <select type="text" class="form-control" name="receivedBy" value="" required="">
@@ -58,7 +64,7 @@
               <label for="dateReceived">Date Received:</label>
               <input type="date" class="form-control" name="dateReceived" placeholder="" value="" required="">
             </div>
-          </div>
+          </div> -->
 
           <div class="row mb-3 text-center">
          <h6 class="mt-5">Submitted by: </h6>
