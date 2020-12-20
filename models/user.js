@@ -10,8 +10,7 @@ const User = connection.sequelize.define('user', {
     type: DataTypes.BIGINT
   },
   username: DataTypes.STRING,
-  password: DataTypes.STRING,
-  membership_form_id: DataTypes.BIGINT,
+  password: DataTypes.STRING,  
   type: DataTypes.ENUM('Chapter Admin', 'Chapter Youth Advisor', 'Council', 'Council Advisor')
 });
 

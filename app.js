@@ -1,4 +1,4 @@
-const port=3000;
+const port=6969;
 const express = require('express');
 const app = express();
 const ejs = require('ejs');
@@ -55,7 +55,7 @@ app.get('/', (req,res)=>{
     }
 });
 
-app.get('/login', (req,res)=>{ //inverse persistent
+app.get('/login', (req,res)=>{ //inverse persistent    
     if(req.session.loggedIn==true){
         res.redirect("/");
     }else{
@@ -81,13 +81,14 @@ app.get('/signup', (req,res)=>{ //no persistent
 app.post('/signup', urlEncodedParser, (req,res)=>{
     let salt= bcrypt.genSaltSync(saltR);
     let pass= bcrypt.hashSync(req.body.pass, salt);
-    connection.query("INSERT INTO `users` (`username`, `password`, `type`) VALUES ('"+req.body.username+"', '"+pass+"', '"+req.body.type+"')",(err,result)=>{
+    connection.query("INSERT INTO `users` (`id`,`username`, `password`, `type`,`createdAt`,`updatedAt`) VALUES (0,'"+req.body.username+"', '"+pass+"', '"+req.body.type+"',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)",(err,result)=>{
+        if(err)throw(err);
         if(req.body.type == 'Chapter Admin' || req.body.type == 'Chapter Youth Advisor'){
             connection.query("INSERT INTO `chapter_personnels` (user_id`, `chapter_id`, `position`) VALUES ('"+result.insertId+"', '"+req.body.chapter+"', '"+req.body.type+"');",(err,result)=>{
                 res.redirect('/');
             });
-        }else if(req.body.type == 'Council'){ //addCouncil right?
-            connection.query("INSERT INTO `councils` (`chapter_id`, `category`, `name`) VALUES ('"+req.body.chapter+"', '"+req.body.category+"', '"+req.body.username+"');",(err,result)=>{
+        }else if(req.body.type == 'Council'){ //addCouncil right? yes
+            connection.query("INSERT INTO `councils` (`user_id`,`chapter_id`, `category`, `name`, `createdAt`) VALUES ('"+result.insertId+"','"+req.body.chapter+"', '"+req.body.category+"', '"+req.body.username+"',CURRENT_TIMESTAMP);",(err,result)=>{
                 res.redirect('/');
             });
         }else{
@@ -98,23 +99,23 @@ app.post('/signup', urlEncodedParser, (req,res)=>{
     });
 });
 
-app.post('/login', urlEncodedParser, (req,res)=>{
-    connection.query("SELECT * FROM `users` WHERE username='"+req.body.username+"'",(err,result)=>{
-        if (bcrypt.compareSync(req.body.pass, result[0]['password'])){
-            req.session.loggedIn=true;
-            req.session.user=result[0]['id'];
-            req.session.type=result[0]['type'];
-            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
-                res.redirect('/admin')
-            }
-            else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
-                res.redirect('/')
-            }  
-        }else{
-            console.log("login failed");
-            res.redirect('/login'); //idk ideal redirect
+app.post('/login', urlEncodedParser, async(req,res)=>{    
+    let result = await Read.getUser(req)
+    if (bcrypt.compareSync(req.body.pass, result['password'])){
+        console.log(req.body.pass);
+        req.session.loggedIn=true;
+        req.session.user=result['id'];
+        req.session.type=result['type'];
+        if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
+            res.redirect('/admin')
         }
-    });
+        else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
+            res.redirect('/')
+        }  
+    }else{
+        console.log("login failed");
+        res.redirect('/login'); //idk ideal redirect
+    }
 });
 
 app.get('/about', (req,res)=>{
@@ -191,7 +192,7 @@ app.get('/membershipForm', async (req,res)=>{
     res.render('membershipForm',{title: "Membership Form", session:req.session,councilName:"USC",councilType:"College Council"});
 });
 
-app.get('/committeeMembershipForm', async (req,res)=>{
+/*app.get('/committeeMembershipForm', async (req,res)=>{
     // let councilName = await Read.getCouncilName(sessionId)
     if(req.session.loggedIn!=true){
         res.redirect("/login");
@@ -199,24 +200,33 @@ app.get('/committeeMembershipForm', async (req,res)=>{
         let committees = await Read.getCommitteesOfCouncil()
         res.render('committeeMembershipForm',{title: "Membership Form", committees: committees, session: req.session,councilName:"USC",councilType:"College Council"});
     }
-});
+});*/
 
 app.get('/committeeMembershipForm', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('committeeMembershipForm',{title: "Committee Membership Form",councilName:"USC",councilType:"College Council"});
+        res.render('committeeMembershipForm',{session:req.session,title: "Committee Membership Form",councilName:"USC",councilType:"College Council"});
     }
 });
 //When a specific committee is selected
 app.get('/generatedCommitteeMembershipForm/:type', urlEncodedParser, async (req,res)=>{
-    let members = await Read.getMembersOfCommittee(req)
-    res.send(members);
+    //let members = await Read.getNoneCommitteeMembers()
+    try{
+        let members = await Read.getMembersOfCommittee(req);
+        res.send(members);
+    }catch(e){
+        console.log("Error! : ",e);
+    }    
 });
 //When a adding members to a committee, show all members of that council without a committee yet
 app.get('/getNoneCommitteeMembers', urlEncodedParser, async (req,res)=>{
-    let members = await Read.getNoneCommitteeMembers()
-    res.send(members);
+    try{
+        let members = await Read.getNoneCommitteeMembers();        
+        res.send(members);
+    }catch(e){
+        console.log("Error! : ",e);
+    }
 });
 
 
@@ -253,7 +263,7 @@ app.get('/unifRequest', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        connection.query("SELECT id, name FROM `councils`",(err,result)=>{
+        /*connection.query("SELECT id, name FROM `councils`",(err,result)=>{
             let council=result;
             connection.query("SELECT id, username as name FROM `users`",(err,result)=>{
                 let people=result;
@@ -263,7 +273,10 @@ app.get('/unifRequest', (req,res)=>{
                     peoples: people
                 });
             });
-        });
+        });*/
+        var council=['x','y','z'];
+        var people=['Clyde','Derek'];
+        res.render('uniformRequest',{title: "Uniform Request",councils: council,peoples: people });
     }
 });
 
@@ -295,12 +308,10 @@ app.get('/filledMemForm/:id', async (req,res)=>{
 //GETS END HERE
 
 //POST requests
-app.post('/signup', urlEncodedParser, (req,res)=>{
-    let salt= bcrypt.genSaltSync(saltR);
-    let pass= bcrypt.hashSync(req.body.pass, salt);
-    connection.query("INSERT INTO `users` (`username`, `password`, `createdAt`, `updatedAt`) VALUES ('"+req.body.username+"', '"+pass+"',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)",(err,result)=>{
-        res.redirect('/')
-    });
+app.post('/signup', urlEncodedParser, async(req,res)=>{
+    await Create.signUp(req);        
+    console.log("Account has been made!");
+    res.redirect('/');
 });
 
 app.post('/login', urlEncodedParser, (req,res)=>{
@@ -325,24 +336,41 @@ app.post('/login', urlEncodedParser, (req,res)=>{
 
 app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{
     await Create.addCouncil(req)
-    console.log(req.body.councilName+" "+req.body.chapter);
+    console.log(req)
     res.redirect('/addCouncil');
 });
 
 app.post('/act/addMemberForm', urlEncodedParser, async (req,res) =>{
     await Create.addMemberForm(req)
-    console.log("ADDING NEW FORM");
+    console.log("ADDING NEW MEMBER");
     res.redirect('/membershipForm');
 });
 
 app.post('/act/addCommitteeMember', urlEncodedParser, async (req,res) =>{
-    await Create.addCommitteeMember(req)
+    //await Create.addCommitteeMember(req)
+    try{
+        //let members = await Read.getNoneCommitteeMembers();
+        //res.send(members);
+        await Create.addCommitteeMember(req)
+    }catch(e){
+        console.log("Error! : ",e);
+    }
     res.send('success');
 });
 
 app.post('/act/add', urlEncodedParser, (req,res) =>{ //unif req 
     //design: 0 is RCY, 1 is Advisor; as per Derek's instructions
     console.log("INSERT INTO `users` (`date_requested`, `volunteer`, `type`, `qty`, `size`, `design`, `or_number`) VALUES ('"+req.body.dateReceived+"', '"+req.body.volunteer+"','"+req.body.type+"','"+req.body.qty+"','"+req.body.size+"','"+req.body.design+"','"+req.body.Receipt+"')");
+});
+
+app.post('/act/addUnifReq',urlEncodedParser,async(req,res)=>{    
+    try{
+        await Create.addUniformRequest(req);        
+        console.log('Uniform Request sent!');
+    }catch (e){
+        console.log('ERROR! ',e);
+    }
+    res.redirect('/docs');
 });
 
 // For approval/rejection of forms

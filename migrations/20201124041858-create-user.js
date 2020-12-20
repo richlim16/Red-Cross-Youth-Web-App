@@ -13,14 +13,7 @@ module.exports = {
       },
       password: {
         type: Sequelize.STRING
-      },
-      membership_form_id: {
-        type: Sequelize.BIGINT,
-        references: {
-          model: 'membership_forms', 
-          key: 'id',
-        }
-      },
+      },      
       type: {
         type: Sequelize.ENUM('Chapter Admin', 'Chapter Youth Advisor', 'Council', 'Council Advisor')
       },

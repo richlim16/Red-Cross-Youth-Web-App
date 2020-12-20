@@ -3,7 +3,7 @@ const {DataTypes, DATE} = require('sequelize');
 const connection = require('../dbconnection');
 
 const uniformRequestForm = connection.sequelize.define('uniform_request_form', {
-  id: {
+  id:{
     allowNull: false,
     autoIncrement: true,
     primaryKey: true,
