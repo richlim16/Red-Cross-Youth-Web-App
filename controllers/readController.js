@@ -20,9 +20,24 @@ Chapter.model.hasMany(Council.model, {foreignKey: 'chapter_id',sourceKey: 'id'})
 Council.model.belongsTo(Chapter.model, {foreignKey: 'chapter_id'});
 
 
+exports.getUser = async (req, res) => {
+    let ret = await User.model.findOne({
+        where: {
+            username: req.body.username
+        }
+    })
+    return ret;
+}
+
 //Used in creating a council
 exports.getAllChapters = async (req, res) => {
     let ret = await Chapter.model.findAll();
+    
+    // res.setHeader('Access-Control-Allow-Origin', '*');
+    // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
+    // res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    // res.setHeader('Access-Control-Allow-Credentials', true);
+    // res.send(ret);
     return ret;
 }
 
@@ -33,14 +48,19 @@ exports.getCommitteesOfCouncil = async (req, res) => {
             council_id: 10      //get council_id from Session variable
         }
     });
-    return ret;
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.send(ret);
 }
 
 //Used in Committee Membership Form
 exports.getMembersOfCommittee = async(req, res) => {
     let committee = await Committee.model.findOne({
         where: {
-            council_id: 10,     //get council_id from Session variable
+            council_id: 2,     //get council_id from Session variable
             type: req.params.type
         }
     });
@@ -50,7 +70,12 @@ exports.getMembersOfCommittee = async(req, res) => {
             committee_membership_id: committee.id
         }
     });
-    return ret;
+    
+    //res.setHeader('Access-Control-Allow-Origin', '*');
+    //res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
+    //res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    //res.setHeader('Access-Control-Allow-Credentials', true);
+    //res.send(ret);
 }
 
 // Used in Committee Membership Form when adding a member to a committee
@@ -65,6 +90,11 @@ exports.getNoneCommitteeMembers = async(req, res) => {
     }
     );
     
+    //res.setHeader('Access-Control-Allow-Origin', '*');
+    //res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
+    //res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    //res.setHeader('Access-Control-Allow-Credentials', true);
+    //res.send(ret);
     return ret;
 }
 

@@ -1,24 +1,34 @@
-const Sequelize = require('sequelize');
-const Op = Sequelize.Op;
-const ActivityReport = require('../models/activity_report_form');
-const ActivityRequest = require('../models/activity_request_form');
-const ChapterPersonnel = require('../models/chapter_personnel');
-const Chapter = require('../models/chapter');
-const CommitteeMembershipForm = require('../models/committee_membership_form');
-const Committee = require('../models/committee');
-const CouncilAdvisor = require('../models/council_advisor');
-const CouncilMonthlyReport = require('../models/council_monthly_report');
-const Council = require('../models/council');
-const Document = require('../models/document');
-const MembershipForm = require('../models/membership_form');
-const Officer = require('../models/officer');
-const OtherOrganizationsAffiliations = require('../models/other_organizations_affiliations');
-const TrainingsAttended = require('../models/trainings_attended');
-const User = require('../models/user');
+const Sequelize=require('sequelize');
+const Op=Sequelize.Op;
+const ActivityReport=require('../models/activity_report_form');
+const ActivityRequest=require('../models/activity_request_form');
+const ChapterPersonnel=require('../models/chapter_personnel');
+const Chapter=require('../models/chapter');
+const CommitteeMembershipForm=require('../models/committee_membership_form');
+const Committee=require('../models/committee');
+const CouncilAdvisor=require('../models/council_advisor');
+const CouncilMonthlyReport=require('../models/council_monthly_report');
+const Council=require('../models/council');
+const UniformRequest=require('../models/uniform_request_form');
+const Document=require('../models/document');
+const MembershipForm=require('../models/membership_form');
+const Officer=require('../models/officer');
+const OtherOrganizationsAffiliations=require('../models/other_organizations_affiliations');
+const TrainingsAttended=require('../models/trainings_attended');
+const User=require('../models/user');
 
 Chapter.model.hasMany(Council.model, {foreignKey: 'chapter_id',sourceKey: 'id'});
 Council.model.belongsTo(Chapter.model, {foreignKey: 'chapter_id'});
 
+
+exports.signUp = async (req, res) => {
+    let salt= bcrypt.genSaltSync(saltR);
+    let pass= bcrypt.hashSync(req.body.pass, salt);
+    await User.model.create({
+        username: req.body.username,
+        password: pass
+    })
+}
 
 //get council id from session variable 'user'
 async function getCouncilId(userId){
@@ -35,7 +45,7 @@ exports.addCouncil = async (req, res) => {
     Council.model.hasMany(Committee.model, {foreignKey: 'council_id',sourceKey: 'id'});
 
     await Council.model.create({
-        user_id: 1,
+        user_id: user_id+1,
         chapter_id: req.body.chapterId,
         category: req.body.category,
         name: req.body.name,
@@ -152,7 +162,7 @@ exports.addMemberForm = async (req, res) => {
 exports.addCommitteeMember = async (req, res) => {
     let committee = await Committee.model.findOne({
         where: {
-            council_id: 1,     //get council_id from Session variable
+            council_id: 2,     //get council_id from Session variable
             type: req.body.type
         }
     });
@@ -164,4 +174,28 @@ exports.addCommitteeMember = async (req, res) => {
             id: req.body.memberId
           }
     });
+}
+
+//For uniform request form
+exports.addUniformRequest = async (req, res) => {
+    const Doc = UniformRequest.model.belongsTo(Document.model, {foreignKey:'document_id'});
+    let council = await getCouncilId(req.session.user)
+    //insert more code here
+    await UniformRequest.model.create({
+        id:0,        
+        uniform_type: req.body.type,
+        date_requested: Sequelize.fn('NOW'),
+        volunteer: 3,
+        quantity: req.body.qty,
+        receipt_no: null,
+        date: Sequelize.fn('NOW'),
+        or_number: null,
+        document:{
+            type: 'UNIFORM_REQUEST',
+            chapter_id: council.chapter_id,  //get from Session variable
+            council_id: council.id  //get from Session variable
+        }
+    },{
+        include: [ Doc ]
+    })
 }
