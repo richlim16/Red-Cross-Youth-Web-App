@@ -27,21 +27,19 @@
 
           <div class="row d-flex mb-4">
             <div class="col-md">
-              <label for="committee">Name of Requesting Volunteer</label>
-              <select id="volunteer" type="text" class="form-control" name="volunteer" required>
+              <label for="volunteer">Name of Requesting Volunteer</label>
+              <input type="text" class="form-control" name="volunteer" placeholder="" value="" required="">
+              <!-- <select id="volunteer" type="text" class="form-control" name="volunteer" required>
                 <option style="display:none"></option>
                 <% peoples.forEach( aa => { %>
                   <option value="<%= aa.id%>"><%= aa.name %> </option>
                 <% }) %>
-              </select>
+              </select> -->
             </div>
             <div class="col-md">
               <label for="activity">Name of Council</label>
               <select type="text" class="form-control" name="council" required>
-                <option style="display:none"></option>
-                <% councils.forEach( aa => { %>
-                  <option value="<%= aa.id%>"><%= aa.name %> </option>
-                <% }) %>
+                  <option value="<%= council.id%>"><%= council.name %> </option>
               </select>
             </div>
           </div>

@@ -51,7 +51,10 @@ app.get('/', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('home', {title: "Home",councilName:"USC",councilType:"College Council"});
+        res.render('home', {
+            title: "Home",
+            council: req.session.council
+        });
     }
 });
 
@@ -59,7 +62,13 @@ app.get('/login', (req,res)=>{ //inverse persistent
     if(req.session.loggedIn==true){
         res.redirect("/");
     }else{
-        res.render('login', {title: "Login",councilName:"USC",councilType:"College Council"});
+        res.render('login', {
+            title: "Login",
+            council:{
+                name: "Red Cross", 
+                type: "Youth"
+            }
+        });
     }
 });
 
@@ -73,7 +82,13 @@ app.get('/signup', (req,res)=>{ //no persistent
         let council=result;
         connection.query("SELECT id, name FROM `chapters`",(err,result)=>{
             let chapter=result;
-            res.render('signup', {title: "Sign Up",councils: council,chapters: chapter});
+            res.render('signup', {
+                title: "Sign Up",
+                council:{
+                    name: "Red Cross", 
+                    type: "Youth"
+                }
+            });
         });
     });    
 });
@@ -107,7 +122,12 @@ app.post('/login', urlEncodedParser, async(req,res)=>{
         req.session.user=result['id'];
         req.session.type=result['type'];
         if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
-            res.redirect('/admin')
+            connection.query("SELECT chapters.id, chapters.name FROM `chapter_personnels` inner JOIN chapters on chapter_personnels.chapter_id=chapters.id WHERE user_id='"+req.session.user+"'",(err,result)=>{
+                req.session.chapter={};
+                req.session.chapter.id=result[0]['id'];
+                req.session.chapter.name=result[0]['name'];
+                res.redirect('/admin')
+            });
         }
         else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
             connection.query("SELECT  * from councils WHERE user_id='"+req.session.user+"'",(err,result)=>{
@@ -138,7 +158,11 @@ app.get('/officerActivity', (req,res) =>{
     }else{
         connection.query("SELECT * FROM membership_forms",(err,result)=>{
             let forms=result;
-            res.render('masterlist',{ title:"Testing", memForm:result,councilName:"USC",councilType:"College Council"});
+            res.render('masterlist',{
+                title:"Testing", 
+                memForm:result,
+                council: req.session.council
+            });
         })
     }
 });
@@ -164,7 +188,11 @@ app.get('/addCouncil', async (req,res) =>{
         res.redirect("/login");
     }else{
        let chapters = await Read.getAllChapters()
-       res.render('addCouncil',{title: "Add Council", chapters: chapters,councilName:"USC",councilType:"College Council"});
+       res.render('addCouncil',{
+           title: "Add Council", 
+           chapters: req.session.chapter,
+           council: req.session.chapter //yes, poor naming
+        });
     }
 });
 
@@ -174,7 +202,10 @@ app.get('/docs', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('docs', {title: "Documents",councilName:"USC",councilType:"College Council"});
+        res.render('docs', {
+            title: "Documents",
+            council: req.session.council
+    });
     }
 });
 
@@ -182,7 +213,10 @@ app.get('/addReport', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('addReport', {title: "Add Report",councilName:"USC",councilType:"College Council"});
+        res.render('addReport', {
+            title: "Add Report",
+            council: req.session.council
+        });
     }
 });
 
@@ -190,12 +224,19 @@ app.get('/activityForm', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{ 
-        res.render('addReport',{title: "Activity Form",councilName:"USC",councilType:"College Council"});
+        res.render('addReport',{
+            title: "Activity Form",
+            council: req.session.council
+        });
     }
 });
 
 app.get('/membershipForm', async (req,res)=>{
-    res.render('membershipForm',{title: "Membership Form", session:req.session,councilName:"USC",councilType:"College Council"});
+    res.render('membershipForm',{
+        title: "Membership Form", 
+        session:req.session,
+        council: req.session.council
+    });
 });
 
 /*app.get('/committeeMembershipForm', async (req,res)=>{
@@ -212,7 +253,11 @@ app.get('/committeeMembershipForm', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('committeeMembershipForm',{session:req.session,title: "Committee Membership Form",councilName:"USC",councilType:"College Council"});
+        res.render('committeeMembershipForm',{
+            session:req.session,
+            title: "Committee Membership Form",
+            council: req.session.council
+        });
     }
 });
 //When a specific committee is selected
@@ -253,7 +298,10 @@ app.get('/activityRequestForm', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('activityRequestForm',{title: "Activity Request Form",councilName:"USC",councilType:"College Council"});
+        res.render('activityRequestForm',{
+            title: "Activity Request Form",
+            council: req.session.council
+        });
     }
 });
 
@@ -261,7 +309,10 @@ app.get('/activityReportForm', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('activityReportForm',{title: "Activity Report Form",councilName:"USC",councilType:"College Council"});
+        res.render('activityReportForm',{
+            title: "Activity Report Form",
+            council: req.session.council
+        });
     }
 });
 
@@ -269,20 +320,25 @@ app.get('/unifRequest', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        /*connection.query("SELECT id, name FROM `councils`",(err,result)=>{
-            let council=result;
+        // connection.query("SELECT id, name FROM `councils`",(err,result)=>{
+            // let council=result;
             connection.query("SELECT id, username as name FROM `users`",(err,result)=>{
                 let people=result;
                 res.render('uniformRequest',{
                     title: "Uniform Request",
-                    councils: council,
+                    council: req.session.council,
                     peoples: people
                 });
             });
-        });*/
-        var council=['x','y','z'];
-        var people=['Clyde','Derek'];
-        res.render('uniformRequest',{title: "Uniform Request",councils: council,peoples: people });
+        // });
+        // var council=['x','y','z'];
+        // var people=['Clyde','Derek'];
+        // res.render('uniformRequest',{
+        //     title: "Uniform Request",
+        //     council: req.session.council,
+        //     councils: council,
+        //     peoples: people 
+        // });
     }
 });
 
@@ -290,7 +346,10 @@ app.get('/unifClaim', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('uniformClaimSlip', {title: "Uniform Claim Slip",councilName:"USC",councilType:"College Council"});
+        res.render('uniformClaimSlip', {
+            title: "Uniform Claim Slip",
+            council: req.session.council
+        });
     }
 });
 
@@ -301,6 +360,7 @@ app.get('/serviceReq', (req,res)=>{
         connection.query("SELECT chapter_personnels.id, users.username FROM `councils` inner join `chapter_personnels` on councils.chapter_id=chapter_personnels.chapter_id inner join users on users.type=\"Chapter Admin\" WHERE councils.user_id='"+req.session.user+"'",(err,result)=>{
             res.render('serviceRequest', {
                 title: "Service Request Form",
+                council: req.session.council,
                 CHname: result[0].username,
                 CHid: result[0].id,
                 reqCou: req.session.council
@@ -313,7 +373,14 @@ app.get('/filledMemForm/:id', async (req,res)=>{
     let member = await Read.getFilledMemForm(req);
     let trainings = await Read.getMemTrainings(member);
     let orgs = await Read.getMemOrgs(member);
-    res.render('filledMembershipForm', {title: "Membership Form", session:req.session, mem: member, trainings: trainings, orgs: orgs});    
+    res.render('filledMembershipForm', {
+        title: "Membership Form",
+        council: req.session.council, 
+        session:req.session, 
+        mem: member, 
+        trainings: trainings, 
+        orgs: orgs
+    });    
 });
 
 //DOCUMENTS END HERE
