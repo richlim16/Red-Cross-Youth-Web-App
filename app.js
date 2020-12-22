@@ -1,14 +1,17 @@
 const port=3000;
 const express = require('express');
-const app = express();
 const ejs = require('ejs');
 const bodyParser = require("body-parser");
+const app = express();
+const cors = require("cors");
+app.use(bodyParser.json());
+app.use(cors());
+app.use(bodyParser.urlencoded({extended: true}));
 const urlEncodedParser = bodyParser.urlencoded({extended: false});
 const Create = require('./controllers/createController');
 const Update = require('./controllers/updateController');
 const Read = require('./controllers/readController');
-const cors = require("cors");
-app.use(cors());
+
 // const routes = require ('./routes/routes')
 
 
@@ -35,11 +38,15 @@ app.use(session({
 }));
 
 app.get('/', (req,res)=>{
-    if(req.session.loggedIn!=true){
-        res.redirect("/login");
-    }else{
-        res.render('home', {title: "Home",councilName:"USC",councilType:"College Council"});
-    }
+    // if(req.session.loggedIn!=true){
+    //     res.redirect("/login");
+    // }else{
+        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
+        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        res.setHeader('Access-Control-Allow-Credentials', true);
+        res.send({title: "Home",councilName:"USC",councilType:"College Council"});
+    // }
 });
 
 app.get('/members', (req,res)=>{
@@ -351,7 +358,9 @@ app.post('/memForm/advReject/:id', async (req,res)=>{
     res.redirect('/filledMemForm/' + req.params.id) 
 });
 
-
+app.post('/', (req, res) => {
+    console.log(req.body)
+})
 
 app.listen(port,()=>{
     console.log("Server is running");

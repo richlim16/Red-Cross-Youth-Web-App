@@ -104,8 +104,7 @@
 // import committee from './components/committeeForm.vue'
 // import home from './views/Home.vue'
 
-
-
+import axios from 'axios';
 
 export default {
   name: 'App',
@@ -116,6 +115,24 @@ export default {
     // 'M': membershipform
     // 'C': committee,
 
+  },
+  mounted() {
+    axios.get('http://localhost:3000')
+    .then(response => console.log(response))
+    .catch(error => console.log(error))
+    // axios({
+    //   method: 'POST',
+    //   url: 'http://localhost:3000',
+    //   data:{
+    //     name: 'lalala',
+    //     concilId: '12345'
+    //   }
+    // })
+  },
+  data() {
+    return {
+      homeData: null
+    }
   }
 }
 </script>

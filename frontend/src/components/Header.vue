@@ -6,7 +6,6 @@
             <a href="/" class="logo mr-auto"><img src="..\..\public\images\1.png" alt="logo"> councilName councilType</a>
             <nav class="nav-menu d-none d-lg-block">
                 <ul>
-                
                     <li class="active"><a href="/"><router-link to="/">Home</router-link></a></li>
                     <li><a href="/#about">About</a></li>
                     <li><a href="/#team">Team</a></li>
@@ -22,7 +21,7 @@
             </nav><!-- .nav-menu -->
         </div>
 
-        <button v-on:click="postData">SUBMIT</button>
+        
     </header><!-- End Header -->
 
 </template>
