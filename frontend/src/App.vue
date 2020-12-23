@@ -25,11 +25,16 @@
                     <li><a href="/#about">About</a></li>
                     <li><a href="/#team">Team</a></li>
                     <li><a href="/#contact">Contact</a></li>
-                    <li><a href="/docs"><router-link :to="{name: 'docs'}">Forms</router-link></a></li>
+                     <li class="drop-down"><a href="#">Document</a>
+                      <ul>
+                        <li><a href="/docs"><router-link :to="{name: 'docs'}">Forms</router-link></a></li>
+                        <li><a href="/officerActivity"><router-link :to="{name: 'masterlist'}">View Forms</router-link></a></li>
+                      </ul>
+                    </li>
                     <li class="drop-down"><a href="#">Profile</a>
                     <ul>
-                        <li><a href="/login">Login</a></li>
-                        <li><a href="/signup">Sign Up</a></li>
+                        <li><a href="/login"><router-link :to="{name: 'login'}">Login</router-link></a></li>                     
+                        <li><a href="/signup">Log Out</a></li>
                     </ul>
                     </li>
                 </ul>

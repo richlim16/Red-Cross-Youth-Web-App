@@ -7,8 +7,8 @@ import docs from './views/docs.vue'
 import membership from './views/membershipForm.vue'
 import committee from './views/committeeForm.vue'
 import index from './views/index.vue'
-
-
+import login from './views/login.vue'
+import masterlist from './views/masterlist.vue'
 
 Vue.use(VueRouter);
 Vue.config.productionTip = false
@@ -41,7 +41,18 @@ const router = new VueRouter({
       path: "/index",
       name: "index",
       component: index
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: login
+    },
+    {
+      path: "/masterlist",
+      name: "masterlist",
+      component: masterlist
     }
+
   ]
 })
 
