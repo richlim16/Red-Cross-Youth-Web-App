@@ -20,7 +20,7 @@
                 <p>Fill out the following fields to apply for membership</p>
                 <div class="row">
                     <div class="col-md-8 order-md-1">
-                        <form id="addMemberForm" @submit="addMember" class="needs-validation">
+                        <form id="addMemberForm" @submit="compile" class="needs-validation">
                             <div class="row d-flex justify-content-end">
                                 <div class="col-md-2 mb-1">
                                     <label for="bloodType">Blood Type</label>
@@ -324,7 +324,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" id="addTraining" class="col-md-3 btn btn-success">Add Another Training</button>
+                            <button type="button" v-on:click="addTraining" class="col-md-3 btn btn-success">Add Another Training</button>
 
 
 
@@ -354,7 +354,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="button" id="addOrg" class="col-md-4 btn btn-success">Add Another Organization</button>
+                            <button type="button" v-on:click="addOrg" class="col-md-4 btn btn-success">Add Another Organization</button>
 
                             <hr class="my-4">          
                             <button type='submit' id="test" class="btn btn-danger btn-lg btn-block text-white">Submit</button>        
@@ -367,6 +367,7 @@
     </div>
 </template>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
 import axios from 'axios';
 
@@ -420,11 +421,25 @@ export default {
             collegeDate : null,
             vocSchool : null,
             vocDate : null,
-            trainings: null,
-            organizations: null
+            trainings: [],
+            organizations: []
         }
     }, 
     methods: {
+        addTraining: function(){
+            let training = $( ".training" ).first().clone();
+            training.children(".trainingDiv").children(".trainingAttended").val("");
+            training.children(".certDiv").children(".certificateNo").val("");
+            training.children(".placeDiv").children(".place").val("");
+            training.appendTo( "#trainingsList" ); 
+        },
+        addOrg: function(){
+            let org = $( ".organization" ).first().clone()
+            org.children(".orgDiv").children(".org").val("");
+            org.children(".posDiv").children(".position").val("");
+            org.children(".councilDiv").children(".council").val("");
+            org.appendTo( "#organizations" ); 
+        },
         addMember: function(){
             axios({
                 method: 'POST',
@@ -481,6 +496,35 @@ export default {
                     organizations: JSON.stringify(this.organizations)
                 }
             })
+        },
+        compile: function(){
+            let tArr = []
+            $(".training").each(function() {
+                let trainingAttended = $( this ).children(".trainingDiv").children(".trainingAttended").val();
+                let certNo = $( this ).children(".certDiv").children(".certificateNo").val();
+                let place = $( this ).children(".placeDiv").children(".place").val();
+                let startDate = $( this ).children(".startDiv").children(".startDate").val();
+                let endDate = $( this ).children(".endDiv").children(".endDate").val();
+
+                let entry = {trainingAttended: trainingAttended, certificateNumber: certNo, place: place, startDate: startDate, endDate: endDate}
+                tArr.push(entry);
+            })
+            this.trainings = tArr;
+
+            let oArr = []
+            $(".organization").each(function() {
+                let org = $( this ).children(".orgDiv").children(".org").val();
+                let position = $( this ).children(".posDiv").children(".position").val();
+                let council = $( this ).children(".councilDiv").children(".council").val();
+                let startDate = $( this ).children(".startDiv").children(".startDate").val();
+                let endDate = $( this ).children(".endDiv").children(".endDate").val();
+
+                let entry = {organization: org, position: position, council: council, startDate: startDate, endDate: endDate}
+                oArr.push(entry);
+            })
+            this.organizations = oArr;
+
+            this.addMember();
         }
     }
 }
