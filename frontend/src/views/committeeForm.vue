@@ -1,5 +1,6 @@
 <template>
     <div>
+        <n/>
         <!-- ======= Breadcrumbs ======= -->
         <section class="breadcrumbs">
             <div class="container">
@@ -179,12 +180,19 @@
             </div>
         </div>
         </div>
+        <f/>
     </div>
 </template>
 
 <script>
+import navbar from '../components/Navbar.vue'
+import footer from '../components/footer.vue'
 export default {
-    name: 'committeeForm'
+    name: 'committeeform',
+    components: {
+      'n': navbar,
+      'f': footer
+    }
 }
 </script>
 

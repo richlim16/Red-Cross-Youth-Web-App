@@ -19,8 +19,8 @@ const router = new VueRouter({
   routes: [
     {
       path: "/",
-      name: "home",
-      component: home,
+      name: "login",
+      component: login,
     },
     {
       path: "/docs",
@@ -43,9 +43,9 @@ const router = new VueRouter({
       component: index
     },
     {
-      path: "/login",
-      name: "login",
-      component: login
+      path: "/home",
+      name: "home",
+      component: home
     },
     {
       path: "/masterlist",
