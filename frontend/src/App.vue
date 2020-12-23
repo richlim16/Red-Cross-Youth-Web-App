@@ -5,10 +5,12 @@
     
 </template>
 
+
 <script>
 import axios from 'axios';
 import temp from './views/adminHome.vue'
 // import temp from './components/adminNavbar.vue'
+// import temp from './components/adminSidebar.vue'
 
 export default {
   name: 'App',

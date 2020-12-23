@@ -9,7 +9,7 @@
             -->
             <div class="logo"><a href="http://www.creative-tim.com" class="simple-text logo-normal">
                 Profile</a></div>
-            <adminSB/>
+            <!-- <adminSB/> -->
             <div class="main-panel">
             <!-- Navbar -->
             <adminN/>
@@ -151,13 +151,13 @@
 </template>
 
 <script>
-import adminsidebar from '../components/adminSidebar.vue'
+// import adminsidebar from '../components/adminSidebar.vue'
 import adminnavbar from '../components/adminNavbar.vue'
 
 export default {
     name: 'adminhome',
     components:{
-        'adminSB': adminsidebar,
+        // 'adminSB': adminsidebar,
         'adminN': adminnavbar
     }
 }
