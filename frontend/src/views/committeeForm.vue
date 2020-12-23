@@ -181,7 +181,7 @@
                         </thead>
                         <tbody id="availMemberTable">
                             <tr v-for="(member,i) in availableMembers" :key="i">
-                                <th> {{i+1}} </th>
+                                <th> <button type="button" v-on:click="addToCommittee(member.id)" class="includeMember btn btn-primary">Add</button> </th>
                                 <td> {{member.surname}} </td>
                                 <td> {{member.first_name}} </td>
                                 <td> {{member.middle_name}} </td>
@@ -201,6 +201,7 @@
     </div>
 </template>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
 import axios from 'axios';
 
@@ -215,14 +216,24 @@ export default {
     },
     methods: {
         changeCommittee: function(){
-            axios.get('http://localhost:3000/' + this.committeeType)
-            .then(response => this.committeeMembers = response)
+            axios.get('http://localhost:3000/generatedCommitteeMembershipForm/' + this.committeeType)
+            .then(response => this.committeeMembers = response.data)
             .catch(error => console.log(error))
         },
         showMembers: function(){
             axios.get('http://localhost:3000/getNoneCommitteeMembers')
             .then(response => this.availableMembers = response.data)
             .catch(error => console.log(error))
+        },
+        addToCommittee: function(memId){
+            axios({
+                method: 'POST',
+                url: 'http://localhost:3000/act/addCommitteeMember',
+                data: {memberId: memId, type: this.committeeType}
+            })
+
+            this.changeCommittee()
+            $('#closeModal').click()
         }
     }
 }
