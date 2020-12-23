@@ -280,7 +280,7 @@ app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{
 app.post('/act/addMemberForm', urlEncodedParser, async (req,res) =>{
     await Create.addMemberForm(req)
     console.log("ADDING NEW FORM");
-    res.redirect('/membershipForm');
+    // res.redirect('/membershipForm');
 });
 
 app.post('/act/addCommitteeMember', urlEncodedParser, async (req,res) =>{
