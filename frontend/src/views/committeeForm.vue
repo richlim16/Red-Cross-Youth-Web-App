@@ -17,19 +17,19 @@
 
         <section class="inner-page">
             <div class="container">
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-3 mb-3">
-                <label for="councilName">Name of School/Community Council</label>
-                <input type="text" class="form-control" name="councilName" placeholder="automatic" value="" required="">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-3 mb-3">
+                        <label for="councilName">Name of School/Community Council</label>
+                        <input type="text" class="form-control" name="councilName" placeholder="automatic" value="" required="">
+                    </div>
                 </div>
-            </div>
 
                 <form class="needs-validation" novalidate="" action="/act/add" method="post">
                 
                     <div class="row d-flex justify-content-center">
                         <div class="col-md-3 mb-5">
                         <label for="committee">Committee</label>
-                        <select id="committeeType" type="text" class="form-control" name="committee" required="">
+                        <select v-model="committeeType" @change="changeCommittee" id="committeeType" type="text" class="form-control" name="committee" required="">
                             <option disabled selected value>-select type-</option>
                             <option value="DRRM">DRRM</option>
                             <option value="Pledge 25">Pledge 25</option>
@@ -74,13 +74,22 @@
                         </tr>
                         </thead>
                         <tbody id="memberTable">    
+                            <tr v-for="(member,i) in committeeMembers" :key="i">
+                                <th> {{i+1}} </th>
+                                <td> {{member.surname}} </td>
+                                <td> {{member.first_name}} </td>
+                                <td> {{member.middle_name}} </td>
+                                <td> {{member.nickname}} </td>
+                                <td> {{member.contact_no}} </td>
+                                <td> {{member.city_tel}} </td>
+                            </tr>
                         </tbody>
                     </table>
 
 
                 <!-- Button trigger modal -->
                 <div class="d-flex justify-content-center">
-                    <button type="button" id="showMembers" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Add a Member</button>
+                    <button type="button" v-on:click="showMembers" id="showMembers" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Add a Member</button>
                 </div>
 
 
@@ -146,45 +155,76 @@
                 <a href="activities.php">Back</a>
             </div>
         </section>
+
         <!-- Modal -->
         <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Available Members</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Available Members</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                            <th></th>
+                            <th>SURNAME</th>
+                            <th>FIRST NAME</th>
+                            <th>MIDDLE INITIAL  </th>
+                            <th>NICKNAME</th>
+                            <th>CEL #</th>
+                            <th>TEL #</th>
+                            </tr>
+                        </thead>
+                        <tbody id="availMemberTable">
+                            <tr v-for="(member,i) in availableMembers" :key="i">
+                                <th> {{i+1}} </th>
+                                <td> {{member.surname}} </td>
+                                <td> {{member.first_name}} </td>
+                                <td> {{member.middle_name}} </td>
+                                <td> {{member.nickname}} </td>
+                                <td> {{member.contact_no}} </td>
+                                <td> {{member.city_tel}} </td>
+                            </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="closeModal" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                <table class="table table-bordered text-center">
-                <thead>
-                    <tr>
-                    <th></th>
-                    <th>SURNAME</th>
-                    <th>FIRST NAME</th>
-                    <th>MIDDLE INITIAL  </th>
-                    <th>NICKNAME</th>
-                    <th>CEL #</th>
-                    <th>TEL #</th>
-                    </tr>
-                </thead>
-                <tbody id="availMemberTable">
-                </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button id="closeModal" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-            </div>
-        </div>
         </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
-    name: 'committeeForm'
+    name: 'committeeForm',
+    data() {
+        return {
+            committeeType: null,
+            committeeMembers: [],
+            availableMembers: []
+        }
+    },
+    methods: {
+        changeCommittee: function(){
+            axios.get('http://localhost:3000/' + this.committeeType)
+            .then(response => this.committeeMembers = response)
+            .catch(error => console.log(error))
+        },
+        showMembers: function(){
+            axios.get('http://localhost:3000/getNoneCommitteeMembers')
+            .then(response => this.availableMembers = response.data)
+            .catch(error => console.log(error))
+        }
+    }
 }
 </script>
 

@@ -38,15 +38,15 @@ app.use(session({
 }));
 
 app.get('/', (req,res)=>{
-    // if(req.session.loggedIn!=true){
-    //     res.redirect("/login");
-    // }else{
+    if(req.session.loggedIn!=true){
+        res.redirect("/login");
+    }else{
         res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
         res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
         res.setHeader('Access-Control-Allow-Credentials', true);
         res.send({title: "Home",councilName:"USC",councilType:"College Council"});
-    // }
+    }
 });
 
 app.get('/members', (req,res)=>{
@@ -196,13 +196,13 @@ app.get('/committeeMembershipForm', async (req,res)=>{
         res.redirect("/login");
     }else{
         let committees = await Read.getCommitteesOfCouncil()
-        res.render('committeeMembershipForm',{title: "Membership Form", committees: committees, session: req.session,councilName:"USC",councilType:"College Council"});
+        res.render('committeeMembershipForm',{title: "Membership Form", session: req.session,councilName:"USC",councilType:"College Council"});
     }
 });
 
 app.get('/committeeMembershipForm', (req,res)=>{
     if(req.session.loggedIn!=true){
-        res.redirect("/login");
+        res.send(false);
     }else{
         res.render('committeeMembershipForm',{title: "Committee Membership Form",councilName:"USC",councilType:"College Council"});
     }
