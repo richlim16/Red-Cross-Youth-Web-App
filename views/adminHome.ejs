@@ -67,46 +67,30 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header card-header-danger">
-                  <h4 class="card-title">Chapter Members:</h4>
+                  <h4 class="card-title">Chapter Councils:</h4>
                 </div>
                 <div class="card-body">
                   <table class="table table-striped table-sm">
                     <thead>
                       <tr>		
                         <th rowspan="2">Name</th>
-                        <th>Contact</th>
+                        <th>Category</th>
                         <th>Recruited</th>
                         <th>Profile</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>
-                          <img src="http://imgur.com/GaBdGdz.png" class="mx-2" style="height: 5em;">
-                          <span>Rory Mercury</span>
-                        </td>
-                        <td>...</td>
-                        <td>...</td>
-                        <td><a>View Profile</a></td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <img src="http://imgur.com/GaBdGdz.png" class="mx-2" style="height: 5em;">
-                          <span>Rory Mercury</span>
-                        </td>
-                        <td>...</td>
-                        <td>...</td>
-                        <td><a>View Profile</a></td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <img src="http://imgur.com/GaBdGdz.png" class="mx-2" style="height: 5em;">
-                          <span>Rory Mercury</span>
-                        </td>
-                        <td>...</td>
-                        <td>...</td>
-                        <td><a>View Profile</a></td>
-                      </tr>
+                      <% councils.forEach( aa => { %>
+                        <tr>
+                          <td>
+                            <img src="http://imgur.com/GaBdGdz.png" class="mx-2" style="height: 5em;">
+                            <span><%= aa.name%></span>
+                          </td>
+                          <td><%= aa.category%></td>
+                          <td>...</td>
+                          <td><a>View Profile</a></td>
+                        </tr>
+                      <% }) %>
                     </tbody>
                   </table>
                 </div>

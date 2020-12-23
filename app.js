@@ -34,15 +34,30 @@ app.get('/admin',(req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('adminHome');
+        connection.query("SELECT * FROM `councils` where chapter_id='"+req.session.chapter.id+ "'",(err,result)=>{
+            res.render('adminHome',{
+                title: "Home",
+                adminNav: {
+                    name: req.session.name, 
+                    chapter: req.session.chapter.name
+                },
+                councils: result
+            });
+        });
     }
 });
 
-app.get('/adminProfile',(req,res)=>{
+app.get('/adminProfile',(req,res)=>{ //inaccessible
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('adminEditProf');
+        res.render('adminEditProf',{
+            title: "Edit Profile",
+            adminNav: {
+                name: req.session.name, 
+                chapter: req.session.chapter.name
+            }
+        });
     }
 });
 
@@ -144,15 +159,27 @@ app.get('/adminForms', (req,res) =>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('adminActivity',{title: "Forms",councilName:"USC",councilType:"College Council"});
+        res.render('adminActivity',{ //inconsistent naming
+            title: "Forms",
+            adminNav: {
+                name: req.session.name, 
+                chapter: req.session.chapter.name
+            }
+        });
     }
 });
 
-app.get('/adminCouncils', (req,res) =>{
+app.get('/adminCouncils', (req,res) =>{ //not directly acessible
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        res.render('adminCouncils',{title: "Admin Council",councilName:"USC",councilType:"College Council"});
+        res.render('adminCouncils',{
+            title: "Councils",
+            adminNav: {
+                name: req.session.name, 
+                chapter: req.session.chapter.name
+            }
+        });
     }
 });
 
@@ -358,8 +385,9 @@ app.post('/login', urlEncodedParser, async(req,res)=>{
         req.session.type=result['type'];
         console.log(req.session.type+" AND "+req.session.user);
         if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
+            req.session.name=result['username'];
             //let sql="SELECT * FROM `chapter_personnels` inner JOIN chapters on chapter_personnels.chapter_id=chapters.id WHERE user_id='"+req.session.user+"'";
-            let sql="SELECT * FROM chapter_personnels"; //DOY ADD USER ID NAAAAAAA
+            let sql="SELECT * FROM chapter_personnels inner JOIN chapters on chapter_personnels.chapter_id=chapters.id"; //DOY ADD USER ID NAAAAAAA
             connection.query(sql,(err,result)=>{
                 req.session.chapter={};
                 req.session.chapter.id=result[0]['id'];
