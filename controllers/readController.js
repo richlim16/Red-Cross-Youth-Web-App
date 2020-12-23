@@ -62,22 +62,18 @@ exports.getCommitteesOfCouncil = async (req, res) => {
 exports.getMembersOfCommittee = async(req, res) => {
     let committee = await Committee.model.findOne({
         where: {
-            council_id: 10,     //get council_id from Session variable
+            council_id: 1,     //get council_id from Session variable
             type: req.params.type
         }
     });
-
+console.log(req.params.type)
     let ret = await MembershipForm.model.findAll({
         where: {
             committee_membership_id: committee.id
         }
     });
-    
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    res.send(ret);
+console.log(ret)
+    return ret
 }
 
 // Used in Committee Membership Form when adding a member to a committee
@@ -91,12 +87,7 @@ exports.getNoneCommitteeMembers = async(req, res) => {
         include: [ Doc ]
     }
     );
-    
-    // res.setHeader('Access-Control-Allow-Origin', '*');
-    // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
-    // res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    // res.setHeader('Access-Control-Allow-Credentials', true);
-    // res.send(ret);
+
     return ret;
 }
 
