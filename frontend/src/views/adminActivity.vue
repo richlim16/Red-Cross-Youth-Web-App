@@ -1,12 +1,12 @@
 <template>
     <div>
-        <!-- <%-include('./partials/header.ejs') %>  -->
         <div class="wrapper ">
             <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
-            <div class="logo"><a href="http://www.creative-tim.com" class="simple-text logo-normal">
-                Profile</a></div>
-            <!-- <%-include('./partials/adminSidebar.ejs') %>  -->
-            <div class="main-panel">
+                <div class="logo"><a href="http://www.creative-tim.com" class="simple-text logo-normal">Profile</a></div>
+                    <div class="main-panel">
+                    </div>
+                </div>
+            </div>
             <!-- Navbar -->
             <adminN/>
             <!-- <%-include('./partials/adminNavbar.ejs') %>  -->
@@ -18,7 +18,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                 <h2>Activity Reports</h2>
                 <ol>
-                    <li><a href="/admin">Home</a></li>
+                    <li><a href="/admin"><router-link :to="{name: 'adminhome'}">Home</router-link></a></li>
                     <li>Activity Reports</li>
                 </ol>
                 </div>

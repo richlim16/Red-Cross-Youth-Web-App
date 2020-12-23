@@ -9,6 +9,8 @@ import committee from './views/committeeForm.vue'
 import index from './views/index.vue'
 import login from './views/login.vue'
 import masterlist from './views/masterlist.vue'
+import adminHome from './views/adminHome.vue'
+import adminActivity from './views/adminActivity.vue'
 
 Vue.use(VueRouter);
 Vue.config.productionTip = false
@@ -51,8 +53,17 @@ const router = new VueRouter({
       path: "/masterlist",
       name: "masterlist",
       component: masterlist
+    },
+    {
+      path: "/adminhome",
+      name: "adminhome",
+      component: adminHome
+    },
+    {
+      path: "/adminActivity",
+      name: "adminactivity",
+      component: adminActivity
     }
-
   ]
 })
 

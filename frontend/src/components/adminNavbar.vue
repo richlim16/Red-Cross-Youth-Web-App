@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
             <div class="navbar-wrapper">
-            <a class="navbar-brand" href="/admin">Home</a>
+            <a class="navbar-brand" href="/admin"><router-link :to="{name: 'adminhome'}">Home</router-link></a>
             </div>
             <div class="navbar-wrapper">
             <a class="navbar-brand" href="/adminForms">Forms</a>
