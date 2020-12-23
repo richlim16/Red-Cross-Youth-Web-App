@@ -25,11 +25,16 @@
                     <li><a href="/#about">About</a></li>
                     <li><a href="/#team">Team</a></li>
                     <li><a href="/#contact">Contact</a></li>
-                    <li><a href="/docs"><router-link :to="{name: 'docs'}">Forms</router-link></a></li>
+                     <li class="drop-down"><a href="#">Document</a>
+                      <ul>
+                        <li><a href="/docs"><router-link :to="{name: 'docs'}">Forms</router-link></a></li>
+                        <li><a href="/officerActivity"><router-link :to="{name: 'masterlist'}">View Forms</router-link></a></li>
+                      </ul>
+                    </li>
                     <li class="drop-down"><a href="#">Profile</a>
                     <ul>
-                        <li><a href="/login">Login</a></li>
-                        <li><a href="/signup">Sign Up</a></li>
+                        <li><a href="/login"><router-link :to="{name: 'login'}">Login</router-link></a></li>                     
+                        <li><a href="/signup">Log Out</a></li>
                     </ul>
                     </li>
                 </ul>
@@ -104,8 +109,7 @@
 // import committee from './components/committeeForm.vue'
 // import home from './views/Home.vue'
 
-
-
+import axios from 'axios';
 
 export default {
   name: 'App',
@@ -116,6 +120,24 @@ export default {
     // 'M': membershipform
     // 'C': committee,
 
+  },
+  mounted() {
+    axios.get('http://localhost:3000')
+    .then(response => console.log(response))
+    .catch(error => console.log(error))
+    // axios({
+    //   method: 'POST',
+    //   url: 'http://localhost:3000',
+    //   data:{
+    //     name: 'lalala',
+    //     concilId: '12345'
+    //   }
+    // })
+  },
+  data() {
+    return {
+      homeData: null
+    }
   }
 }
 </script>

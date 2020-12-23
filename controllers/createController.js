@@ -16,16 +16,39 @@ const OtherOrganizationsAffiliations = require('../models/other_organizations_af
 const TrainingsAttended = require('../models/trainings_attended');
 const User = require('../models/user');
 
+const bcrypt = require("bcrypt");
+const saltR = 10;
 
 Chapter.model.hasMany(Council.model, {foreignKey: 'chapter_id',sourceKey: 'id'});
 Council.model.belongsTo(Chapter.model, {foreignKey: 'chapter_id'});
 
+
+
+exports.signUp = async (req, res) => {
+    let salt= bcrypt.genSaltSync(saltR);
+    let pass= bcrypt.hashSync(req.body.pass, salt);
+    await User.model.create({
+        username: req.body.username,
+        password: pass
+    })
+}
+
+//get council id from session variable 'user'
+async function getCouncilId(userId){
+    let ret = await Council.model.findOne({
+        where: {
+            user_id: userId
+        }
+    })
+    return ret
+}
 
 //For adding a council
 exports.addCouncil = async (req, res) => {
     Council.model.hasMany(Committee.model, {foreignKey: 'council_id',sourceKey: 'id'});
     console.log(req.body)
     await Council.model.create({
+        user_id: 1,
         chapter_id: req.body.chapterId,
         category: req.body.category,
         name: req.body.name,
@@ -48,8 +71,12 @@ exports.addCouncil = async (req, res) => {
 
 
 //For adding a member in Membership Form
+
+// let council = await getCouncilId(req.session.user)
+
 exports.addMemberForm = async (req, res) => {
     const Doc = MembershipForm.model.belongsTo(Document.model, {foreignKey:'document_id'});
+    
 
     await MembershipForm.model.create({
         blood_type: req.body.bloodType,
@@ -103,8 +130,8 @@ exports.addMemberForm = async (req, res) => {
         council_adv_sig: false,
         document:{
             type: 'MEMBERSHIP',
-            chapter_id: 1,  //get from Session variable
-            council_id: 10  //get from Session variable
+            chapter_id: 1,    //council.chapter_id,  //get from Session variable
+            council_id: 1    //council.id  //get from Session variable
         }
     }, {
         include: [ Doc ]
@@ -135,11 +162,6 @@ exports.addMemberForm = async (req, res) => {
         })
     };
 
-
-    // res.setHeader('Access-Control-Allow-Origin', '*');
-    // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
-    // res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    // res.setHeader('Access-Control-Allow-Credentials', true);
 }
 
 
@@ -147,7 +169,7 @@ exports.addMemberForm = async (req, res) => {
 exports.addCommitteeMember = async (req, res) => {
     let committee = await Committee.model.findOne({
         where: {
-            council_id: 10,     //get council_id from Session variable
+            council_id: 1,     //get council_id from Session variable
             type: req.body.type
         }
     });

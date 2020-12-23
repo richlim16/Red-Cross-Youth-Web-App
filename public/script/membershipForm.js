@@ -114,7 +114,73 @@ $(document).ready(function(){
         org.appendTo( "#organizations" ); 
     });
 
-    // $('#addCommittee').on('click', function(){
-    //     $( "#committee" ).clone().appendTo( "#committeesList" ); 
-    // });
+
+
+    let memId = $('#memFormId').val()
+
+    $('#presApprove').on('click', function(){
+        $.ajax({
+            type: 'POST',
+            url: '/memForm/presApprove/' + memId,
+            success: function(data){
+              //do something with the data via front-end framework
+              location.reload()
+            }
+          });
+    });
+
+    $('#presReject').on('click', function(){
+        $.ajax({
+            type: 'POST',
+            url: '/memForm/presReject/' + memId,
+            success: function(data){
+              //do something with the data via front-end framework
+              location.reload()
+            }
+          });
+    });
+
+    $('#memApprove').on('click', function(){
+        $.ajax({
+            type: 'POST',
+            url: '/memForm/memApprove/' + memId,
+            success: function(data){
+              //do something with the data via front-end framework
+              location.reload()
+            }
+          });
+    });
+
+    $('#memReject').on('click', function(){
+        $.ajax({
+            type: 'POST',
+            url: '/memForm/memReject/' + memId,
+            success: function(data){
+              //do something with the data via front-end framework
+              location.reload()
+            }
+          });
+    });
+
+    $('#advApprove').on('click', function(){
+        $.ajax({
+            type: 'POST',
+            url: '/memForm/advApprove/' + memId,
+            success: function(data){
+              //do something with the data via front-end framework
+              location.reload()
+            }
+          });
+    });
+
+    $('#advReject').on('click', function(){
+        $.ajax({
+            type: 'POST',
+            url: '/memForm/advReject/' + memId,
+            success: function(data){
+              //do something with the data via front-end framework
+              location.reload()
+            }
+          });
+    });
 })
