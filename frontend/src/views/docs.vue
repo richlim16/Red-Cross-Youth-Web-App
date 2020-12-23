@@ -50,7 +50,7 @@
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk
                                     of the
                                     card's content.</p>
-                                <a href="membershipForm" class="btn btn-primary"><router-link :to="{name: 'membershipform'}">Go somewhere</router-link></a>
+                                <a href="membershipForm"><router-link :to="{name: 'membershipform'}" class="btn btn-primary">Go somewhere</router-link></a>
                             </div>
                         </div>
                     </div>
@@ -63,7 +63,7 @@
                                 <p class="card-text">Some quick example text to build on the card title and make up the bulk
                                     of the
                                     card's content.</p>
-                                <a href="committeeMembershipForm" class="btn btn-primary"><router-link :to="{name: 'committeeform'}">Go somewhere</router-link></a>
+                                <a href="committeeMembershipForm"><router-link :to="{name: 'committeeform'}" class="btn btn-primary">Go somewhere</router-link></a>
                             </div>
                         </div>
                     </div>
