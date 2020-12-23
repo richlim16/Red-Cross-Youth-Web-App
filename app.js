@@ -30,7 +30,6 @@ app.use(session({
 }));
 
 //GETS START HERE
-
 app.get('/admin',(req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
@@ -53,7 +52,7 @@ app.get('/', (req,res)=>{
     }else{
         res.render('home', {
             title: "Home",
-            council: req.session.council
+            user: req.session.council
         });
     }
 });
@@ -64,7 +63,7 @@ app.get('/login', (req,res)=>{ //inverse persistent
     }else{
         res.render('login', {
             title: "Login",
-            council:{
+            user:{
                 name: "Red Cross", 
                 type: "Youth"
             }
@@ -79,15 +78,19 @@ app.get('/logout', (req,res)=>{ //no persistent
 
 app.get('/signup', (req,res)=>{ //no persistent
     connection.query("SELECT id, name FROM `councils`",(err,result)=>{
-        let council=result;
+        let councils=result;
+        console.log(result+" "+"Result 1")
         connection.query("SELECT id, name FROM `chapters`",(err,result)=>{
-            let chapter=result;
+            let chapters=result;
+            console.log(result+" "+"Result 2")
             res.render('signup', {
                 title: "Sign Up",
-                council:{
+                user:{
                     name: "Red Cross", 
                     type: "Youth"
-                }
+                },
+                councils:councils,
+                chapters:chapters
             });
         });
     });    
@@ -114,36 +117,6 @@ app.post('/signup', urlEncodedParser, (req,res)=>{
     });
 });
 
-app.post('/login', urlEncodedParser, async(req,res)=>{    
-    let result = await Read.getUser(req)
-    if (bcrypt.compareSync(req.body.pass, result['password'])){
-        // console.log(result['id']);
-        req.session.loggedIn=true;
-        req.session.user=result['id'];
-        req.session.type=result['type'];
-        if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
-            connection.query("SELECT chapters.id, chapters.name FROM `chapter_personnels` inner JOIN chapters on chapter_personnels.chapter_id=chapters.id WHERE user_id='"+req.session.user+"'",(err,result)=>{
-                req.session.chapter={};
-                req.session.chapter.id=result[0]['id'];
-                req.session.chapter.name=result[0]['name'];
-                res.redirect('/admin')
-            });
-        }
-        else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
-            connection.query("SELECT  * from councils WHERE user_id='"+req.session.user+"'",(err,result)=>{
-                req.session.council={};
-                req.session.council.id=result[0]['id'];
-                req.session.council.name=result[0]['name'];
-                req.session.council.type=result[0]['category'];
-                res.redirect('/')
-            });
-        }  
-    }else{
-        console.log("login failed");
-        res.redirect('/login'); //idk ideal redirect
-    }
-});
-
 app.get('/about', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
@@ -152,18 +125,18 @@ app.get('/about', (req,res)=>{
     }
 });
 
-app.get('/officerActivity', (req,res) =>{    
+app.get('/viewDocs',async (req,res) =>{
+    let members=await Read.docsMemForms();
+    let uniformRequests=await Read.getUnifReqs();    
     if(req.session.loggedIn!=true){
         res.redirect("/login");
-    }else{
-        connection.query("SELECT * FROM membership_forms",(err,result)=>{
-            let forms=result;
-            res.render('masterlist',{
-                title:"Testing", 
-                memForm:result,
-                council: req.session.council
-            });
-        })
+    }else{                
+        res.render('masterlist',{
+            title:"Documents", 
+            memForm:members,
+            unifReqs:uniformRequests,
+            council: req.session.council
+        });        
     }
 });
 
@@ -204,7 +177,7 @@ app.get('/docs', (req,res)=>{
     }else{
         res.render('docs', {
             title: "Documents",
-            council: req.session.council
+            user: req.session.council
     });
     }
 });
@@ -238,6 +211,7 @@ app.get('/membershipForm', async (req,res)=>{
         council: req.session.council
     });
 });
+
 
 /*app.get('/committeeMembershipForm', async (req,res)=>{
     // let councilName = await Read.getCouncilName(sessionId)
@@ -280,19 +254,11 @@ app.get('/getNoneCommitteeMembers', urlEncodedParser, async (req,res)=>{
     }
 });
 
-
-//When a specific committee is selected
-app.get('/generatedCommitteeMembershipForm/:type', urlEncodedParser, async (req,res)=>{
-    let members = await Read.getMembersOfCommittee(req)
-    res.send(members);
-});
-
 //When a adding members to a committee, show all members of that council without a committee yet
 app.get('/getNoneCommitteeMembers', urlEncodedParser, async (req,res)=>{
     let members = await Read.getNoneCommitteeMembers()
     res.send(members);
 });
-
 
 app.get('/activityRequestForm', (req,res)=>{
     if(req.session.loggedIn!=true){
@@ -319,26 +285,16 @@ app.get('/activityReportForm', (req,res)=>{
 app.get('/unifRequest', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
-    }else{
-        // connection.query("SELECT id, name FROM `councils`",(err,result)=>{
-            // let council=result;
-            connection.query("SELECT id, username as name FROM `users`",(err,result)=>{
-                let people=result;
-                res.render('uniformRequest',{
-                    title: "Uniform Request",
-                    council: req.session.council,
-                    peoples: people
-                });
+    }else{        
+        connection.query("SELECT id, username as name FROM `users`",(err,result)=>{
+            console.log("User type == "+req.session.type+" "+"User ID =="+req.session.id);
+            let people=result;
+            res.render('uniformRequest',{
+                title: "Uniform Request",
+                council: req.session.council,
+                peoples: people
             });
-        // });
-        // var council=['x','y','z'];
-        // var people=['Clyde','Derek'];
-        // res.render('uniformRequest',{
-        //     title: "Uniform Request",
-        //     council: req.session.council,
-        //     councils: council,
-        //     peoples: people 
-        // });
+        });        
     }
 });
 
@@ -393,24 +349,38 @@ app.post('/signup', urlEncodedParser, async(req,res)=>{
     res.redirect('/');
 });
 
-app.post('/login', urlEncodedParser, (req,res)=>{
-    connection.query("SELECT * FROM `users` WHERE username='"+req.body.username+"'",(err,result)=>{
-        if(err)throw(err);
-        if (bcrypt.compareSync(req.body.pass, result[0]['password'])){
-            req.session.loggedIn=true;
-            req.session.user=result[0]['id'];
-            req.session.type=result[0]['type'];
-            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
-                res.redirect('/admin')
-            }
-            else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
-                res.redirect('/')
-            }  
-        }else{
-            console.log("login failed");
-            res.redirect('/login'); //idk ideal redirect
+app.post('/login', urlEncodedParser, async(req,res)=>{    
+    let result = await Read.getUser(req)
+    if (bcrypt.compareSync(req.body.pass, result['password'])){
+        // console.log(result['id']);
+        req.session.loggedIn=true;
+        req.session.user=result['id'];
+        req.session.type=result['type'];
+        console.log(req.session.type+" AND "+req.session.user);
+        if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
+            //let sql="SELECT * FROM `chapter_personnels` inner JOIN chapters on chapter_personnels.chapter_id=chapters.id WHERE user_id='"+req.session.user+"'";
+            let sql="SELECT * FROM chapter_personnels"; //DOY ADD USER ID NAAAAAAA
+            connection.query(sql,(err,result)=>{
+                //req.session.chapter={};
+                //req.session.chapter.id=result[0]['id'];
+                //req.session.chapter.name=result[0]['name'];
+                //res.redirect('/admin')
+                res.send('logged in');
+            });
         }
-    });
+        else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
+            connection.query("SELECT  * from councils WHERE user_id='"+req.session.user+"'",(err,result)=>{
+                req.session.council={};
+                req.session.council.id=result[0]['id'];
+                req.session.council.name=result[0]['name'];
+                req.session.council.type=result[0]['category'];
+                res.redirect('/')
+            });
+        }  
+    }else{
+        console.log("login failed");
+        res.redirect('/login'); //idk ideal redirect
+    }
 });
 
 app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{
@@ -484,14 +454,12 @@ app.post('/memForm/advReject/:id', async (req,res)=>{
 });
 //POST requests END HERE
 
-app.get('/test',(req,res)=>{//Derek uses this to test some stuff because eye yam dumdum
-    connection.query("SELECT * FROM membership_forms",(err,result)=>{
-        let forms=result;
-        res.render('masterlist', {
-            title:"Testing",
-            memForm:result
-        });    
-    });
+app.get('/test',urlEncodedParser, async(req,res)=>{//Derek uses this to test some stuff because eye yam dumdum
+    let test=await Read.docsMemForms();
+    //let test=await Read.getAllFilledMemForms();    
+    //let test=await Read.getAllUsers();    
+    console.log(test[0]);
+    res.send(test[0].document.type);
 });
 
 app.listen(port,()=>{

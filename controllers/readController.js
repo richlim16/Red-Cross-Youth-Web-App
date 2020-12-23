@@ -14,11 +14,25 @@ const MembershipForm = require('../models/membership_form');
 const Officer = require('../models/officer');
 const OtherOrganizationsAffiliations = require('../models/other_organizations_affiliations');
 const TrainingsAttended = require('../models/trainings_attended');
+const UniformRequest=require('../models/uniform_request_form');
 const User = require('../models/user');
 
 Chapter.model.hasMany(Council.model, {foreignKey: 'chapter_id',sourceKey: 'id'});
 Council.model.belongsTo(Chapter.model, {foreignKey: 'chapter_id'});
 
+exports.docsMemForms=async (req,res)=>{
+    const memForm = MembershipForm.model.belongsTo(Document.model, {foreignKey:'document_id'});
+    let ret=await MembershipForm.model.findAll({
+        include:memForm
+    })
+    
+    return ret;
+}
+
+exports.getUnifReqs=async (req,res)=>{    
+    let ret=await UniformRequest.model.findAll()
+    return ret;
+}
 
 exports.getUser = async (req, res) => {
     let ret = await User.model.findOne({
@@ -87,8 +101,7 @@ exports.getNoneCommitteeMembers = async(req, res) => {
             committee_membership_id: null,
         },
         include: [ Doc ]
-    }
-    );
+    });
     
     //res.setHeader('Access-Control-Allow-Origin', '*');
     //res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
@@ -105,6 +118,26 @@ exports.getFilledMemForm = async (req, res) => {
             id: req.params.id
         }
     })
+    return ret;
+}
+
+exports.getAllDocs=async(req, res)=>{
+    let ret = await Document.model.findAll()
+    return ret;
+}
+
+exports.getAllFilledMemForms = async (req, res) => {
+    let ret = await Document.model.findAll({
+        where:{
+            type:'MEMBERSHIP'
+        }
+    })
+    
+    //res.setHeader('Access-Control-Allow-Origin', '*');
+    //res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
+    //res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    //res.setHeader('Access-Control-Allow-Credentials', true);
+    //res.send(ret);
     return ret;
 }
 
