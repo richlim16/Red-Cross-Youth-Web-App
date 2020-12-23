@@ -361,11 +361,10 @@ app.post('/login', urlEncodedParser, async(req,res)=>{
             //let sql="SELECT * FROM `chapter_personnels` inner JOIN chapters on chapter_personnels.chapter_id=chapters.id WHERE user_id='"+req.session.user+"'";
             let sql="SELECT * FROM chapter_personnels"; //DOY ADD USER ID NAAAAAAA
             connection.query(sql,(err,result)=>{
-                //req.session.chapter={};
-                //req.session.chapter.id=result[0]['id'];
-                //req.session.chapter.name=result[0]['name'];
-                //res.redirect('/admin')
-                res.send('logged in');
+                req.session.chapter={};
+                req.session.chapter.id=result[0]['id'];
+                req.session.chapter.name=result[0]['name'];
+                res.redirect('/admin')                
             });
         }
         else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
