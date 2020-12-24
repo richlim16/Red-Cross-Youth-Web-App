@@ -58,11 +58,21 @@ exports.getCommitteesOfCouncil = async (req, res) => {
     // res.send(ret);
 }
 
+async function getCouncilId(userId){
+    let ret = await Council.model.findOne({
+        where: {
+            user_id: userId
+        }
+    })
+    return ret
+}
+
 //Used in Committee Membership Form
 exports.getMembersOfCommittee = async(req, res) => {
+    let council = await getCouncilId(req.params.userId)
     let committee = await Committee.model.findOne({
         where: {
-            council_id: 1,     //get council_id from Session variable
+            council_id: council.id,     //get council_id from Session variable
             type: req.params.type
         }
     });
@@ -90,6 +100,28 @@ exports.getNoneCommitteeMembers = async(req, res) => {
 
     return ret;
 }
+
+
+// Used in masterlist
+exports.getCouncilPendingMemForms = async(req, res) => {
+    let ret = await MembershipForm.model.findAll({
+        where: {
+            council_pres_sig: 0,
+        },
+    });
+
+    return ret;
+}
+exports.getCouncilAdvPendingMemForms = async(req, res) => {
+    let ret = await MembershipForm.model.findAll({
+        where: {
+            council_adv_sig: 0,
+        },
+    });
+
+    return ret;
+}
+
 
 
 exports.getFilledMemForm = async (req, res) => {

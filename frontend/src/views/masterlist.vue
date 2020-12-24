@@ -39,15 +39,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                      <!-- <% memForm.forEach( out=>{%>                       -->
-                        <tr>
-                        <!-- <th scope="row"><%= out.id %></th> -->
-                        <!--<td>Pending</td>-->
-                        <!-- <td><a href="/filledMemForm/<%= out.id %>"><%= out.surname %> <%= out.first_name %></a></td>                       -->
-                        <td><span>&#10003;</span></td>
-                        <td><span>&#9747;</span></td>
-                        </tr>
-                      <!-- <% }) %> -->
+                      <tr v-on:click="viewMemForm(member.id)" v-for="(member,i) in memForms" :key="i">                  
+                        <th scope="row">{{member.id}}</th> 
+                        <td> {{member.surname}} {{member.first_name}} </td>     
+                        <td>Pending</td>                 
+                      </tr>
                     </tbody>
                       </table>
                     </div>
@@ -160,11 +156,31 @@
 <script>
 import navbar from '../components/Navbar.vue'
 import footer from '../components/footer.vue'
+import axios from 'axios';
 export default {
     name: 'masterlist',
     components: {
       'n': navbar,
       'f': footer
+    },
+    data() {
+      return {
+        memForms: [],
+        userType: null
+      }
+    },
+    mounted(){
+        this.userType = this.$store.getters.getUserType
+
+        axios.get('http://localhost:3000/officerActivity/' + this.userType)
+            .then(response => this.memForms = response.data)
+            .catch(error => console.log(error))
+    },
+    methods: {
+      viewMemForm: function(memId){
+        this.$store.commit('setMemFormId', memId)
+        this.$router.push({ path: `/membershipform` })
+      }
     }
 }
 </script>

@@ -1,6 +1,5 @@
 <template>
     <div class="login">
-      <n/>
       <section id="hero" class="d-flex align-items-center">
           <div class="container" data-aos="zoom-out" data-aos-delay="100">
           <div class="row">
@@ -12,18 +11,18 @@
               <div class="ml-auto col-md-4 col-sm-4 col-xs-12 text-white">
                   <div class="m-3 p-3 bg-danger rounded-lg">
                       <h2 class="text-center text-white">Log In</h2>
-                      <form action="/login" method="POST">
+                      <form @submit="login">
                           <!-- <div class="form-group">
                           <label for="email">Email address</label>
                           <input type="email" class="form-control" id="email" required>
                           </div><br> -->
                           <div class="form-group">
                           <label for="username">Username</label>
-                          <input type="text" class="form-control" id="username" name="username" required>
+                          <input type="text" class="form-control" v-model="username" id="username" name="username" required>
                           </div><br>
                           <div class="form-group">
                           <label for="pass">Password</label>
-                          <input type="password" class="form-control" id="pass" name="pass" required>
+                          <input type="password" class="form-control" v-model="password" id="pass" name="pass" required>
                           </div><br>
                           <div class="form-group form-check">
                           <input type="checkbox" class="form-check-input" id="remember">
@@ -49,13 +48,47 @@
       
 </template>
 <script>
-import navbar from '../components/Navbar.vue'
 import footer from '../components/footer.vue'
+
+import axios from 'axios';
 export default {
     name: 'login',
     components: {
-      'n': navbar,
       'f': footer
+    },
+    data() {
+        return {
+            username: null,
+            password: null,
+            session: null
+        }
+    },
+    methods: {
+      login: async function(event){
+        event.preventDefault()
+        await axios({
+            method: 'POST',
+            url: 'http://localhost:3000/login',
+            data: {username: this.username, pass: this.password}
+        })
+        .then(response => this.session = response.data)
+        if (this.session == "wrong"){
+          this.$router.replace({ path: `/` })
+        }
+        else if (JSON.parse(JSON.stringify(this.session.userType)) == "Admin") {
+          this.$router.push({ path: `/adminHome` })
+        }
+        else if (JSON.parse(JSON.stringify(this.session)).userType == "Council") {
+          this.$store.commit('setUserId', JSON.parse(JSON.stringify(this.session)).userId)
+          this.$store.commit('setUserType', JSON.parse(JSON.stringify(this.session)).userType) 
+          this.$router.push({ path: `/home` })
+        }
+        else if (JSON.parse(JSON.stringify(this.session)).userType == "Council Advisor") {
+          this.$store.commit('setUserId', JSON.parse(JSON.stringify(this.session)).userId)
+          this.$store.commit('setUserType', JSON.parse(JSON.stringify(this.session)).userType)
+          this.$router.push({ path: `/home` })
+        }
+      }
     }
 }
 </script>

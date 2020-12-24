@@ -224,12 +224,16 @@ export default {
         return {
             committeeType: null,
             committeeMembers: [],
-            availableMembers: []
+            availableMembers: [],
+            sessionUserId: null
         }
+    },
+    mounted(){
+        this.sessionUserId = this.$store.getters.getUserId
     },
     methods: {
         changeCommittee: function(){
-            axios.get('http://localhost:3000/generatedCommitteeMembershipForm/' + this.committeeType)
+            axios.get('http://localhost:3000/generatedCommitteeMembershipForm/' + this.committeeType + '&' + this.sessionUserId)
             .then(response => this.committeeMembers = response.data)
             .catch(error => console.log(error))
         },
@@ -242,7 +246,7 @@ export default {
             axios({
                 method: 'POST',
                 url: 'http://localhost:3000/act/addCommitteeMember',
-                data: {memberId: memId, type: this.committeeType}
+                data: {memberId: memId, type: this.committeeType, sessionUserId: this.sessionUserId}
             })
 
             this.changeCommittee()

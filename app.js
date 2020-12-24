@@ -37,6 +37,9 @@ app.use(session({
     resave: true
 }));
 
+
+
+
 app.get('/', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
@@ -99,22 +102,29 @@ app.post('/signup', urlEncodedParser, async (req,res)=>{
 });
 
 app.post('/login', urlEncodedParser, async (req,res)=>{
+    console.log(req.body)
     let result = await Read.getUser(req)
-    if (bcrypt.compareSync(req.body.pass, result['password'])){
-        req.session.loggedIn=true;
-        req.session.user=result['id'];
-        req.session.type=result['type'];
-        if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
-            res.redirect('/admin')
+    if (result != null) {
+        if (bcrypt.compareSync(req.body.pass, result['password'])){
+            req.session.loggedIn=true;
+            req.session.user=result['id'];
+            req.session.type=result['type'];
+            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
+                res.send("admin")
+            }
+            else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
+                res.send({userId: req.session.user, userType: req.session.type})
+            }  
+        }else{
+            console.log("login failed");
+            res.send("wrong")
         }
-        else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
-            res.redirect('/')
-        }  
-    }else{
-        console.log("login failed");
-        res.redirect('/login'); //idk ideal redirect
+    }
+    else{
+        res.send("wrong")
     }
 });
+
 
 app.get('/about', (req,res)=>{
     if(req.session.loggedIn!=true){
@@ -124,14 +134,15 @@ app.get('/about', (req,res)=>{
     }
 });
 
-app.get('/officerActivity', (req,res) =>{    
-    if(req.session.loggedIn!=true){
-        res.redirect("/login");
-    }else{
-        connection.query("SELECT * FROM membership_forms",(err,result)=>{
-            let forms=result;
-            res.render('masterlist',{ title:"Testing", memForm:result,councilName:"USC",councilType:"College Council"});
-        })
+app.get('/officerActivity/:type', async (req,res) =>{    
+    console.log(req.params.type)
+    if (req.params.type == 'Council'){
+        let result = await Read.getCouncilPendingMemForms()
+        res.send(result)
+    }
+    else if (req.params.type == 'Council Advisor'){
+        let result = await Read.getCouncilAdvPendingMemForms()
+        res.send(result)
     }
 });
 
@@ -208,7 +219,7 @@ app.get('/committeeMembershipForm', (req,res)=>{
     }
 });
 //When a specific committee is selected
-app.get('/generatedCommitteeMembershipForm/:type', urlEncodedParser, async (req,res)=>{
+app.get('/generatedCommitteeMembershipForm/:type&:userId', urlEncodedParser, async (req,res)=>{ 
     let members = await Read.getMembersOfCommittee(req)
     res.send(members);
 });
@@ -327,7 +338,8 @@ app.get('/filledMemForm/:id', async (req,res)=>{
     let member = await Read.getFilledMemForm(req);
     let trainings = await Read.getMemTrainings(member);
     let orgs = await Read.getMemOrgs(member);
-    res.render('filledMembershipForm', {title: "Membership Form", session:req.session, mem: member, trainings: trainings, orgs: orgs});    
+    // res.render('filledMembershipForm', {title: "Membership Form", session:req.session, mem: member, trainings: trainings, orgs: orgs});   
+    res.send({member: member, trainings: trainings, orgs: orgs}) 
 });
 
 
@@ -336,27 +348,34 @@ app.get('/filledMemForm/:id', async (req,res)=>{
 // For approval/rejection of forms
 app.post('/memForm/presApprove/:id', async (req,res)=>{
     await Update.memFormPresApprove(req);  
-    res.redirect('/filledMemForm/' + req.params.id)
+    let member = await Read.getFilledMemForm(req)
+    res.send({sig:member.council_pres_sig})
 });
 app.post('/memForm/presReject/:id', async (req,res)=>{
     await Update.memFormPresReject(req);  
-    res.redirect('/filledMemForm/' + req.params.id)
+    let member = await Read.getFilledMemForm(req)
+    console.log(member)
+    res.send({sig:member.council_pres_sig})
 });
 app.post('/memForm/memApprove/:id', async (req,res)=>{
     await Update.memFormMemApprove(req);  
-    res.redirect('/filledMemForm/' + req.params.id)
+    let member = await Read.getFilledMemForm(req)
+    res.send({sig:member.member_sig})
 });
 app.post('/memForm/memReject/:id', async (req,res)=>{
     await Update.memFormMemReject(req);  
-    res.redirect('/filledMemForm/' + req.params.id) 
+    let member = await Read.getFilledMemForm(req)
+    res.send({sig:member.member_sig}) 
 });
 app.post('/memForm/advApprove/:id', async (req,res)=>{
     await Update.memFormAdvApprove(req);  
-    res.redirect('/filledMemForm/' + req.params.id)
+    let member = await Read.getFilledMemForm(req)
+    res.send({sig:member.council_adv_sig})
 });
 app.post('/memForm/advReject/:id', async (req,res)=>{
     await Update.memFormAdvReject(req);  
-    res.redirect('/filledMemForm/' + req.params.id) 
+    let member = await Read.getFilledMemForm(req)
+    res.send({sig:member.council_adv_sig})
 });
 
 app.post('/', (req, res) => {

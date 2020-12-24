@@ -301,27 +301,27 @@
 
                             <h4 class="mb-3">RED CROSS TRAININGS ATTENDED</h4>
                             <!-- JS to add more lines for trainingList -->
-                            <div id="trainingsList">
+                            <div id="trainingsList" v-for="(training,i) in trainings" :key="i">
                                 <div class="row training">
                                     <div class="col-md-6 mb-1 trainingDiv">
                                         <label for="training">Training Attended</label>
-                                        <input type="text" class="form-control trainingAttended" name="training" placeholder="Training Attended" value="" required="">
+                                        <input type="text" class="form-control trainingAttended" name="training" :value=training.training_attended required="">
                                     </div>
                                     <div class="col-md-6 mb-1 certDiv">
                                     <label for="cert">Certificate Number</label>
-                                    <input type="text" class="form-control certificateNo" name="cert" placeholder="Certificate Number" value="" required="">
-                                </div>
+                                    <input type="text" class="form-control certificateNo" name="cert" placeholder="Certificate Number" :value=training.certificate_no required="">
+                                     </div>
                                     <div class="col-md-6 mb-4 placeDiv">
                                         <label for="place">Place</label>
-                                        <input type="text" class="form-control place" name="place" placeholder="Place" value="" required="">
+                                        <input type="text" class="form-control place" name="place" placeholder="Place" :value=training.place required="">
                                     </div>
                                     <div class="col-md-3 mb-4 startDiv">
                                         <label for="startDate">Start Date</label>
-                                        <input type="date" class="form-control startDate" name="startDate" placeholder="" value="" required="">
+                                        <input type="date" class="form-control startDate" name="startDate" placeholder="" :value=formatDate(training.start_date) required="">
                                     </div>
                                     <div class="col-md-3 mb-4 endDiv">
                                         <label for="endDate">End Date</label>
-                                        <input type="date" class="form-control endDate" name="endDate" placeholder="" value="" required="">
+                                        <input type="date" class="form-control endDate" name="endDate" placeholder="" :value=formatDate(training.end_date) required="">
                                     </div>
                                 </div>
                             </div>
@@ -332,35 +332,76 @@
                             <h4 class="mt-5 mb-3">AFFILIATION WITH OTHER ORGANIZATIONS</h4>
                             <!-- JS to add more lines for orgAffiliations -->
                             <div id="organizations">
-                                <div class="row organization">
+                                <div class="row organization" v-for="(org,i) in organizations" :key="i">
                                     <div class="col-md-6 mb-1 orgDiv">
                                     <label for="organization">Organization</label>
-                                    <input type="text" class="form-control org" name="organization" placeholder="Organization" value="" required="">
+                                    <input type="text" class="form-control org" name="organization" placeholder="Organization" :value=org.organization required="">
                                     </div>
                                     <div class="col-md-3 mb-1 startDiv">
                                     <label for="startDate">Start Date</label>
-                                    <input type="date" class="form-control startDate" name="startDate" placeholder="" value="" required="">
+                                    <input type="date" class="form-control startDate" name="startDate" placeholder="" :value=formatDate(org.start_date) required="">
                                     </div>
                                     <div class="col-md-3 mb-1 endDiv">
                                     <label for="endDate">End Date</label>
-                                    <input type="date" class="form-control endDate" name="endDate" placeholder="" value="" required="">
+                                    <input type="date" class="form-control endDate" name="endDate" placeholder="" :value=formatDate(org.end_date) required="">
                                     </div>
                                     <div class="col-md-6 mb-4 posDiv">
                                     <label for="position">Position</label>
-                                    <input type="text" class="form-control position" name="position" placeholder="Position" value="" required="">
+                                    <input type="text" class="form-control position" name="position" placeholder="Position" :value=org.position required="">
                                     </div>
                                     <div class="col-md-6 mb-4 councilDiv">
                                     <label for="council">Council</label>
-                                    <input type="text" class="form-control council" name="council" placeholder="Council" value="" required="">
+                                    <input type="text" class="form-control council" name="council" placeholder="Council" :value=org.council required="">
                                     </div>
                                 </div>
                             </div>
                             <button type="button" v-on:click="addOrg" class="col-md-4 btn btn-success">Add Another Organization</button>
 
                             <hr class="my-4">          
-                            <button type='submit' id="test" class="btn btn-danger btn-lg btn-block text-white">Submit</button>        
+                        
+
+                            <div class="row mt-5 mb-2">
+                                <div class="d-flex justify-content-center">
+                                    <h6>I hereby certify to the correctness of the foregoing information</h6>
+                                </div>
+                            </div>
+                                
+                            <div class="row mt-3 mb-3 justify-content-center">
+                                <div class="col-md-6 text-center">   
+                                    <button v-if="council_pres_sig==1" class="btn btn-success">Approved</button>
+                                    <button v-if="council_pres_sig==2" class="btn btn-danger">Rejected</button>
+                                    <button v-if="council_pres_sig==0 && userType=='Council'" type="button" v-on:click="presApprove" class="btn btn-success">Approve</button>
+                                    <button v-if="council_pres_sig==0 && userType=='Council'" type="button" v-on:click="presReject" class="btn btn-danger">Reject</button>
+                                    <h5 name="cyc1" id="cyc1"></h5>
+                                    <hr class="my-1">  
+                                    <p>Council President</p>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <button v-if="member_sig==1" class="btn btn-success">Approved</button>
+                                    <button v-if="member_sig==2" class="btn btn-danger">Rejected</button>
+                                    <button v-if="member_sig==0 && userType=='Council'" type="button" v-on:click="memApprove" class="btn btn-success">Approve</button>
+                                    <button v-if="member_sig==0 && userType=='Council'" type="button" v-on:click="memReject" class="btn btn-danger">Reject</button> 
+                                    <h5 name="cyc2" id="cyc2"></h5>
+                                    <hr class="my-1">  
+                                    <p>Signature of Member</p>
+                                </div>
+                            </div>
+
+                            <div class="row mt-5 mb-3 justify-content-center">
+                                <div class="col-md-6 text-center">            
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <button v-if="council_adv_sig==1" class="btn btn-success">Approved</button>
+                                    <button v-if="council_adv_sig==2" class="btn btn-danger">Rejected</button>
+                                    <button v-if="council_adv_sig==0 && userType=='Council Advisor'" type="button" v-on:click="advApprove" class="btn btn-success">Approve</button>
+                                    <button v-if="council_adv_sig==0 && userType=='Council Advisor'" type="button" v-on:click="advReject" class="btn btn-danger">Reject</button> 
+                                    <h5 name="cyc2" id="cyc2"></h5>
+                                    <hr class="my-1">  
+                                    <p>Council Advisor</p>
+                                </div>
+                            </div>
+                            <button v-if="council_pres_sig==null || member_sig==null || council_adv_sig==null" type='submit' id="test" class="btn btn-danger btn-lg btn-block text-white">Submit</button>        
                         </form>
-                        <!--<a href="activities.php">Back</a> -->
                     </div>
                 </div>
             </div>
@@ -384,6 +425,7 @@ export default {
     },
     data(){
         return{
+            userType: null,
             bloodType: null,
             rcyId: null,
             surname : null,
@@ -431,16 +473,139 @@ export default {
             vocSchool : null,
             vocDate : null,
             trainings: [],
-            organizations: []
+            organizations: [],
+            council_pres_sig: null,
+            member_sig: null,
+            council_adv_sig: null,
+            sessionUserId: null,
+            memId: null
         }
     }, 
+    async mounted(){
+        this.sessionUserId = this.$store.getters.getUserId
+        this.userType = this.$store.getters.getUserType
+        this.memId = this.$store.getters.getMemFormId
+        await axios.get('http://localhost:3000/filledMemForm/' + this.memId)
+            .then(response => {
+                this.bloodType = response.data.member.blood_type
+                this.rcyId = response.data.member.rcy_id
+                this.committee = response.data.member.committee
+                this.surname = response.data.member.surname
+                this.firstname = response.data.member.first_name
+                this.middlename = response.data.member.middle_name
+                this.nickname = response.data.member.nickname
+                this.birthdate = this.formatDate(response.data.member.birthdate)
+                this.age = response.data.member.age
+                this.civilStatus = response.data.member.civil_status
+                this.height = response.data.member.height
+                this.weight = response.data.member.weight
+                this.nationality = response.data.member.nationality
+                this.religion = response.data.member.religion
+                this.contactNo = response.data.member.contact_no
+                this.cityAdd = response.data.member.city_address
+                this.cityTel = response.data.member.city_tel
+                this.provinceAdd = response.data.member.provincial_address
+                this.provinceTel = response.data.member.provincial_tel
+                this.ailments = response.data.member.ailments
+                this.allergies = response.data.member.allergies
+                this.hobbies = response.data.member.hobbies
+                this.specSkills = response.data.member.special_skills
+                this.fathersName = response.data.member.fathers_name
+                this.fathersOcc = response.data.member.fathers_occupation
+                this.fathersAdd = response.data.member.fathers_address
+                this.fathersTel = response.data.member.fathers_tel
+                this.mothersName = response.data.member.mothers_name
+                this.mothersOcc = response.data.member.mothers_occupation
+                this.mothersAdd = response.data.member.mothers_address
+                this.mothersTel = response.data.member.mothers_tel
+                this.guardiansName = response.data.member.guardians_name
+                this.guardiansOcc = response.data.member.guardians_occupation
+                this.guardiansAdd = response.data.member.guardians_address
+                this.guardiansTel = response.data.member.guardians_tel
+                this.presentSchool = response.data.member.present_school
+                this.course = response.data.member.course
+                this.year = response.data.member.year
+                this.schoolAdd = response.data.member.school_address
+                this.elemSchool = response.data.member.elementary_school
+                this.elemDate = this.formatDate(response.data.member.elementary_attainment)
+                this.secondarySchool = response.data.member.secondary_school
+                this.secondaryDate = this.formatDate(response.data.member.secondary_attainment)
+                this.collegeSchool = response.data.member.college_school
+                this.collegeDate = this.formatDate(response.data.member.college_attainment)
+                this.vocSchool = response.data.member.vocational_school
+                this.vocDate = this.formatDate(response.data.member.vocational_attainment)
+                this.trainings = response.data.trainings,
+                this.organizations = response.data.orgs,
+                this.council_pres_sig = response.data.member.council_pres_sig,
+                this.member_sig = response.data.member.member_sig,
+                this.council_adv_sig = response.data.member.council_adv_sig,
+                this.member_sig = response.data.member_sig
+            })
+            .catch(error => console.log(error))
+        console.log(this.council_pres_sig)
+        console.log(this.userType)
+    },
     methods: {
+        formatDate: function(dt){
+            let date = new Date(dt)
+            let month = (date.getMonth()+1).toString()
+            let year = date.getFullYear()
+            let day = (date.getDate()).toString()
+            if (month.length < 2) 
+                month = '0' + month;
+            if (day.length < 2) 
+                day = '0' + day;
+        
+            let ret = year + "-" + month + "-" + day
+            return ret
+        },
+        presApprove: function(){
+            axios({
+                method: 'POST',
+                url: 'http://localhost:3000/memForm/presApprove/' + this.memId,
+            }).then(response => this.council_pres_sig = response.data.sig)
+        },
+        presReject: function(){
+            axios({
+                method: 'POST',
+                url: 'http://localhost:3000/memForm/presReject/' + this.memId,
+                
+            }).then(response => this.council_pres_sig = response.data.sig)
+        },
+        memApprove: function(){
+            axios({
+                method: 'POST',
+                url: 'http://localhost:3000/memForm/memApprove/' + this.memId,
+            }).then(response => this.member_sig = response.data.sig)
+        },
+        memReject: function(){
+            axios({
+                method: 'POST',
+                url: 'http://localhost:3000/memForm/memReject/' + this.memId,
+                
+            }).then(response => this.member_sig = response.data.sig)
+        },
+        advApprove: function(){
+            axios({
+                method: 'POST',
+                url: 'http://localhost:3000/memForm/advApprove/' + this.memId,
+            }).then(response => this.council_adv_sig = response.data.sig)
+        },
+        advReject: function(){
+            axios({
+                method: 'POST',
+                url: 'http://localhost:3000/memForm/advReject/' + this.memId,
+                
+            }).then(response => this.council_adv_sig = response.data.sig)
+        },
+        
         addTraining: function(){
             let training = $( ".training" ).first().clone();
             training.children(".trainingDiv").children(".trainingAttended").val("");
             training.children(".certDiv").children(".certificateNo").val("");
             training.children(".placeDiv").children(".place").val("");
             training.appendTo( "#trainingsList" ); 
+            console.log(this.sessionUserId)
         },
         addOrg: function(){
             let org = $( ".organization" ).first().clone()
@@ -502,7 +667,8 @@ export default {
                     vocSchool : this.vocSchool,
                     vocDate : this.vocDate,
                     trainings: JSON.stringify(this.trainings),
-                    organizations: JSON.stringify(this.organizations)
+                    organizations: JSON.stringify(this.organizations),
+                    sessionUserId: this.sessionUserId
                 }
             })
         },

@@ -72,11 +72,10 @@ exports.addCouncil = async (req, res) => {
 
 //For adding a member in Membership Form
 
-// let council = await getCouncilId(req.session.user)
-
 exports.addMemberForm = async (req, res) => {
     const Doc = MembershipForm.model.belongsTo(Document.model, {foreignKey:'document_id'});
-    
+    console.log(req.body)
+    let council = await getCouncilId(req.body.sessionUserId)
 
     await MembershipForm.model.create({
         blood_type: req.body.bloodType,
@@ -130,8 +129,8 @@ exports.addMemberForm = async (req, res) => {
         council_adv_sig: false,
         document:{
             type: 'MEMBERSHIP',
-            chapter_id: 1,    //council.chapter_id,  //get from Session variable
-            council_id: 1    //council.id  //get from Session variable
+            chapter_id: council.chapter_id,    //council.chapter_id,  //get from Session variable
+            council_id: council.id    //council.id  //get from Session variable
         }
     }, {
         include: [ Doc ]
@@ -167,9 +166,10 @@ exports.addMemberForm = async (req, res) => {
 
 //For adding a member to a committee
 exports.addCommitteeMember = async (req, res) => {
+    let council = await getCouncilId(req.body.sessionUserId)
     let committee = await Committee.model.findOne({
         where: {
-            council_id: 1,     //get council_id from Session variable
+            council_id: council.id,     //get council_id from Session variable
             type: req.body.type
         }
     });

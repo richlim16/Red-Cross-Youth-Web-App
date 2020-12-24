@@ -21,20 +21,20 @@
                 <nav class="nav-menu d-none d-lg-block">
                     <ul>
                     
-                        <li><a href="/"><router-link to="/home">Home</router-link></a></li> <!--class="active"-->
+                        <li><a v-on:click="goHome">Home</a></li> <!--class="active"-->
                         <li><a href="/home/#about">About</a></li>
                         <li><a href="/home/#team">Team</a></li>
                         <li><a href="/home/#contact">Contact</a></li>
-                        <li class="drop-down"><a href="#">Document</a>
+                        <li class="drop-down"><a href="#" v-on:click="goHome">Document</a>
                         <ul>
-                            <li><a href="/docs"><router-link :to="{name: 'docs'}">Forms</router-link></a></li>
-                            <li><a href="/officerActivity"><router-link :to="{name: 'masterlist'}">View Forms</router-link></a></li>
+                            <li><a v-on:click="goDocs">Forms</a></li>
+                            <li><a v-on:click="goViewForms">View Forms</a></li>
                         </ul>
                         </li>
                         <li class="drop-down"><a href="#">Profile</a>
                         <ul>
-                            <li><a href="/login"><router-link :to="{name: 'login'}">Login</router-link></a></li>                     
-                            <li><a href="/signup">Log Out</a></li>
+                            <li><a href="/login">Login</a></li>                     
+                            <li><a href="/login">Log Out</a></li>
                         </ul>
                         </li>
                     </ul>
@@ -46,7 +46,30 @@
 
 <script>
 export default {
-    name: "navbar"
+    name: "navbar",
+    methods: {
+      goHome: function(){
+        if (this.$store.getters.getUserId == null) {
+          this.$router.replace({ path: `/` })
+        }
+        else this.$router.push({ path: `/home` })
+      },
+      goDocs: async function(){
+        if (this.$store.getters.getUserId == null) {
+          this.$router.replace({ path: `/` })
+        }
+        else {
+          this.$store.commit('setMemFormId', null)
+          this.$router.push({ path: `/docs` })
+          }
+      },
+      goViewForms: function(){
+        if (this.$store.getters.getUserId == null) {
+          this.$router.replace({ path: `/` })
+        }
+        else this.$router.push({ path: `/masterlist` })
+      }
+    }
 }
 </script>
 

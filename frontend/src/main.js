@@ -11,7 +11,11 @@ import login from './views/login.vue'
 import masterlist from './views/masterlist.vue'
 import adminHome from './views/adminHome.vue'
 import adminActivity from './views/adminActivity.vue'
+// import axios from 'axios';
+import 'es6-promise/auto'
+import Vuex from 'vuex'
 
+Vue.use(Vuex)
 Vue.use(VueRouter);
 Vue.config.productionTip = false
 
@@ -55,7 +59,7 @@ const router = new VueRouter({
       component: masterlist
     },
     {
-      path: "/adminhome",
+      path: "/adminHome",
       name: "adminhome",
       component: adminHome
     },
@@ -67,9 +71,42 @@ const router = new VueRouter({
   ]
 })
 
+
+
+
+const store = new Vuex.Store({
+  state: {
+    userId: null,
+    userType: null,
+    memFormId: null
+  },
+  getters: {
+    getUserId: state => {
+      return state.userId
+    },
+    getUserType: state => {
+      return state.userType
+    },
+    getMemFormId: state => {
+      return state.memFormId
+    }
+  },
+  mutations: {
+    setUserId(state, id) {
+      state.userId = id
+    },
+    setUserType(state, type) {
+      state.userType = type
+    },
+    setMemFormId(state, id) {
+      state.memFormId = id
+    }
+  }
+})
+
+
 new Vue({
   router,
+  store,
   render: h => h(App),
 }).$mount('#app')
-
-
