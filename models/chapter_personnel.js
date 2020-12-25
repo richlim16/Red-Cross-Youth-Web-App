@@ -9,8 +9,12 @@ const chapterPersonnel = connection.sequelize.define('chapter_personnel', {
     primaryKey: true,
     type: DataTypes.BIGINT
   },
+  user_id: DataTypes.BIGINT,
   chapter_id: DataTypes.BIGINT,
-  position: DataTypes.ENUM('Chapter Admin', 'Chapter Youth Advisor')
+  position: DataTypes.ENUM('Chapter Admin', 'Chapter Youth Advisor'),
+  
+},{
+	freezeTableName: true
 });
 
 exports.model = chapterPersonnel;

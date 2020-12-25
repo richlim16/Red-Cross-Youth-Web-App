@@ -142,16 +142,12 @@ app.get('/about', (req,res)=>{
 
 app.get('/viewDocs',async (req,res) =>{
     let members=await Read.docsMemForms();
-    let uniformRequests=await Read.getUnifReqs();    
+    let uniformRequests=await Read.getUnifReqs();
+    console.log(members[0].membership_forms[0]);
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{                
-        res.render('masterlist',{
-            title:"Documents", 
-            memForm:members,
-            unifReqs:uniformRequests,
-            council: req.session.council
-        });        
+        res.render('masterlist',{title:"Documents", memForm:members,unifReqs:uniformRequests,council:req.session.council });
     }
 });
 
@@ -263,13 +259,8 @@ app.get('/committeeMembershipForm', (req,res)=>{
 });
 //When a specific committee is selected
 app.get('/generatedCommitteeMembershipForm/:type', urlEncodedParser, async (req,res)=>{
-    //let members = await Read.getNoneCommitteeMembers()
-    try{
-        let members = await Read.getMembersOfCommittee(req);
-        res.send(members);
-    }catch(e){
-        console.log("Error! : ",e);
-    }    
+    let members = await Read.getNoneCommitteeMembers()
+        
 });
 //When a adding members to a committee, show all members of that council without a committee yet
 app.get('/getNoneCommitteeMembers', urlEncodedParser, async (req,res)=>{
@@ -376,37 +367,40 @@ app.post('/signup', urlEncodedParser, async(req,res)=>{
     res.redirect('/');
 });
 
-app.post('/login', urlEncodedParser, async(req,res)=>{    
+app.post('/login', urlEncodedParser, async(req,res)=>{
     let result = await Read.getUser(req)
     if (bcrypt.compareSync(req.body.pass, result['password'])){
-        // console.log(result['id']);
         req.session.loggedIn=true;
         req.session.user=result['id'];
         req.session.type=result['type'];
         console.log(req.session.type+" AND "+req.session.user);
         if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
             req.session.name=result['username'];
-            //let sql="SELECT * FROM `chapter_personnels` inner JOIN chapters on chapter_personnels.chapter_id=chapters.id WHERE user_id='"+req.session.user+"'";
-            let sql="SELECT * FROM chapter_personnels inner JOIN chapters on chapter_personnels.chapter_id=chapters.id"; //DOY ADD USER ID NAAAAAAA
+            let sql="SELECT * FROM chapter_personnel inner JOIN chapters on chapter_personnel.chapter_id=chapters.id";
             connection.query(sql,(err,result)=>{
+                if(err)throw(err);
                 req.session.chapter={};
                 req.session.chapter.id=result[0]['id'];
                 req.session.chapter.name=result[0]['name'];
-                res.redirect('/admin')                
+                console.log(req.session)
+                res.redirect('/admin')
             });
         }
         else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
-            connection.query("SELECT  * from councils WHERE user_id='"+req.session.user+"'",(err,result)=>{
+            connection.query("SELECT * FROM councils WHERE user_id='"+req.session.user+"'",(err,result)=>{
+                if(err)throw(err)
+                console.log(result);
                 req.session.council={};
                 req.session.council.id=result[0]['id'];
                 req.session.council.name=result[0]['name'];
                 req.session.council.type=result[0]['category'];
+                console.log(req.session)
                 res.redirect('/')
             });
-        }  
+        }
     }else{
         console.log("login failed");
-        res.redirect('/login'); //idk ideal redirect
+        res.redirect('/login');
     }
 });
 
@@ -423,14 +417,7 @@ app.post('/act/addMemberForm', urlEncodedParser, async (req,res) =>{
 });
 
 app.post('/act/addCommitteeMember', urlEncodedParser, async (req,res) =>{
-    //await Create.addCommitteeMember(req)
-    try{
-        //let members = await Read.getNoneCommitteeMembers();
-        //res.send(members);
-        await Create.addCommitteeMember(req)
-    }catch(e){
-        console.log("Error! : ",e);
-    }
+    await Create.addCommitteeMember(req)
     res.send('success');
 });
 
@@ -480,14 +467,6 @@ app.post('/memForm/advReject/:id', async (req,res)=>{
     res.redirect('/filledMemForm/' + req.params.id) 
 });
 //POST requests END HERE
-
-app.get('/test',urlEncodedParser, async(req,res)=>{//Derek uses this to test some stuff because eye yam dumdum
-    let test=await Read.docsMemForms();
-    //let test=await Read.getAllFilledMemForms();    
-    //let test=await Read.getAllUsers();    
-    console.log(test[0]);
-    res.send(test[0].document.type);
-});
 
 app.listen(port,()=>{
     console.log("Server is running");

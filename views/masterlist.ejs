@@ -37,16 +37,16 @@
                           <th scope="col" value="reject"></th>
                       </tr>
                   </thead>
-                  <tbody>
-                    <% memForm.forEach( out=>{%>
+                  <tbody>                  
+                    <% for(var i=0;i<memForm.length; i++){%>
                       <tr>
-                      <th scope="row"><%= out.id %></th>
+                      <th scope="row"><%= memForm[i].id %></th>
                       <!--<td>Pending</td>-->
-                      <td><a href="/filledMemForm/<%= out.id %>"><%= out.type %> <%= out.first_name %></a></td>                      
+                      <td><a href="/filledMemForm/<%= memForm[i].id %>"> <%= memForm[i].membership_forms[0] %> </a></td>
                       <td><span>&#10003;</span></td>
                       <td><span>&#9747;</span></td>
                       </tr>
-                    <% }) %>
+                    <% } %>
                   </tbody>
                     </table>
                   </div>

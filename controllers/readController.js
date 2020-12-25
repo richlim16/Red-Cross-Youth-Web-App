@@ -21,9 +21,12 @@ Chapter.model.hasMany(Council.model, {foreignKey: 'chapter_id',sourceKey: 'id'})
 Council.model.belongsTo(Chapter.model, {foreignKey: 'chapter_id'});
 
 exports.docsMemForms=async (req,res)=>{
-    const memForm = MembershipForm.model.belongsTo(Document.model, {foreignKey:'document_id'});
-    let ret=await MembershipForm.model.findAll({
-        include:memForm
+    const memForm = Document.model.hasMany(MembershipForm.model, {foreignKey:'id'});
+    let ret=await Document.model.findAll({
+        include:memForm,
+        where:{
+            type: "MEMBERSHIP",            
+        }
     })
     
     return ret;
@@ -31,6 +34,23 @@ exports.docsMemForms=async (req,res)=>{
 
 exports.getUnifReqs=async (req,res)=>{    
     let ret=await UniformRequest.model.findAll()
+    return ret;
+}
+
+exports.getAllChapPersonnel=async (req,res)=>{
+    const chapPersonnel= ChapterPersonnel.model.belongsTo(User.model, {foreignKey:'user_id'});
+    let ret=await ChapterPersonnel.model.findAll({
+        include:chapPersonnel,
+    })
+    return ret;
+}
+
+exports.getAllUsers = async (req, res)=>{
+    let ret = await User.model.findAll({
+        where:{
+            type:'Chapter Youth Advisor',
+        }
+    })
     return ret;
 }
 
@@ -59,7 +79,7 @@ exports.getAllChapters = async (req, res) => {
 exports.getCommitteesOfCouncil = async (req, res) => {
     let ret = await Committee.model.findAll({
         where: {
-            council_id: 10      //get council_id from Session variable
+            council_id: council      //get council_id from Session variable
         }
     });
 
@@ -74,7 +94,7 @@ exports.getCommitteesOfCouncil = async (req, res) => {
 exports.getMembersOfCommittee = async(req, res) => {
     let committee = await Committee.model.findOne({
         where: {
-            council_id: 2,     //get council_id from Session variable
+            council_id: req.session.id,     //get council_id from Session variable
             type: req.params.type
         }
     });
