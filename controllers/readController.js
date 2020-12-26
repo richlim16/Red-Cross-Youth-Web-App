@@ -28,7 +28,6 @@ exports.docsMemForms=async (req,res)=>{
             type: "MEMBERSHIP",            
         }
     })
-    
     return ret;
 }
 
@@ -42,6 +41,11 @@ exports.getAllChapPersonnel=async (req,res)=>{
     let ret=await ChapterPersonnel.model.findAll({
         include:chapPersonnel,
     })
+    return ret;
+}
+
+exports.getAllCouncils=async(req,res)=>{
+    let ret=await Council.model.findAll();
     return ret;
 }
 

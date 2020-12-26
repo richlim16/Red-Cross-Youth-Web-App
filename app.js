@@ -30,21 +30,21 @@ app.use(session({
 }));
 
 //GETS START HERE
-app.get('/admin',(req,res)=>{
+app.get('/admin',async(req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
-        connection.query("SELECT * FROM `councils` where chapter_id='"+req.session.chapter.id+ "'",(err,result)=>{
+        let docs= await Read.getAllDocs();
+        let councils = await Read.getAllCouncils();
+        if(docs != null && councils != null){
             res.render('adminHome',{
                 title: "Home",
-                adminNav: {
-                    name: req.session.name, 
-                    chapter: req.session.chapter.name
-                },
-                councils: result
+                adminNav:{name:req.session.name,session:req.session.chapter.name,position:req.session.chapter.type},
+                documents:docs,
+                council:councils
             });
-        });
-    }
+        }
+    };
 });
 
 app.get('/adminProfile',(req,res)=>{ //inaccessible
@@ -236,27 +236,16 @@ app.get('/membershipForm', async (req,res)=>{
 });
 
 
-/*app.get('/committeeMembershipForm', async (req,res)=>{
+app.get('/committeeMembershipForm', async (req,res)=>{
     // let councilName = await Read.getCouncilName(sessionId)
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
         let committees = await Read.getCommitteesOfCouncil()
-        res.render('committeeMembershipForm',{title: "Membership Form", committees: committees, session: req.session,councilName:"USC",councilType:"College Council"});
-    }
-});*/
-
-app.get('/committeeMembershipForm', (req,res)=>{
-    if(req.session.loggedIn!=true){
-        res.redirect("/login");
-    }else{
-        res.render('committeeMembershipForm',{
-            session:req.session,
-            title: "Committee Membership Form",
-            council: req.session.council
-        });
+        res.render('committeeMembershipForm',{title: "Committee Membership Form", committees: committees, session: req.session});
     }
 });
+
 //When a specific committee is selected
 app.get('/generatedCommitteeMembershipForm/:type', urlEncodedParser, async (req,res)=>{
     let members = await Read.getNoneCommitteeMembers()
@@ -369,38 +358,40 @@ app.post('/signup', urlEncodedParser, async(req,res)=>{
 
 app.post('/login', urlEncodedParser, async(req,res)=>{
     let result = await Read.getUser(req)
-    if (bcrypt.compareSync(req.body.pass, result['password'])){
-        req.session.loggedIn=true;
-        req.session.user=result['id'];
-        req.session.type=result['type'];
-        console.log(req.session.type+" AND "+req.session.user);
-        if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
-            req.session.name=result['username'];
-            let sql="SELECT * FROM chapter_personnel inner JOIN chapters on chapter_personnel.chapter_id=chapters.id";
-            connection.query(sql,(err,result)=>{
-                if(err)throw(err);
-                req.session.chapter={};
-                req.session.chapter.id=result[0]['id'];
-                req.session.chapter.name=result[0]['name'];
-                console.log(req.session)
-                res.redirect('/admin')
-            });
+    if(result !=null){
+        if (bcrypt.compareSync(req.body.pass, result['password'])){
+            req.session.loggedIn=true;
+            req.session.user=result['id'];
+            req.session.type=result['type'];
+            console.log(req.session.type+" AND "+req.session.user);
+            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
+                req.session.name=result['username'];
+                let sql="SELECT * FROM chapter_personnel inner JOIN chapters on chapter_personnel.chapter_id=chapters.id";
+                connection.query(sql,(err,result)=>{
+                    if(err)throw(err);
+                    req.session.chapter={};
+                    req.session.chapter.id=result[0]['id'];
+                    req.session.chapter.name=result[0]['name'];
+                    console.log(req.session)
+                    res.redirect('/admin')
+                });
+            }
+            else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
+                connection.query("SELECT * FROM councils WHERE user_id='"+req.session.user+"'",(err,result)=>{
+                    if(err)throw(err)
+                    console.log(result);
+                    req.session.council={};
+                    req.session.council.id=result[0]['id'];
+                    req.session.council.name=result[0]['name'];
+                    req.session.council.type=result[0]['category'];
+                    console.log(req.session)
+                    res.redirect('/')
+                });
+            }
+        }else{
+            console.log("login failed");
+            res.redirect('/login');
         }
-        else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
-            connection.query("SELECT * FROM councils WHERE user_id='"+req.session.user+"'",(err,result)=>{
-                if(err)throw(err)
-                console.log(result);
-                req.session.council={};
-                req.session.council.id=result[0]['id'];
-                req.session.council.name=result[0]['name'];
-                req.session.council.type=result[0]['category'];
-                console.log(req.session)
-                res.redirect('/')
-            });
-        }
-    }else{
-        console.log("login failed");
-        res.redirect('/login');
     }
 });
 
@@ -471,3 +462,8 @@ app.post('/memForm/advReject/:id', async (req,res)=>{
 app.listen(port,()=>{
     console.log("Server is running");
 });
+
+app.get('/test',urlEncodedParser,async(req,res)=>{
+    let test = await Read.getAllCouncils();
+    res.send(test);
+})
