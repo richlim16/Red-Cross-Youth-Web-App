@@ -450,7 +450,7 @@
                                     <p>Council Advisor</p>
                                 </div>
                             </div>
-                            <button v-if="council_pres_sig==null || member_sig==null || council_adv_sig==null" type='submit' id="test" class="btn btn-danger btn-lg btn-block text-white">Submit</button>        
+                            <button v-if="newFlag==null" type='submit' id="test" class="btn btn-danger btn-lg btn-block text-white">Submit</button>        
                         </form>
                     </div>
                 </div>
@@ -526,7 +526,8 @@ export default {
             member_sig: null,
             council_adv_sig: null,
             sessionUserId: null,
-            memId: null
+            memId: null,
+            newFlag: null
         }
     }, 
     async mounted(){
@@ -587,7 +588,8 @@ export default {
                 this.council_pres_sig = response.data.member.council_pres_sig,
                 this.member_sig = response.data.member.member_sig,
                 this.council_adv_sig = response.data.member.council_adv_sig,
-                this.member_sig = response.data.member_sig
+                this.member_sig = response.data.member_sig,
+                this.newFlag = 1
             })
             .catch(error => console.log(error))
         console.log(this.council_pres_sig)
