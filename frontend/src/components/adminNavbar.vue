@@ -8,7 +8,7 @@
             <a class="navbar-brand">Forms</a>
             </div> -->
             <div class="navbar-wrapper">
-            <a class="navbar-brand">Councils</a>
+            <a class="navbar-brand"><router-link :to="{name: 'addCouncil'}">Councils</router-link></a>
             </div>
             <!-- <div class="navbar-wrapper">
             <a class="navbar-brand" href="/adminCouncils">Councils</a>

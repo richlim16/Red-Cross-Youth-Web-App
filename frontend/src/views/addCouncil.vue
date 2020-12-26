@@ -43,7 +43,6 @@
                             <hr class="mb-4">        
                             <button type='submit' class="btn btn-danger btn-lg btn-block text-white">Add</button>        
                         </form>
-                        <a href="activities.php">Back</a>
                     </div>
                 </div>
             </div>

@@ -42,7 +42,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <h4 class="my-3">PERSONAL DATA</h4>
                                 <div class="row">
                                     <div class="col-md-4 mb-1">
                                         <label for="surName">Surname</label>
@@ -301,6 +300,32 @@
 
                             <h4 class="mb-3">RED CROSS TRAININGS ATTENDED</h4>
                             <!-- JS to add more lines for trainingList -->
+                            <div id="trainingsList" v-if="trainings==null">
+                                <div class="row training">
+                                    <div class="col-md-6 mb-1 trainingDiv">
+                                        <label for="training">Training Attended</label>
+                                        <input type="text" class="form-control trainingAttended" name="training" placeholder="Training Attended" required="">
+                                    </div>
+                                    <div class="col-md-6 mb-1 certDiv">
+                                    <label for="cert">Certificate Number</label>
+                                    <input type="text" class="form-control certificateNo" name="cert" placeholder="Certificate Number" required="">
+                                     </div>
+                                    <div class="col-md-6 mb-4 placeDiv">
+                                        <label for="place">Place</label>
+                                        <input type="text" class="form-control place" name="place" placeholder="Place" required="">
+                                    </div>
+                                    <div class="col-md-3 mb-4 startDiv">
+                                        <label for="startDate">Start Date</label>
+                                        <input type="date" class="form-control startDate" name="startDate" placeholder="" required="">
+                                    </div>
+                                    <div class="col-md-3 mb-4 endDiv">
+                                        <label for="endDate">End Date</label>
+                                        <input type="date" class="form-control endDate" name="endDate" placeholder="" required="">
+                                    </div>
+                                </div>
+                            </div>
+
+
                             <div id="trainingsList" v-for="(training,i) in trainings" :key="i">
                                 <div class="row training">
                                     <div class="col-md-6 mb-1 trainingDiv">
@@ -331,6 +356,31 @@
 
                             <h4 class="mt-5 mb-3">AFFILIATION WITH OTHER ORGANIZATIONS</h4>
                             <!-- JS to add more lines for orgAffiliations -->
+                            <div id="organizations">
+                                <div v-if="trainings==null" class="row organization">
+                                    <div class="col-md-6 mb-1 orgDiv">
+                                    <label for="organization">Organization</label>
+                                    <input type="text" class="form-control org" name="organization" placeholder="Organization" required="">
+                                    </div>
+                                    <div class="col-md-3 mb-1 startDiv">
+                                    <label for="startDate">Start Date</label>
+                                    <input type="date" class="form-control startDate" name="startDate" placeholder="" required="">
+                                    </div>
+                                    <div class="col-md-3 mb-1 endDiv">
+                                    <label for="endDate">End Date</label>
+                                    <input type="date" class="form-control endDate" name="endDate" placeholder="" required="">
+                                    </div>
+                                    <div class="col-md-6 mb-4 posDiv">
+                                    <label for="position">Position</label>
+                                    <input type="text" class="form-control position" name="position" placeholder="Position" required="">
+                                    </div>
+                                    <div class="col-md-6 mb-4 councilDiv">
+                                    <label for="council">Council</label>
+                                    <input type="text" class="form-control council" name="council" placeholder="Council" required="">
+                                    </div>
+                                </div>
+                            </div>
+
                             <div id="organizations">
                                 <div class="row organization" v-for="(org,i) in organizations" :key="i">
                                     <div class="col-md-6 mb-1 orgDiv">
@@ -406,7 +456,7 @@
                 </div>
             </div>
         </section>
-        <f/>
+
     </div>
 </template>
 
@@ -415,13 +465,11 @@
 <script>
 import axios from 'axios'
 import navbar from '../components/Navbar.vue'
-import footer from '../components/formNav.vue'
 
 export default {
     name: 'membershipForm',
     components:{
-        'n': navbar,
-        'f': footer
+        'n': navbar
     },
     data(){
         return{
@@ -472,8 +520,8 @@ export default {
             collegeDate : null,
             vocSchool : null,
             vocDate : null,
-            trainings: [],
-            organizations: [],
+            trainings: null,
+            organizations: null,
             council_pres_sig: null,
             member_sig: null,
             council_adv_sig: null,
