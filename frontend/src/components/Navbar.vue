@@ -34,7 +34,7 @@
                         <li class="drop-down"><a href="#">Profile</a>
                         <ul>
                             <li><a href="/login">Login</a></li>                     
-                            <li><a href="/login">Log Out</a></li>
+                            <li><a  v-on:click="logout">Log Out</a></li>
                         </ul>
                         </li>
                     </ul>
@@ -68,6 +68,11 @@ export default {
           this.$router.replace({ path: `/` })
         }
         else this.$router.push({ path: `/masterlist` })
+      },
+      logout: function(){
+        this.$store.commit('setUserId', null)
+        this.$store.commit('setUserType', null) 
+        this.$router.replace({ path: `/` })
       }
     }
 }

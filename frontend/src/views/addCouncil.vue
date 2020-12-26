@@ -1,29 +1,20 @@
 <template>
     <div id="addCouncil">
-        <section class="breadcrumbs">
-            <div class="container">
-    
-                <div class="d-flex justify-content-between align-items-center">
-                    <h2>Add Council</h2>
-                    <ol>
-                    <li><a href="/adminActivity">Back To Activity Page</a></li>
-                    <li>Adding Council</li>
-                    </ol>
-                </div>
-    
-            </div>
-        </section><!-- End Breadcrumbs -->
-    
+        <adminN/>
+        <br>
+        
+        
         <section class="inner-page">
             <div class="container">
+                <h2>Add Council</h2>
                 <p>Fill out the following fields to create a new council</p>
 
                 <div class="row">
                     <div class="col-md-8 order-md-1">
-                        <form id="addForm" class="needs-validation" method="POST">
+                        <form id="addForm" class="needs-validation" @submit="addCouncil">
                             <div class="row mb-5">
                                 <label for="councilName">Council name</label>
-                                <input type="text" class="form-control" id="councilName" name="councilName" placeholder="Council Name" value="" required="">
+                                <input type="text" class="form-control" v-model="councilName" id="councilName" name="councilName" placeholder="Council Name" value="" required="">
                                 <div class="invalid-feedback">
                                     Valid council name is required.
                                 </div>
@@ -32,16 +23,14 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="chapter">Chapter</label>
-                                    <select class="form-control" id="chapter" name="chapter">
+                                    <select class="form-control" v-model="chapter" id="chapter" name="chapter">
                                         <option disabled selected value> -- select an option -- </option>
-                                        <!-- <% for (let i=0; i < chapters.length; i++){%> -->  
-                                            <option value="<%= chapters[i].id%>"><!--<%= chapters[i].name%> --></option>
-                                        <!-- <%}%> -->
+                                        <option v-for="(chapter,i) in chapters" :key="i" :value=chapter.id>{{chapter.name}}</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="category">Category</label>
-                                    <select class="form-control" id="category" name="category">
+                                    <select class="form-control" v-model="category" id="category" name="category">
                                         <option disabled selected value> -- select an option -- </option>
                                         <option value="Junior Red Cross Youth">Junior Red Cross Youth</option>
                                         <option value="Senior Red Cross Youth">Senior Red Cross Youth</option>
@@ -63,7 +52,36 @@
 </template>
 
 <script>
+import adminnavbar from '../components/adminNavbar.vue'
+import axios from 'axios';
 export default {
     name: 'addCouncil',
+    data(){
+        return{
+            chapters: [],
+            councilName: null,
+            chapter: null,
+            category: null
+        }
+    },
+    components: {
+        'adminN': adminnavbar
+    },
+    mounted(){
+        axios.get('http://localhost:3000/addCouncil')
+            .then(response => {
+                this.chapters = response.data
+                console.log(JSON.parse(JSON.stringify(response.data)))
+            })
+    },
+    methods: {
+        addCouncil: function(){
+            axios({
+                method: 'POST',
+                url: 'http://localhost:3000/act/addCouncil',
+                data: {name: this.councilName, chapterId: this.chapter, category: this.category}
+            })
+        }
+    }
 }
 </script>

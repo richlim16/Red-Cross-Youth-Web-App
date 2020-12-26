@@ -72,10 +72,13 @@ export default {
             data: {username: this.username, pass: this.password}
         })
         .then(response => this.session = response.data)
+
         if (this.session == "wrong"){
           this.$router.replace({ path: `/` })
         }
-        else if (JSON.parse(JSON.stringify(this.session.userType)) == "Admin") {
+        else if (JSON.parse(JSON.stringify(this.session)).userType == "Chapter Admin") {
+          this.$store.commit('setUserId', JSON.parse(JSON.stringify(this.session)).userId)
+          this.$store.commit('setUserType', JSON.parse(JSON.stringify(this.session)).userType) 
           this.$router.push({ path: `/adminHome` })
         }
         else if (JSON.parse(JSON.stringify(this.session)).userType == "Council") {

@@ -110,7 +110,7 @@ app.post('/login', urlEncodedParser, async (req,res)=>{
             req.session.user=result['id'];
             req.session.type=result['type'];
             if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
-                res.send("admin")
+                res.send({userId: req.session.user, userType: req.session.type})
             }
             else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
                 res.send({userId: req.session.user, userType: req.session.type})
@@ -135,7 +135,6 @@ app.get('/about', (req,res)=>{
 });
 
 app.get('/officerActivity/:type', async (req,res) =>{    
-    console.log(req.params.type)
     if (req.params.type == 'Council'){
         let result = await Read.getCouncilPendingMemForms()
         res.send(result)
@@ -163,12 +162,15 @@ app.get('/adminCouncils', (req,res) =>{
 });
 
 app.get('/addCouncil', async (req,res) =>{
-    if(req.session.loggedIn!=true){
-        res.redirect("/login");
-    }else{
        let chapters = await Read.getAllChapters()
-       res.render('addCouncil',{title: "Add Council", chapters: chapters,councilName:"USC",councilType:"College Council"});
-    }
+       res.send(chapters)
+    
+});
+
+app.get('/allCouncils', async (req,res) =>{
+    let councils = await Read.getAllCouncils()
+    res.send(councils)
+ 
 });
 
 

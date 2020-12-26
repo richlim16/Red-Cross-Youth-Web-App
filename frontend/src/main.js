@@ -11,6 +11,7 @@ import login from './views/login.vue'
 import masterlist from './views/masterlist.vue'
 import adminHome from './views/adminHome.vue'
 import adminActivity from './views/adminActivity.vue'
+import addCouncil from './views/addCouncil.vue'
 // import axios from 'axios';
 import 'es6-promise/auto'
 import Vuex from 'vuex'
@@ -60,13 +61,18 @@ const router = new VueRouter({
     },
     {
       path: "/adminHome",
-      name: "adminhome",
+      name: "adminHome",
       component: adminHome
     },
     {
       path: "/adminActivity",
-      name: "adminactivity",
+      name: "adminActivity",
       component: adminActivity
+    },
+    {
+      path: "/addCouncil",
+      name: "addCouncil",
+      component: addCouncil
     }
   ]
 })

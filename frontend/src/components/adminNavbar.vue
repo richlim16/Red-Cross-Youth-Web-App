@@ -2,13 +2,13 @@
     <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
             <div class="navbar-wrapper">
-            <a class="navbar-brand" href="/admin"><router-link :to="{name: 'adminhome'}">Home</router-link></a>
+            <a class="navbar-brand"><router-link :to="{name: 'adminHome'}">Home</router-link></a>
             </div>
+            <!-- <div class="navbar-wrapper">
+            <a class="navbar-brand">Forms</a>
+            </div> -->
             <div class="navbar-wrapper">
-            <a class="navbar-brand" href="/adminForms">Forms</a>
-            </div>
-            <div class="navbar-wrapper">
-            <a class="navbar-brand" href="/addCouncil">Councils</a>
+            <a class="navbar-brand">Councils</a>
             </div>
             <!-- <div class="navbar-wrapper">
             <a class="navbar-brand" href="/adminCouncils">Councils</a>
@@ -83,7 +83,7 @@
                     </div>
                     </div> -->
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Log out</a>
+                    <a class="dropdown-item" v-on:click="logout">Log out</a>
                 </div>
                 </li>
             </ul>
@@ -94,7 +94,14 @@
 
 <script>
 export default {
-    name: 'adminNavbar'
+    name: 'adminNavbar',
+    methods: {
+      logout: function(){
+        this.$store.commit('setUserId', null)
+        this.$store.commit('setUserType', null) 
+        this.$router.replace({ path: `/` })
+      }
+    }
 }
 </script>
 
