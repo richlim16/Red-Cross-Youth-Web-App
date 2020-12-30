@@ -15,5 +15,4 @@ const council = connection.sequelize.define('council', {
   name: DataTypes.STRING
 });
 
-
 exports.model = council;

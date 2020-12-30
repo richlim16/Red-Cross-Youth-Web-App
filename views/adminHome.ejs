@@ -16,7 +16,7 @@
       <div class="content">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-12">
+            <div class="col-12">              
               <div class="card">
                 <div class="card-header card-header-danger">
                   <h4 class="card-title">Pending and Recieved Forms</h4>
@@ -27,38 +27,24 @@
                     <thead class="text-warning">
                       <tr>
                         <th scope="col">ID</th>
-                        <th scope="col">Status</th>
+                        <th scope="col">Type</th>
                         <th scope="col">Title</th>
-                        <th scope="col">Sender</th>
+                        <th scope="col">Time Made</th>
                         <th scope="col" value="approve"></th>
                         <th scope="col" value="reject"></th>
                     </tr>
                 </thead>
                 <tbody>
+                  <%for(var i=0;i<documents.length; i++){%>
                     <tr>
-                    <th scope="row">1</th>
-                    <td>Pending</td>
-                    <td>New Recruit</td>
-                    <td>USC TC Chapter</td>
+                    <th scope="row"><%= documents[i].id %></th>
+                    <td><%= documents[i].type %></td>
+                    <td>joins are weird in sequelize</td>
+                    <td><%= documents[i].createdAt %></td>
                     <td><span>&#10003;</span></td>
                     <td><span>&#9747;</span></td>
                     </tr>
-                    <tr>
-                    <th scope="row">2</th>
-                    <td>Recieved</td>
-                    <td>Event Plan</td>
-                    <td>STC Chapter</td>
-                    <td><a href="#" ><span>&#10003;</span></a></td>
-                    <td><span>&#9747;</span></td>
-                    </tr>
-                    <tr>
-                    <th scope="row">3</th>
-                    <td>Pending</td>
-                    <td>Training for newbs</td>
-                    <td>Sacred Heart Chapter</td>
-                    <td><span>&#10003;</span></td>
-                    <td><span>&#9747;</span></td>
-                    </tr>
+                    <% } %> 
                 </tbody>
                   </table>
                 </div>
@@ -67,46 +53,30 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header card-header-danger">
-                  <h4 class="card-title">Chapter Members:</h4>
+                  <h4 class="card-title">Chapter Councils:</h4>
                 </div>
                 <div class="card-body">
                   <table class="table table-striped table-sm">
                     <thead>
                       <tr>		
                         <th rowspan="2">Name</th>
-                        <th>Contact</th>
-                        <th>Recruited</th>
+                        <th>Category</th>
+                        <th>Profile Created</th>
                         <th>Profile</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>
-                          <img src="http://imgur.com/GaBdGdz.png" class="mx-2" style="height: 5em;">
-                          <span>Rory Mercury</span>
-                        </td>
-                        <td>...</td>
-                        <td>...</td>
-                        <td><a>View Profile</a></td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <img src="http://imgur.com/GaBdGdz.png" class="mx-2" style="height: 5em;">
-                          <span>Rory Mercury</span>
-                        </td>
-                        <td>...</td>
-                        <td>...</td>
-                        <td><a>View Profile</a></td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <img src="http://imgur.com/GaBdGdz.png" class="mx-2" style="height: 5em;">
-                          <span>Rory Mercury</span>
-                        </td>
-                        <td>...</td>
-                        <td>...</td>
-                        <td><a>View Profile</a></td>
-                      </tr>
+                      <%for(var i=0;i<council.length; i++){%>
+                        <tr>
+                          <td>
+                            <img src="http://imgur.com/GaBdGdz.png" class="mx-2" style="height: 5em;">
+                            <span><%= council[i].name %></span>
+                          </td>
+                          <td><%= council[i].category %></td>
+                          <td><%= council[i].createdAt %></td>
+                          <td><a href="#">View Profile</a></td>
+                        </tr>
+                      <% } %>
                     </tbody>
                   </table>
                 </div>

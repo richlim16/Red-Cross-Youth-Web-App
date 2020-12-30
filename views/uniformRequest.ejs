@@ -5,8 +5,8 @@
     <div class="container">
       <div class="d-flex justify-content-between align-items-center">        
         <ol>
-          <li><a href="index.html">Back To Activity Page</a></li>
-          <li>Adding Report</li>
+          <li><a href="/docs">Go Back</a></li>
+          <li>Uniform Request</li>
         </ol>
       </div>
     </div>
@@ -16,7 +16,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-8 order-md-1">
-        <form class="needs-validation" novalidate="" action="/act/add" method="post">          
+       <form class="needs-validation" novalidate="" action="/act/addUnifReq" method="post">
         <h4>Uniform Request Form</h4>          
           <div class="row d-flex mb-4">          
             <div class="col-md-3">
@@ -27,21 +27,19 @@
 
           <div class="row d-flex mb-4">
             <div class="col-md">
-              <label for="committee">Name of Requesting Volunteer</label>
-              <select type="text" class="form-control" name="volunteer" required>
+              <label for="volunteer">Name of Requesting Volunteer</label>
+              <input type="text" class="form-control" name="volunteer" placeholder="" value="" required="">
+              <!-- <select id="volunteer" type="text" class="form-control" name="volunteer" required>
                 <option style="display:none"></option>
                 <% peoples.forEach( aa => { %>
                   <option value="<%= aa.id%>"><%= aa.name %> </option>
                 <% }) %>
-              </select>
+              </select> -->
             </div>
             <div class="col-md">
               <label for="activity">Name of Council</label>
               <select type="text" class="form-control" name="council" required>
-                <option style="display:none"></option>
-                <% councils.forEach( aa => { %>
-                  <option value="<%= aa.id%>"><%= aa.name %> </option>
-                <% }) %>
+                  <option value="<%= council.id%>"><%= council.name %> </option>
               </select>
             </div>
           </div>
@@ -56,7 +54,7 @@
             </div>
             <div class="col-md-2">
               <label for="rcys">Quantity</label>
-              <input type="number" class="form-control" name="qty" placeholder="" value="" required>
+              <input type="number" class="form-control" id="qty" name="qty" required>
             </div>
             <div class="col-md-1">
               <label for="rcys">Size</label>            
@@ -78,7 +76,7 @@
             </div>
           </div>
           
-            <div class="row mb-4">
+            <!--<div class="row mb-4">
               <div class="col-md-4">
                 <label for="rcys">Receipt Number:</label>
                 <input type="text" class="form-control" name="Receipt" placeholder="" value="" required>
@@ -120,7 +118,7 @@
                 <p>Chapter Bookkeeper</p>
               </div>
             </div>           
-          </div> 
+          </div> -->
 
           <hr class="mb-4">        
           <button type='submit' class="btn btn-danger btn-lg btn-block text-white">Post</button>        

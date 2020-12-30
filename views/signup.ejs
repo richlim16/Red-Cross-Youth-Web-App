@@ -19,7 +19,48 @@
             <div class="form-group">
               <label for="pass">Password</label>
               <input type="password" class="form-control" id="pass" name="pass" required>
-            </div><br>            
+            </div><br>
+            
+            <div class="form-group">
+              <label for="rcys">User Type</label>            
+              <select class="form-control" name="type" required>
+                <option style="display:none" selected>Please select...</option>
+                <option value="Council">Council</option>
+                <option value="Council Advisor">Council Advisor</option>
+                <option value="Chapter Youth Advisor">Chapter Youth Advisor</option>
+                <option value="Chapter Admin">Chapter Admin</option>
+              </select>
+            </div><br>
+            
+            <div class="form-group">
+              <label for="committee">Chapter</label>
+              <select type="text" class="form-control" name="chapter">
+                <option style="display:none" selected>Please select...</option>
+                <% chapters.forEach( aa => { %>
+                  <option value="<%= aa.id%>"><%= aa.name %> </option>
+                <% }) %>
+              </select>
+            </div><br>
+            <div class="form-group">
+              <label for="committee">Council</label>
+              <select type="text" class="form-control" name="council">
+                <option style="display:none" selected>Please select...</option>
+                <% councils.forEach( aa => { %>
+                  <option value="<%= aa.id%>"><%= aa.name %> </option>
+                <% }) %>
+              </select>
+            </div><br>
+            <div class="form-group col-md-6">
+              <label for="category">Category</label>
+              <select class="form-control" id="category" name="category">
+                <option disabled selected value> -- select an option -- </option>
+                <option value="Junior Red Cross Youth">Junior Red Cross Youth</option>
+                <option value="Senior Red Cross Youth">Senior Red Cross Youth</option>
+                <option value="Senior Plus Red Cross Youth">Senior Plus Red Cross Youth</option>
+                <option value="College Red Cross Youth">College Red Cross Youth</option>
+                <option value="Community Red Cross Youth">Community Red Cross Youth</option>
+              </select>
+            </div><br>           
             <button type="submit" class="btn btn-light">Sign Up</button>
           </form>
         </div>
