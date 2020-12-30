@@ -67,15 +67,20 @@ exports.getUser = async (req, res) => {
     return ret;
 }
 
+
+exports.getUser = async (req, res) => {
+    let ret = await User.model.findOne({
+        where: {
+            username: req.body.username
+        }
+    })
+    return ret;
+}
+
+
 //Used in creating a council
 exports.getAllChapters = async (req, res) => {
     let ret = await Chapter.model.findAll();
-    
-    // res.setHeader('Access-Control-Allow-Origin', '*');
-    // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
-    // res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    // res.setHeader('Access-Control-Allow-Credentials', true);
-    // res.send(ret);
     return ret;
 }
 
@@ -87,33 +92,34 @@ exports.getCommitteesOfCouncil = async (req, res) => {
         }
     });
 
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    res.send(ret);
+    return ret
+}
+async function getCouncilId(userId){
+    let ret = await Council.model.findOne({
+        where: {
+            user_id: userId
+        }
+    })
+    return ret
 }
 
 //Used in Committee Membership Form
 exports.getMembersOfCommittee = async(req, res) => {
+    let council = await getCouncilId(req.params.userId)
     let committee = await Committee.model.findOne({
         where: {
-            council_id: req.session.id,     //get council_id from Session variable
+            council_id: council.id,     //get council_id from Session variable
             type: req.params.type
         }
     });
-
+console.log(req.params.type)
     let ret = await MembershipForm.model.findAll({
         where: {
             committee_membership_id: committee.id
         }
     });
-    
-    //res.setHeader('Access-Control-Allow-Origin', '*');
-    //res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
-    //res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    //res.setHeader('Access-Control-Allow-Credentials', true);
-    //res.send(ret);
+console.log(ret)
+    return ret
 }
 
 // Used in Committee Membership Form when adding a member to a committee
@@ -125,15 +131,34 @@ exports.getNoneCommitteeMembers = async(req, res) => {
             committee_membership_id: null,
         },
         include: [ Doc ]
-    });
-    
-    //res.setHeader('Access-Control-Allow-Origin', '*');
-    //res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
-    //res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    //res.setHeader('Access-Control-Allow-Credentials', true);
-    //res.send(ret);
+    }
+    );
+
     return ret;
 }
+
+
+// Used in masterlist
+exports.getCouncilPendingMemForms = async(req, res) => {
+    let ret = await MembershipForm.model.findAll({
+        where: {
+            council_pres_sig: 0,
+        },
+    });
+
+    return ret;
+}
+exports.getCouncilAdvPendingMemForms = async(req, res) => {
+    let ret = await MembershipForm.model.findAll({
+        where: {
+            council_adv_sig: 0,
+        },
+    });
+
+    });    
+    return ret;
+}
+
 
 
 exports.getFilledMemForm = async (req, res) => {
@@ -156,12 +181,6 @@ exports.getAllFilledMemForms = async (req, res) => {
             type:'MEMBERSHIP'
         }
     })
-    
-    //res.setHeader('Access-Control-Allow-Origin', '*');
-    //res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
-    //res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    //res.setHeader('Access-Control-Allow-Credentials', true);
-    //res.send(ret);
     return ret;
 }
 
@@ -180,5 +199,10 @@ exports.getMemOrgs = async (req, res) => {
             rcy_id: req.rcy_id
         }
     })
+    return ret;
+}
+
+exports.getAllCouncils = async (req, res) => {
+    let ret = await Council.model.findAll();
     return ret;
 }

@@ -17,9 +17,11 @@ const OtherOrganizationsAffiliations=require('../models/other_organizations_affi
 const TrainingsAttended=require('../models/trainings_attended');
 const User=require('../models/user');
 
+const bcrypt = require("bcrypt");
+const saltR = 10;
+
 Chapter.model.hasMany(Council.model, {foreignKey: 'chapter_id',sourceKey: 'id'});
 Council.model.belongsTo(Chapter.model, {foreignKey: 'chapter_id'});
-
 
 exports.signUp = async (req, res) => {
     let salt= bcrypt.genSaltSync(saltR);
@@ -43,7 +45,7 @@ async function getCouncilId(userId){
 //For adding a council
 exports.addCouncil = async (req, res) => {
     Council.model.hasMany(Committee.model, {foreignKey: 'council_id',sourceKey: 'id'});
-
+    console.log(req.body)
     await Council.model.create({
         user_id: user_id+1,
         chapter_id: req.body.chapterId,
@@ -68,9 +70,11 @@ exports.addCouncil = async (req, res) => {
 
 
 //For adding a member in Membership Form
+
 exports.addMemberForm = async (req, res) => {
     const Doc = MembershipForm.model.belongsTo(Document.model, {foreignKey:'document_id'});
-    let council = await getCouncilId(req.session.user)
+    console.log(req.body)
+    let council = await getCouncilId(req.body.sessionUserId)
 
     await MembershipForm.model.create({
         blood_type: req.body.bloodType,
@@ -124,8 +128,8 @@ exports.addMemberForm = async (req, res) => {
         council_adv_sig: false,
         document:{
             type: 'MEMBERSHIP',
-            chapter_id: council.chapter_id,  //get from Session variable
-            council_id: council.id  //get from Session variable
+            chapter_id: council.chapter_id,    //council.chapter_id,  //get from Session variable
+            council_id: council.id    //council.id  //get from Session variable
         }
     }, {
         include: [ Doc ]
@@ -155,14 +159,15 @@ exports.addMemberForm = async (req, res) => {
             end_date: organizations[o].endDate
         })
     };
-}
 
+}
 
 //For adding a member to a committee
 exports.addCommitteeMember = async (req, res) => {
+    let council = await getCouncilId(req.body.sessionUserId)
     let committee = await Committee.model.findOne({
         where: {
-            council_id: 2,     //get council_id from Session variable
+            council_id: council.id,     //get council_id from Session variable
             type: req.body.type
         }
     });
