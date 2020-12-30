@@ -1,0 +1,25 @@
+<template>
+    <div class="sidebar-wrapper">
+        <ul class="nav">
+        <li class="nav-item active  ">
+            <img src="https://i.ytimg.com/vi/9q3_8N4YZRI/maxresdefault.jpg" class="image-sidebar">
+        </li>
+        <div class="space"></div>
+        <li class="nav-item active">
+            <p class="word-sidebar">Name: </p>
+        </li>
+        <li class="nav-item active">
+            <p class="word-sidebar">Status: </p>
+        </li>
+        <li class="nav-item active ">
+            <p class="word-sidebar">Gender: </p>
+        </li>
+        </ul>
+    </div>
+</template>
+
+<script>
+export default {
+    name: 'addminSidebar',
+}
+</script>
