@@ -59,10 +59,10 @@ app.get('/admin',async(req,res)=>{
     }else{
         let docs= await Read.getAllDocs();
         let councils = await Read.getAllCouncils();
-        if(docs != null && councils != null){
+        if(docs != null && councils != null){            
             res.render('adminHome',{
                 title: "Home",
-                adminNav:{name:req.session.name,session:req.session.chapter.name,position:req.session.chapter.type},
+                adminNav:{name:req.session.username,position:req.session.type},
                 documents:docs,
                 council:councils
             });
@@ -108,7 +108,8 @@ app.post('/login', urlEncodedParser, async (req,res)=>{
             req.session.username=result['username'];
             req.session.type=result['type'];
             if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
-                res.send({userId: req.session.user, userType: req.session.type})
+                //res.send({userId: req.session.user, userType: req.session.type})
+                res.redirect('/admin');
             }
             else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){                
                 res.redirect('/');
