@@ -42,8 +42,15 @@ app.get('/', (req,res)=>{
         res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
         res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-        res.setHeader('Access-Control-Allow-Credentials', true);
-        res.send({title: "Home",councilName:"USC",councilType:"College Council"});
+        res.setHeader('Access-Control-Allow-Credentials', true);        
+        res.render('home',{
+            title:"Home",
+            user:{
+                name:req.session.username,                
+            }
+        })
+    }
+});
       
 //GETS START HERE
 app.get('/admin',async(req,res)=>{
@@ -77,17 +84,6 @@ app.get('/adminProfile',(req,res)=>{ //inaccessible
     }
 });
 
-app.get('/', (req,res)=>{
-    if(req.session.loggedIn!=true){
-        res.redirect("/login");
-    }else{
-        res.render('home', {
-            title: "Home",
-            user: req.session.council
-        });
-    }
-});
-
 app.get('/login', (req,res)=>{ //inverse persistent    
     if(req.session.loggedIn==true){
         res.redirect("/");
@@ -101,6 +97,28 @@ app.get('/login', (req,res)=>{ //inverse persistent
         });
     }
 });
+
+app.post('/login', urlEncodedParser, async (req,res)=>{
+    console.log(req.body)
+    let result = await Read.getUser(req)
+    if (result != null) {
+        if (bcrypt.compareSync(req.body.pass, result['password'])){
+            req.session.loggedIn=true;
+            req.session.user=result['id'];
+            req.session.username=result['username'];
+            req.session.type=result['type'];
+            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
+                res.send({userId: req.session.user, userType: req.session.type})
+            }
+            else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){                
+                res.redirect('/');
+            }
+        }else{
+            console.log("login failed");
+            res.send("wrong")
+        }
+   };
+})
 
 app.get('/logout', (req,res)=>{ //no persistent
     req.session.loggedIn=false;
@@ -132,26 +150,7 @@ app.post('/signup', urlEncodedParser, async (req,res)=>{
     res.redirect('/login');
 });
 
-app.post('/login', urlEncodedParser, async (req,res)=>{
-    console.log(req.body)
-    let result = await Read.getUser(req)
-    if (result != null) {
-        if (bcrypt.compareSync(req.body.pass, result['password'])){
-            req.session.loggedIn=true;
-            req.session.user=result['id'];
-            req.session.type=result['type'];
-            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
-                res.send({userId: req.session.user, userType: req.session.type})
-            }
-            else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
-                res.send({userId: req.session.user, userType: req.session.type})
-            }  
-        }else{
-            console.log("login failed");
-            res.send("wrong")
-        }
-   });
-          
+
 /*app.post('/signup', urlEncodedParser, (req,res)=>{
     let salt= bcrypt.genSaltSync(saltR);
     let pass= bcrypt.hashSync(req.body.pass, salt);
@@ -199,11 +198,19 @@ app.get('/officerActivity/:type', async (req,res) =>{
 app.get('/viewDocs',async (req,res) =>{
     let members=await Read.docsMemForms();
     let uniformRequests=await Read.getUnifReqs();
-    console.log(members[0].membership_forms[0]);
+    console.log(req.session);
+
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{                
-        res.render('masterlist',{title:"Documents", memForm:members,unifReqs:uniformRequests,council:req.session.council });
+        res.render('masterlist',{
+            title:"Documents",
+            memForm:members,
+            unifReqs:uniformRequests,
+            council:{
+                name:req.session.username
+            } 
+        });
     }
 });
 
@@ -247,8 +254,7 @@ app.get('/allCouncils', async (req,res) =>{
       title: "Add Council", 
       chapters: req.session.chapter,
       council: req.session.chapter //yes, poor naming
-      });
-    }
+    });    
 });
 
 //DOCUMENTS START HERE
@@ -256,10 +262,14 @@ app.get('/docs', (req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
+        console.log(req.session)
         res.render('docs', {
             title: "Documents",
-            user: req.session.council
-    });
+            user:{
+                name:req.session.username,
+                type:'council'
+            }
+        });
     }
 });
 
@@ -295,7 +305,6 @@ app.get('/membershipForm', async (req,res)=>{
 
 
 app.get('/committeeMembershipForm', async (req,res)=>{
-    // let councilName = await Read.getCouncilName(sessionId)
     if(req.session.loggedIn!=true){
         res.redirect("/login");
     }else{
@@ -311,12 +320,12 @@ app.get('/committeeMembershipForm', (req,res)=>{
         res.render('committeeMembershipForm',{title: "Committee Membership Form",councilName:"USC",councilType:"College Council"});
     }
 });
+
 //When a specific committee is selected
-app.get('/generatedCommitteeMembershipForm/:type&:userId', urlEncodedParser, async (req,res)=>{ 
+app.get('/generatedCommitteeMembershipForm/:type&:userId', urlEncodedParser, async (req,res)=>{
     let members = await Read.getMembersOfCommittee(req)
       res.send(members);
       res.render('committeeMembershipForm',{title: "Committee Membership Form", committees: committees, session: req.session});
-    }
 });
 
 //When a specific committee is selected
@@ -420,16 +429,14 @@ app.get('/filledMemForm/:id', async (req,res)=>{
 });
 
 //DOCUMENTS END HERE
-//GETS END HERE
 
-//POST requests
 app.post('/signup', urlEncodedParser, async(req,res)=>{
     await Create.signUp(req);        
     console.log("Account has been made!");
     res.redirect('/');
 });
 
-app.post('/login', urlEncodedParser, async(req,res)=>{
+/*app.post('/login', urlEncodedParser, async(req,res)=>{
     let result = await Read.getUser(req)
     if(result !=null){
         if (bcrypt.compareSync(req.body.pass, result['password'])){
@@ -466,7 +473,7 @@ app.post('/login', urlEncodedParser, async(req,res)=>{
             res.redirect('/login');
         }
     }
-});
+});*/
 
 app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{  
     await Create.addCouncil(req)
@@ -538,12 +545,6 @@ app.post('/memForm/advReject/:id', async (req,res)=>{
     let member = await Read.getFilledMemForm(req)
     res.send({sig:member.council_adv_sig})
 });
-
-app.post('/', (req, res) => {
-    console.log(req.body)//not deleting this because idk what it is for lmao
-})
-
-//POST requests END HERE
 
 app.listen(port,()=>{
     console.log("Server is running");

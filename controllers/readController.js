@@ -67,17 +67,6 @@ exports.getUser = async (req, res) => {
     return ret;
 }
 
-
-exports.getUser = async (req, res) => {
-    let ret = await User.model.findOne({
-        where: {
-            username: req.body.username
-        }
-    })
-    return ret;
-}
-
-
 //Used in creating a council
 exports.getAllChapters = async (req, res) => {
     let ret = await Chapter.model.findAll();
@@ -137,7 +126,6 @@ exports.getNoneCommitteeMembers = async(req, res) => {
     return ret;
 }
 
-
 // Used in masterlist
 exports.getCouncilPendingMemForms = async(req, res) => {
     let ret = await MembershipForm.model.findAll({
@@ -154,12 +142,8 @@ exports.getCouncilAdvPendingMemForms = async(req, res) => {
             council_adv_sig: 0,
         },
     });
-
-    });    
     return ret;
-}
-
-
+};    
 
 exports.getFilledMemForm = async (req, res) => {
     let ret = await MembershipForm.model.findOne({
