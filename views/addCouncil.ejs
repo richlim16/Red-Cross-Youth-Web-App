@@ -34,11 +34,10 @@
                   <div class="form-group col-md-6">
                   <label for="chapter">Chapter</label>
                   <select class="form-control" id="chapter" name="chapter">
-                    <option disabled selected value> -- select an option -- </option>
-                    <!-- <% for (let i=0; i < chapters.length; i++){%>
+                    <% for (let i=0; i < chapters.length; i++){%>
+                        <option disabled selected value> -- select an option -- </option>
                         <option value="<%= chapters[i].id%>"><%= chapters[i].name%></option>
-                    <%}%> -->
-                    <option value="<%= chapters.id%>"><%= chapters.name%></option>
+                    <%}%>                    
                   </select>
                   </div>
                   <div class="form-group col-md-6">

@@ -56,14 +56,14 @@ app.get('/', (req,res)=>{
 app.get('/admin',async(req,res)=>{
     if(req.session.loggedIn!=true){
         res.redirect("/login");
-    }else{
-        let docs= await Read.getAllDocs();
+    }else{        
+        let docs = await Read.getDocsFromCouncils();
         let councils = await Read.getAllCouncils();
         if(docs != null && councils != null){            
             res.render('adminHome',{
                 title: "Home",
                 adminNav:{name:req.session.username,position:req.session.type},
-                documents:docs,
+                forms:docs,
                 council:councils
             });
         }
@@ -104,11 +104,10 @@ app.post('/login', urlEncodedParser, async (req,res)=>{
     if (result != null) {
         if (bcrypt.compareSync(req.body.pass, result['password'])){
             req.session.loggedIn=true;
-            req.session.user=result['id'];
+            req.session.user_id=result['id'];
             req.session.username=result['username'];
             req.session.type=result['type'];
-            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
-                //res.send({userId: req.session.user, userType: req.session.type})
+            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){                
                 res.redirect('/admin');
             }
             else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){                
@@ -244,8 +243,9 @@ app.get('/adminCouncils', (req,res) =>{ //not directly acessible
 });
 
 app.get('/addCouncil', async (req,res) =>{
-       let chapters = await Read.getAllChapters()
-       res.send(chapters)
+       let chapters = await Read.getAllChapters();
+       //res.send(chapters)//idk why this is here is it because vue uses res.send? -derek
+       res.render('addCouncil',{title:'Councils',chapters:chapters});
 });
 
 app.get('/allCouncils', async (req,res) =>{
@@ -551,7 +551,9 @@ app.listen(port,()=>{
     console.log("Server is running");
 });
 
-app.get('/test',urlEncodedParser,async(req,res)=>{
-    let test = await Read.getAllCouncils();
+app.get('/test',urlEncodedParser,async(req,res)=>{//derek uses this to test functions kay tapolan siya     
+    let test = await Read.getDocsFromCouncils();
     res.send(test);
+    //res.render('test',{results:test});    
+    //jump to line 56 after docs is good
 })

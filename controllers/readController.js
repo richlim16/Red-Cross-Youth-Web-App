@@ -25,7 +25,7 @@ exports.docsMemForms=async (req,res)=>{
     let ret=await Document.model.findAll({
         include:memForm,
         where:{
-            type: "MEMBERSHIP",            
+            type: "MEMBERSHIP",
         }
     })
     return ret;
@@ -188,5 +188,27 @@ exports.getMemOrgs = async (req, res) => {
 
 exports.getAllCouncils = async (req, res) => {
     let ret = await Council.model.findAll();
+    return ret;
+}
+
+exports.getCouncilUsers =async(req,res)=>{//test passed integrate and testing after chapter side is finished
+    //trying to join user of type council to the associated council row
+    //i think i might be missing another step sa query so this is still an unstable function
+    const council = User.model.hasOne(Council.model, {foreignKey:'user_id'});
+    let ret=await User.model.findAll({
+        include:council,
+        where:{
+            type:'Council'
+        }
+    })
+    return ret;
+}
+
+exports.getDocsFromCouncils=async(req, res)=>{//should give a better name?
+    const doc= Council.model.hasMany(Document.model,{foreignKey:'council_id'});
+    let ret = await Council.model.findAll({
+        include:doc,
+        //where:{chapter_id:1}// 1 should be a value from the session variable, do this when chapter side login is complete
+    });
     return ret;
 }

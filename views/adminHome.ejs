@@ -35,16 +35,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                  <%for(var i=0;i<documents.length; i++){%>
-                    <tr>
-                    <th scope="row"><%= documents[i].id %></th>
-                    <td><%= documents[i].type %></td>
-                    <td>Join document via council_id</td>
-                    <td><%= documents[i].createdAt %></td>
-                    <td><span>&#10003;</span></td>
-                    <td><span>&#9747;</span></td>
-                    </tr>
-                    <% } %> 
+                  <%for(var i=0;i<forms.length; i++){%>
+                      <%for(var x=0;x<forms[i].documents.length; x++){%>
+                      <tr>
+                      <th scope="row"><%= forms[i].documents[x]['id'] %></th>
+                      <td><%= forms[i].documents[x]['type'] %></td>
+                      <td><%= forms[i].name %></td>
+                      <td><%= forms[i].documents[x]['createdAt'] %></td>
+                      <td><span>&#10003;</span></td>
+                      <td><span>&#9747;</span></td>
+                      </tr>
+                      <%}%>
+                  <%}%> 
                 </tbody>
                   </table>
                 </div>
