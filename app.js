@@ -551,9 +551,8 @@ app.listen(port,()=>{
     console.log("Server is running");
 });
 
-app.get('/test',urlEncodedParser,async(req,res)=>{//derek uses this to test functions kay tapolan siya     
-    let test = await Read.getDocsFromCouncils();
+app.get('/test',urlEncodedParser,async(req,res)=>{//derek uses this to test functions kay tapolan siya         
+    let test=await Read.docsMemForms();//wrong reference, id was used instead of document_id
+    //let uniformRequests=await Read.getUnifReqs();
     res.send(test);
-    //res.render('test',{results:test});    
-    //jump to line 56 after docs is good
 })

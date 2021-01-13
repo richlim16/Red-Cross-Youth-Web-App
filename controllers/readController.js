@@ -21,11 +21,12 @@ Chapter.model.hasMany(Council.model, {foreignKey: 'chapter_id',sourceKey: 'id'})
 Council.model.belongsTo(Chapter.model, {foreignKey: 'chapter_id'});
 
 exports.docsMemForms=async (req,res)=>{
-    const memForm = Document.model.hasMany(MembershipForm.model, {foreignKey:'id'});
+    const memForm = Document.model.hasMany(MembershipForm.model, {foreignKey:'document_id'});
     let ret=await Document.model.findAll({
         include:memForm,
         where:{
             type: "MEMBERSHIP",
+            //council_id:sessionVairableHere//still working on a proper login -derek
         }
     })
     return ret;
