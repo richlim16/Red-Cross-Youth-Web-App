@@ -59,7 +59,7 @@ exports.getAllUsers = async (req, res)=>{
     return ret;
 }
 
-exports.getUser = async (req, res) => {
+exports.getUser = async (req, res) => {    
     let ret = await User.model.findOne({
         where: {
             username: req.body.username
@@ -192,15 +192,26 @@ exports.getAllCouncils = async (req, res) => {
     return ret;
 }
 
-exports.getCouncilUsers =async(req,res)=>{//test passed integrate and testing after chapter side is finished
-    //trying to join user of type council to the associated council row
+exports.getCouncilUser=async(req,res)=>{    
     //i think i might be missing another step sa query so this is still an unstable function
     const council = User.model.hasOne(Council.model, {foreignKey:'user_id'});
-    let ret=await User.model.findAll({
+    let ret=await User.model.findOne({
         include:council,
         where:{
-            type:'Council'
+            type:'Council',
+            id:req.session.user_id
         }
+    })
+    return ret;
+}
+
+exports.getChapterUser=async(req,res)=>{
+    //i think i might be missing another step sa query so this is still an unstable function
+    //const chapter = User.model.hasOne(Chapter.model, {foreignKey:'user_id'});
+    const chap_personnel = User.model.hasOne(ChapterPersonnel.model, {foreignKey:'user_id'});
+    let ret=await User.model.findOne({
+        include:chap_personnel,
+        where:{id:req.session.user_id}
     })
     return ret;
 }
@@ -211,5 +222,16 @@ exports.getDocsFromCouncils=async(req, res)=>{//should give a better name?
         include:doc,
         //where:{chapter_id:1}// 1 should be a value from the session variable, do this when chapter side login is complete
     });
+    return ret;
+}
+
+exports.test=async(req,res)=>{
+    //i think i might be missing another step sa query so this is still an unstable function
+    //const chapter = User.model.hasOne(Chapter.model, {foreignKey:'user_id'});
+    const chap_personnel = User.model.hasOne(ChapterPersonnel.model, {foreignKey:'user_id'});
+    let ret=await User.model.findOne({
+        include:chap_personnel,
+        where:{id:2}
+    })
     return ret;
 }
