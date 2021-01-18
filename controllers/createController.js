@@ -74,7 +74,7 @@ exports.addCouncil = async (req, res) => {
 exports.addMemberForm = async (req, res) => {
     const Doc = MembershipForm.model.belongsTo(Document.model, {foreignKey:'document_id'});
     console.log(req.body)
-    let council = await getCouncilId(req.body.sessionUserId)
+    let council = await getCouncilId(req.session.user_id)
 
     await MembershipForm.model.create({
         blood_type: req.body.bloodType,

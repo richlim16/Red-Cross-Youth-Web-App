@@ -84,7 +84,7 @@ app.get('/adminProfile',(req,res)=>{ //inaccessible
     }
 });
 
-app.get('/login', (req,res)=>{ //inverse persistent    
+app.get('/login', (req,res)=>{ //inverse persistent
     if(req.session.logged_in==true){
         res.redirect("/");
     }else{
@@ -110,7 +110,8 @@ app.post('/login', urlEncodedParser, async (req,res)=>{
             if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){                
                 let data = await Read.getChapterUser(req);
                 req.session.chapter_id=data.chapter_personnel['chapter_id'];                
-                res.send(req.session)
+                //res.send(req.session)
+                res.redirect('/admin');
             }
             else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
                 let data = await Read.getCouncilUser(req)
@@ -118,8 +119,8 @@ app.post('/login', urlEncodedParser, async (req,res)=>{
                 req.session.council.id=data.council['id']
                 req.session.council.name=data.council['name']
                 req.session.council.categ=data.council['category']
-                res.send(req.session)                
-                //res.redirect('/');
+                //res.send(req.session)                
+                res.redirect('/');
             }
         }else{
             console.log("login failed");
