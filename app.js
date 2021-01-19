@@ -19,11 +19,11 @@ const saltR = 10;
 const mysql = require("mysql");
 
 const connection =  mysql.createConnection({
-    multipleStatements: true,
-    host: "lfmerukkeiac5y5w.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
-    user: "m6kvxzjvw4fvofsl",
-    password: "exxzpyih9awp6pa1",
-    database: "fh760xjq4bv7hcgj"
+    multipleStatements:true,
+    host:"lfmerukkeiac5y5w.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    user:"m6kvxzjvw4fvofsl",
+    password:"exxzpyih9awp6pa1",
+    database:"fh760xjq4bv7hcgj"
 });
 
 /*
