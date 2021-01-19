@@ -20,13 +20,13 @@ const User = require('../models/user');
 Chapter.model.hasMany(Council.model, {foreignKey: 'chapter_id',sourceKey: 'id'});
 Council.model.belongsTo(Chapter.model, {foreignKey: 'chapter_id'});
 
-exports.docsMemForms=async (req,res)=>{
+exports.docsMemForms=async (req,res)=>{    
     const memForm = Document.model.hasMany(MembershipForm.model, {foreignKey:'document_id'});
     let ret=await Document.model.findAll({
         include:memForm,
         where:{
             type: "MEMBERSHIP",
-            //council_id:sessionVairableHere//still working on a proper login -derek
+            council_id:req.session.council_id
         }
     })
     return ret;
@@ -192,8 +192,7 @@ exports.getAllCouncils = async (req, res) => {
     return ret;
 }
 
-exports.getCouncilUser=async(req,res)=>{    
-    //i think i might be missing another step sa query so this is still an unstable function
+exports.getCouncilUser=async(req,res)=>{        
     const council = User.model.hasOne(Council.model, {foreignKey:'user_id'});
     let ret=await User.model.findOne({
         include:council,
@@ -205,9 +204,7 @@ exports.getCouncilUser=async(req,res)=>{
     return ret;
 }
 
-exports.getChapterUser=async(req,res)=>{
-    //i think i might be missing another step sa query so this is still an unstable function
-    //const chapter = User.model.hasOne(Chapter.model, {foreignKey:'user_id'});
+exports.getChapterUser=async(req,res)=>{    
     const chap_personnel = User.model.hasOne(ChapterPersonnel.model, {foreignKey:'user_id'});
     let ret=await User.model.findOne({
         include:chap_personnel,
@@ -225,13 +222,14 @@ exports.getDocsFromCouncils=async(req, res)=>{//should give a better name?
     return ret;
 }
 
-exports.test=async(req,res)=>{
-    //i think i might be missing another step sa query so this is still an unstable function
-    //const chapter = User.model.hasOne(Chapter.model, {foreignKey:'user_id'});
-    const chap_personnel = User.model.hasOne(ChapterPersonnel.model, {foreignKey:'user_id'});
-    let ret=await User.model.findOne({
-        include:chap_personnel,
-        where:{id:2}
+exports.docsUnifReqs=async (req,res)=>{    
+    const memForm = Document.model.hasMany(UniformRequest.model, {foreignKey:'document_id'});
+    let ret=await Document.model.findAll({
+        include:memForm,
+        where:{
+            type: "UNIFORM_REQUEST",
+            council_id:req.session.council_id
+        }
     })
     return ret;
 }

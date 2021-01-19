@@ -35,40 +35,35 @@ app.use(session({
     resave: true
 }));
 
-app.get('/', (req,res)=>{
+app.get('/', async(req,res)=>{
     if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
         res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
         res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-        res.setHeader('Access-Control-Allow-Credentials', true);        
-        res.render('home',{
-            title:"Home",
-            user:{
-                name:req.session.username,                
+        res.setHeader('Access-Control-Allow-Credentials', true);
+        if(req.session.type == 'Council' || req.session.type == 'Council Advisor'){
+            res.render('home',{
+                title:"Home",
+                nav:{name:req.session.council_name,category:req.session.council_category}
+            });
+        }else{
+            let docs = await Read.getDocsFromCouncils();
+            let councils = await Read.getAllCouncils();
+            if(docs != null && councils != null){            
+                res.render('adminHome',{
+                    title: "Home",
+                    adminNav:{name:req.session.username,position:req.session.type},
+                    forms:docs,
+                    council:councils
+                });
             }
-        })
+        }        
     }
 });
-      
+
 //GETS START HERE
-app.get('/admin',async(req,res)=>{
-    if(req.session.logged_in!=true){
-        res.redirect("/login");
-    }else{        
-        let docs = await Read.getDocsFromCouncils();
-        let councils = await Read.getAllCouncils();
-        if(docs != null && councils != null){            
-            res.render('adminHome',{
-                title: "Home",
-                adminNav:{name:req.session.username,position:req.session.type},
-                forms:docs,
-                council:councils
-            });
-        }
-    };
-});
 
 app.get('/adminProfile',(req,res)=>{ //inaccessible
     if(req.session.logged_in!=true){
@@ -88,13 +83,7 @@ app.get('/login', (req,res)=>{ //inverse persistent
     if(req.session.logged_in==true){
         res.redirect("/");
     }else{
-        res.render('login', {
-            title: "Login",
-            user:{
-                name: "Red Cross", 
-                type: "Youth"
-            }
-        });
+        res.render('login',{title: "Login"});
     }
 });
 
@@ -109,18 +98,15 @@ app.post('/login', urlEncodedParser, async (req,res)=>{
             req.session.type=result['type'];
             if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){                
                 let data = await Read.getChapterUser(req);
-                req.session.chapter_id=data.chapter_personnel['chapter_id'];                
-                res.send(req.session)
-                //res.redirect('/admin');
+                req.session.chapter_id=data.chapter_personnel['chapter_id'];                                    
             }
             else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
                 let data = await Read.getCouncilUser(req)                
                 req.session.council_id=data.council['id']
                 req.session.council_name=data.council['name']
-                req.session.council_category=data.council['category']
-                res.send(req.session)                
-                //res.redirect('/');
+                req.session.council_category=data.council['category']                
             }
+            res.redirect('/');//if login failed it should redirect them to login anyway
         }else{
             console.log("login failed");
             res.send("wrong")
@@ -203,20 +189,20 @@ app.get('/officerActivity/:type', async (req,res) =>{
 });
 
 app.get('/viewDocs',async (req,res) =>{
-    let members=await Read.docsMemForms();
-    let uniformRequests=await Read.getUnifReqs();
-    console.log(req.session);
-
+    let members=await Read.docsMemForms(req);
+    let uniformRequests=await Read.docsUnifReqs(req);
     if(req.session.logged_in!=true){
         res.redirect("/login");
-    }else{                
+    }else{
+        req.session
         res.render('masterlist',{
             title:"Documents",
             memForm:members,
             unifReqs:uniformRequests,
-            council:{
-                name:req.session.username
-            } 
+            nav:{
+                name:req.session.council_name,                
+                category:req.session.council_category
+            }
         });
     }
 });
@@ -252,7 +238,7 @@ app.get('/adminCouncils', (req,res) =>{ //not directly acessible
 app.get('/addCouncil', async (req,res) =>{
        let chapters = await Read.getAllChapters();
        //res.send(chapters)//idk why this is here is it because vue uses res.send? -derek
-       res.render('addCouncil',{title:'Councils',chapters:chapters});
+       res.render('addCouncil',{title:'Councils',chapters:chapters});//going to remove chapters since the sessions work na
 });
 
 app.get('/allCouncils', async (req,res) =>{
@@ -261,7 +247,7 @@ app.get('/allCouncils', async (req,res) =>{
     res.render('addCouncil',{
       title: "Add Council", 
       chapters: req.session.chapter,
-      council: req.session.chapter //yes, poor naming
+      council: req.session.chapter //yes, poor naming lmao poggers
     });    
 });
 
@@ -271,11 +257,11 @@ app.get('/docs', (req,res)=>{
         res.redirect("/login");
     }else{
         console.log(req.session)
-        res.render('docs', {
+        res.render('docs',{
             title: "Documents",
-            user:{
-                name:req.session.username,
-                type:'council'
+            nav:{
+                name:req.session.council_name,
+                category:req.session.council_category
             }
         });
     }
@@ -320,7 +306,7 @@ app.get('/committeeMembershipForm', async (req,res)=>{
         res.render('committeeMembershipForm',{title: "Membership Form", session: req.session,councilName:"USC",councilType:"College Council"});
     }
 });
-
+//what's the difference between the two routes?
 app.get('/committeeMembershipForm', (req,res)=>{
     if(req.session.logged_in!=true){
         res.send(false);
@@ -519,8 +505,7 @@ app.listen(port,()=>{
     console.log("Server is running");
 });
 
-app.get('/test',urlEncodedParser,async(req,res)=>{//derek uses this to test functions kay tapolan siya         
-    let test=await Read.test();//wrong reference, id was used instead of document_id
-    //let uniformRequests=await Read.getUnifReqs();
+app.get('/test',urlEncodedParser,async(req,res)=>{//derek uses this to test functions kay tapolan siya
+    let test=await Read.docsUnifReqs(req);
     res.send(test);
 })
