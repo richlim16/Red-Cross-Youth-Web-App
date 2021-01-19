@@ -155,7 +155,6 @@ exports.getCouncilAdvPendingMemForms = async(req, res) => {
         },
     });
 
-    });    
     return ret;
 }
 
