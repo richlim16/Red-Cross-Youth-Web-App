@@ -1,4 +1,3 @@
-const port=3000;
 const express = require('express');
 const ejs = require('ejs');
 const bodyParser = require("body-parser");
@@ -18,6 +17,16 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 const saltR = 10;
 const mysql = require("mysql");
+
+const connection =  mysql.createConnection({
+    multipleStatements: true,
+    host: "lfmerukkeiac5y5w.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    user: "m6kvxzjvw4fvofsl",
+    password: "exxzpyih9awp6pa1",
+    database: "fh760xjq4bv7hcgj"
+});
+
+/*
 const connection =  mysql.createConnection({
     multipleStatements: true,
     host: "127.0.0.1",
@@ -25,6 +34,7 @@ const connection =  mysql.createConnection({
     password: "",
     database: "rcy_db"
 });
+*/
 
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
@@ -501,8 +511,8 @@ app.post('/memForm/advReject/:id', async (req,res)=>{
     res.send({sig:member.council_adv_sig})
 });
 
-app.listen(port,()=>{
-    console.log("Server is running");
+app.listen(process.env.PORT || 3000,()=>{
+    console.log("Server is running!");
 });
 
 app.get('/test',urlEncodedParser,async(req,res)=>{//derek uses this to test functions kay tapolan siya
