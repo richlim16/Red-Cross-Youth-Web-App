@@ -143,6 +143,7 @@ exports.getCouncilAdvPendingMemForms = async(req, res) => {
             council_adv_sig: 0,
         },
     });
+
     return ret;
 };    
 
