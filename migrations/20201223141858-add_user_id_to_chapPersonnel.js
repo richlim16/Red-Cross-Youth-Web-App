@@ -10,10 +10,10 @@ module.exports = {
       key:'id'
     },
     after: 'id'
-  });    
+  });
 },
 
   down: async (queryInterface, Sequelize)=>{
-  queryInterface.removeColumn('chapter_personnel', 'user_id');    
+  queryInterface.removeColumn('chapter_personnel','user_id');
   }
 };

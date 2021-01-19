@@ -21,11 +21,12 @@ Chapter.model.hasMany(Council.model, {foreignKey: 'chapter_id',sourceKey: 'id'})
 Council.model.belongsTo(Chapter.model, {foreignKey: 'chapter_id'});
 
 exports.docsMemForms=async (req,res)=>{
-    const memForm = Document.model.hasMany(MembershipForm.model, {foreignKey:'id'});
+    const memForm = Document.model.hasMany(MembershipForm.model, {foreignKey:'document_id'});
     let ret=await Document.model.findAll({
         include:memForm,
         where:{
-            type: "MEMBERSHIP",            
+            type: "MEMBERSHIP",
+            //council_id:sessionVairableHere//still working on a proper login -derek
         }
     })
     return ret;
@@ -58,7 +59,7 @@ exports.getAllUsers = async (req, res)=>{
     return ret;
 }
 
-exports.getUser = async (req, res) => {
+exports.getUser = async (req, res) => {    
     let ret = await User.model.findOne({
         where: {
             username: req.body.username
@@ -66,17 +67,6 @@ exports.getUser = async (req, res) => {
     })
     return ret;
 }
-
-
-exports.getUser = async (req, res) => {
-    let ret = await User.model.findOne({
-        where: {
-            username: req.body.username
-        }
-    })
-    return ret;
-}
-
 
 //Used in creating a council
 exports.getAllChapters = async (req, res) => {
@@ -137,7 +127,6 @@ exports.getNoneCommitteeMembers = async(req, res) => {
     return ret;
 }
 
-
 // Used in masterlist
 exports.getCouncilPendingMemForms = async(req, res) => {
     let ret = await MembershipForm.model.findAll({
@@ -156,9 +145,7 @@ exports.getCouncilAdvPendingMemForms = async(req, res) => {
     });
 
     return ret;
-}
-
-
+};    
 
 exports.getFilledMemForm = async (req, res) => {
     let ret = await MembershipForm.model.findOne({
@@ -203,5 +190,49 @@ exports.getMemOrgs = async (req, res) => {
 
 exports.getAllCouncils = async (req, res) => {
     let ret = await Council.model.findAll();
+    return ret;
+}
+
+exports.getCouncilUser=async(req,res)=>{    
+    //i think i might be missing another step sa query so this is still an unstable function
+    const council = User.model.hasOne(Council.model, {foreignKey:'user_id'});
+    let ret=await User.model.findOne({
+        include:council,
+        where:{
+            type:'Council',
+            id:req.session.user_id
+        }
+    })
+    return ret;
+}
+
+exports.getChapterUser=async(req,res)=>{
+    //i think i might be missing another step sa query so this is still an unstable function
+    //const chapter = User.model.hasOne(Chapter.model, {foreignKey:'user_id'});
+    const chap_personnel = User.model.hasOne(ChapterPersonnel.model, {foreignKey:'user_id'});
+    let ret=await User.model.findOne({
+        include:chap_personnel,
+        where:{id:req.session.user_id}
+    })
+    return ret;
+}
+
+exports.getDocsFromCouncils=async(req, res)=>{//should give a better name?
+    const doc= Council.model.hasMany(Document.model,{foreignKey:'council_id'});
+    let ret = await Council.model.findAll({
+        include:doc,
+        //where:{chapter_id:1}// 1 should be a value from the session variable, do this when chapter side login is complete
+    });
+    return ret;
+}
+
+exports.test=async(req,res)=>{
+    //i think i might be missing another step sa query so this is still an unstable function
+    //const chapter = User.model.hasOne(Chapter.model, {foreignKey:'user_id'});
+    const chap_personnel = User.model.hasOne(ChapterPersonnel.model, {foreignKey:'user_id'});
+    let ret=await User.model.findOne({
+        include:chap_personnel,
+        where:{id:2}
+    })
     return ret;
 }

@@ -36,27 +36,34 @@ app.use(session({
 }));
 
 app.get('/', (req,res)=>{
-    if(req.session.loggedIn!=true){
+    if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
         res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
         res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-        res.setHeader('Access-Control-Allow-Credentials', true);
-        res.send({title: "Home",councilName:"USC",councilType:"College Council"});
+        res.setHeader('Access-Control-Allow-Credentials', true);        
+        res.render('home',{
+            title:"Home",
+            user:{
+                name:req.session.username,                
+            }
+        })
+    }
+});
       
 //GETS START HERE
 app.get('/admin',async(req,res)=>{
-    if(req.session.loggedIn!=true){
+    if(req.session.logged_in!=true){
         res.redirect("/login");
-    }else{
-        let docs= await Read.getAllDocs();
+    }else{        
+        let docs = await Read.getDocsFromCouncils();
         let councils = await Read.getAllCouncils();
-        if(docs != null && councils != null){
+        if(docs != null && councils != null){            
             res.render('adminHome',{
                 title: "Home",
-                adminNav:{name:req.session.name,session:req.session.chapter.name,position:req.session.chapter.type},
-                documents:docs,
+                adminNav:{name:req.session.username,position:req.session.type},
+                forms:docs,
                 council:councils
             });
         }
@@ -64,7 +71,7 @@ app.get('/admin',async(req,res)=>{
 });
 
 app.get('/adminProfile',(req,res)=>{ //inaccessible
-    if(req.session.loggedIn!=true){
+    if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
         res.render('adminEditProf',{
@@ -77,19 +84,8 @@ app.get('/adminProfile',(req,res)=>{ //inaccessible
     }
 });
 
-app.get('/', (req,res)=>{
-    if(req.session.loggedIn!=true){
-        res.redirect("/login");
-    }else{
-        res.render('home', {
-            title: "Home",
-            user: req.session.council
-        });
-    }
-});
-
-app.get('/login', (req,res)=>{ //inverse persistent    
-    if(req.session.loggedIn==true){
+app.get('/login', (req,res)=>{ //inverse persistent
+    if(req.session.logged_in==true){
         res.redirect("/");
     }else{
         res.render('login', {
@@ -102,8 +98,38 @@ app.get('/login', (req,res)=>{ //inverse persistent
     }
 });
 
+app.post('/login', urlEncodedParser, async (req,res)=>{
+    console.log(req.body)
+    let result = await Read.getUser(req)
+    if (result != null) {
+        if (bcrypt.compareSync(req.body.pass, result['password'])){
+            req.session.logged_in=true;
+            req.session.user_id=result['id'];
+            req.session.username=result['username'];
+            req.session.type=result['type'];
+            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){                
+                let data = await Read.getChapterUser(req);
+                req.session.chapter_id=data.chapter_personnel['chapter_id'];                
+                res.send(req.session)
+                //res.redirect('/admin');
+            }
+            else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
+                let data = await Read.getCouncilUser(req)                
+                req.session.council_id=data.council['id']
+                req.session.council_name=data.council['name']
+                req.session.council_category=data.council['category']
+                res.send(req.session)                
+                //res.redirect('/');
+            }
+        }else{
+            console.log("login failed");
+            res.send("wrong")
+        }
+   };
+})
+
 app.get('/logout', (req,res)=>{ //no persistent
-    req.session.loggedIn=false;
+    req.session.logged_in=false;
     res.redirect('/login');
 });
 
@@ -132,26 +158,6 @@ app.post('/signup', urlEncodedParser, async (req,res)=>{
     res.redirect('/login');
 });
 
-app.post('/login', urlEncodedParser, async (req,res)=>{
-    console.log(req.body)
-    let result = await Read.getUser(req)
-    if (result != null) {
-        if (bcrypt.compareSync(req.body.pass, result['password'])){
-            req.session.loggedIn=true;
-            req.session.user=result['id'];
-            req.session.type=result['type'];
-            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
-                res.send({userId: req.session.user, userType: req.session.type})
-            }
-            else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
-                res.send({userId: req.session.user, userType: req.session.type})
-            }  
-        }else{
-            console.log("login failed");
-            res.send("wrong")
-        }
-   });
-          
 /*app.post('/signup', urlEncodedParser, (req,res)=>{
     let salt= bcrypt.genSaltSync(saltR);
     let pass= bcrypt.hashSync(req.body.pass, salt);
@@ -178,7 +184,7 @@ app.post('/login', urlEncodedParser, async (req,res)=>{
 */
 
 app.get('/about', (req,res)=>{
-    if(req.session.loggedIn!=true){
+    if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
         res.render('about', {title: "About",councilName:"USC",councilType:"College Council"});
@@ -199,16 +205,24 @@ app.get('/officerActivity/:type', async (req,res) =>{
 app.get('/viewDocs',async (req,res) =>{
     let members=await Read.docsMemForms();
     let uniformRequests=await Read.getUnifReqs();
-    console.log(members[0].membership_forms[0]);
-    if(req.session.loggedIn!=true){
+    console.log(req.session);
+
+    if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{                
-        res.render('masterlist',{title:"Documents", memForm:members,unifReqs:uniformRequests,council:req.session.council });
+        res.render('masterlist',{
+            title:"Documents",
+            memForm:members,
+            unifReqs:uniformRequests,
+            council:{
+                name:req.session.username
+            } 
+        });
     }
 });
 
 app.get('/adminForms', (req,res) =>{
-    if(req.session.loggedIn!=true){
+    if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
         res.render('adminActivity',{ //inconsistent naming
@@ -222,7 +236,7 @@ app.get('/adminForms', (req,res) =>{
 });
 
 app.get('/adminCouncils', (req,res) =>{ //not directly acessible
-    if(req.session.loggedIn!=true){
+    if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
         res.render('adminCouncils',{
@@ -236,8 +250,9 @@ app.get('/adminCouncils', (req,res) =>{ //not directly acessible
 });
 
 app.get('/addCouncil', async (req,res) =>{
-       let chapters = await Read.getAllChapters()
-       res.send(chapters)
+       let chapters = await Read.getAllChapters();
+       //res.send(chapters)//idk why this is here is it because vue uses res.send? -derek
+       res.render('addCouncil',{title:'Councils',chapters:chapters});
 });
 
 app.get('/allCouncils', async (req,res) =>{
@@ -247,24 +262,27 @@ app.get('/allCouncils', async (req,res) =>{
       title: "Add Council", 
       chapters: req.session.chapter,
       council: req.session.chapter //yes, poor naming
-      });
-    }
+    });    
 });
 
 //DOCUMENTS START HERE
 app.get('/docs', (req,res)=>{
-    if(req.session.loggedIn!=true){
+    if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
+        console.log(req.session)
         res.render('docs', {
             title: "Documents",
-            user: req.session.council
-    });
+            user:{
+                name:req.session.username,
+                type:'council'
+            }
+        });
     }
 });
 
 app.get('/addReport', (req,res)=>{
-    if(req.session.loggedIn!=true){
+    if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
         res.render('addReport', {
@@ -275,7 +293,7 @@ app.get('/addReport', (req,res)=>{
 });
 
 app.get('/activityForm', (req,res)=>{
-    if(req.session.loggedIn!=true){
+    if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{ 
         res.render('addReport',{
@@ -295,8 +313,7 @@ app.get('/membershipForm', async (req,res)=>{
 
 
 app.get('/committeeMembershipForm', async (req,res)=>{
-    // let councilName = await Read.getCouncilName(sessionId)
-    if(req.session.loggedIn!=true){
+    if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
         let committees = await Read.getCommitteesOfCouncil()
@@ -305,18 +322,18 @@ app.get('/committeeMembershipForm', async (req,res)=>{
 });
 
 app.get('/committeeMembershipForm', (req,res)=>{
-    if(req.session.loggedIn!=true){
+    if(req.session.logged_in!=true){
         res.send(false);
     }else{
         res.render('committeeMembershipForm',{title: "Committee Membership Form",councilName:"USC",councilType:"College Council"});
     }
 });
+
 //When a specific committee is selected
-app.get('/generatedCommitteeMembershipForm/:type&:userId', urlEncodedParser, async (req,res)=>{ 
+app.get('/generatedCommitteeMembershipForm/:type&:userId', urlEncodedParser, async (req,res)=>{
     let members = await Read.getMembersOfCommittee(req)
       res.send(members);
       res.render('committeeMembershipForm',{title: "Committee Membership Form", committees: committees, session: req.session});
-    }
 });
 
 //When a specific committee is selected
@@ -341,7 +358,7 @@ app.get('/getNoneCommitteeMembers', urlEncodedParser, async (req,res)=>{
 });
 
 app.get('/activityRequestForm', (req,res)=>{
-    if(req.session.loggedIn!=true){
+    if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
         res.render('activityRequestForm',{
@@ -352,7 +369,7 @@ app.get('/activityRequestForm', (req,res)=>{
 });
 
 app.get('/activityReportForm', (req,res)=>{
-    if(req.session.loggedIn!=true){
+    if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
         res.render('activityReportForm',{
@@ -363,7 +380,7 @@ app.get('/activityReportForm', (req,res)=>{
 });
 
 app.get('/unifRequest', (req,res)=>{
-    if(req.session.loggedIn!=true){
+    if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{        
         connection.query("SELECT id, username as name FROM `users`",(err,result)=>{
@@ -379,7 +396,7 @@ app.get('/unifRequest', (req,res)=>{
 });
 
 app.get('/unifClaim', (req,res)=>{
-    if(req.session.loggedIn!=true){
+    if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
         res.render('uniformClaimSlip', {
@@ -390,7 +407,7 @@ app.get('/unifClaim', (req,res)=>{
 });
 
 app.get('/serviceReq', (req,res)=>{
-    if(req.session.loggedIn!=true){
+    if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
         connection.query("SELECT chapter_personnels.id, users.username FROM `councils` inner join `chapter_personnels` on councils.chapter_id=chapter_personnels.chapter_id inner join users on users.type=\"Chapter Admin\" WHERE councils.user_id='"+req.session.user+"'",(err,result)=>{
@@ -420,52 +437,11 @@ app.get('/filledMemForm/:id', async (req,res)=>{
 });
 
 //DOCUMENTS END HERE
-//GETS END HERE
 
-//POST requests
 app.post('/signup', urlEncodedParser, async(req,res)=>{
     await Create.signUp(req);        
     console.log("Account has been made!");
     res.redirect('/');
-});
-
-app.post('/login', urlEncodedParser, async(req,res)=>{
-    let result = await Read.getUser(req)
-    if(result !=null){
-        if (bcrypt.compareSync(req.body.pass, result['password'])){
-            req.session.loggedIn=true;
-            req.session.user=result['id'];
-            req.session.type=result['type'];
-            console.log(req.session.type+" AND "+req.session.user);
-            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
-                req.session.name=result['username'];
-                let sql="SELECT * FROM chapter_personnel inner JOIN chapters on chapter_personnel.chapter_id=chapters.id";
-                connection.query(sql,(err,result)=>{
-                    if(err)throw(err);
-                    req.session.chapter={};
-                    req.session.chapter.id=result[0]['id'];
-                    req.session.chapter.name=result[0]['name'];
-                    console.log(req.session)
-                    res.redirect('/admin')
-                });
-            }
-            else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
-                connection.query("SELECT * FROM councils WHERE user_id='"+req.session.user+"'",(err,result)=>{
-                    if(err)throw(err)
-                    console.log(result);
-                    req.session.council={};
-                    req.session.council.id=result[0]['id'];
-                    req.session.council.name=result[0]['name'];
-                    req.session.council.type=result[0]['category'];
-                    console.log(req.session)
-                    res.redirect('/')
-                });
-            }
-        }else{
-            console.log("login failed");
-            res.redirect('/login');
-        }
-    }
 });
 
 app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{  
@@ -539,17 +515,12 @@ app.post('/memForm/advReject/:id', async (req,res)=>{
     res.send({sig:member.council_adv_sig})
 });
 
-app.post('/', (req, res) => {
-    console.log(req.body)//not deleting this because idk what it is for lmao
-})
-
-//POST requests END HERE
-
 app.listen(port,()=>{
     console.log("Server is running");
 });
 
-app.get('/test',urlEncodedParser,async(req,res)=>{
-    let test = await Read.getAllCouncils();
+app.get('/test',urlEncodedParser,async(req,res)=>{//derek uses this to test functions kay tapolan siya         
+    let test=await Read.test();//wrong reference, id was used instead of document_id
+    //let uniformRequests=await Read.getUnifReqs();
     res.send(test);
 })

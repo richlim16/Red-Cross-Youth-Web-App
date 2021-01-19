@@ -1,0 +1,12 @@
+Things for the immediate future:
+
+	Host on Heroku when at least 95% functional (backend-wise)
+	Clean the code
+	Optimization
+	Testing
+
+Things for the far future:
+	Get someone to make a background image for the app so that it doesn't look like it's just for the Cebu Chapter
+	Change the images of the forms to something else, maybe some graphics napud
+	In about change the group photo to something else, preferably the logo lang or another graphic
+	Team, change the content to something totally different or make it dynamic?(making it adapt to the different chapters is data intensive; storage-wise)

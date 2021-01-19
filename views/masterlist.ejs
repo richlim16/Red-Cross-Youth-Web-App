@@ -42,7 +42,7 @@
                       <tr>
                       <th scope="row"><%= memForm[i].id %></th>
                       <!--<td>Pending</td>-->
-                      <td><a href="/filledMemForm/<%= memForm[i].id %>"> <%= memForm[i].membership_forms[0] %> </a></td>
+                      <td><a href="/filledMemForm/<%= memForm[i].membership_forms[0]['id'] %>"> <%= memForm[i].membership_forms[0]['surname']%> <%=memForm[i].membership_forms[0]['first_name'] %> </a></td>
                       <td><span>&#10003;</span></td>
                       <td><span>&#9747;</span></td>
                       </tr>
@@ -88,11 +88,11 @@
               </div>
             </div>
 
-            <div class="col-md-6">
+            <!--<div class="col-md-6">
               <div class="card">
                 <div class="card-header card-header-danger">
                   <h4 class="card-title">Committee Membership Forms</h4>
-                  <!-- <p class="card-category">New employees on 15th September, 2016</p> -->
+                  <p class="card-category">New employees on 15th September, 2016</p>
                 </div>
                 <div class="card-body table-responsive">
                   <table class="table table-hover">
@@ -135,7 +135,7 @@
                   </table>
                 </div>
               </div>
-            </div>
+            </div>-->
           </div>
         </div>
       </section>
