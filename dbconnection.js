@@ -1,5 +1,5 @@
 const {Sequelize} = require('sequelize');
-const sequelize = new Sequelize('rcy_db', 'root', '', {
+const sequelize = new Sequelize('fh760xjq4bv7hcgj', 'm6kvxzjvw4fvofsl', 'exxzpyih9awp6pa1', {
     host: 'lfmerukkeiac5y5w.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
     dialect: 'mysql',
     pool: {
@@ -17,3 +17,10 @@ try{
 }
 
 exports.sequelize = sequelize;
+
+/*
+    host:"lfmerukkeiac5y5w.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+    user:"m6kvxzjvw4fvofsl",
+    password:"exxzpyih9awp6pa1",
+    database:"fh760xjq4bv7hcgj"
+*/
