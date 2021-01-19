@@ -1,6 +1,6 @@
 const {Sequelize} = require('sequelize');
 const sequelize = new Sequelize('rcy_db', 'root', '', {
-    host: 'localhost',
+    host: 'lfmerukkeiac5y5w.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
     dialect: 'mysql',
     pool: {
         max: 10,
