@@ -1,4 +1,3 @@
-const port=3000;
 const express = require('express');
 const ejs = require('ejs');
 const bodyParser = require("body-parser");
@@ -477,8 +476,8 @@ app.post('/memForm/advReject/:id', async (req,res)=>{
     res.send({sig:member.council_adv_sig})
 });
 
-app.listen(port,()=>{
-    console.log("Server is running");
+app.listen(process.env.PORT || 3000,()=>{
+    console.log("Server is running!");
 });
 
 app.get('/test',urlEncodedParser,async(req,res)=>{//derek uses this to test functions kay tapolan siya
