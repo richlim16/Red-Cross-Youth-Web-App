@@ -21,7 +21,6 @@ const mysql = require("mysql");
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 
-/*
 app.use(session({
     secret: "EyeYam-bUk1u!?",
     saveUninitialized: true,
@@ -478,12 +477,11 @@ app.post('/memForm/advReject/:id', async (req,res)=>{
     let member = await Read.getFilledMemForm(req)
     res.send({sig:member.council_adv_sig})
 });
-*/
 
 app.listen(process.env.PORT || 3000,()=>{
     console.log("Server is running!");
 });
-/*
+
 function shortenCateg(category){//this is used on login to shorten the category, placed at the bottom in case this function can be used elsewhere
     let ret=''
     switch(category){
@@ -496,11 +494,10 @@ function shortenCateg(category){//this is used on login to shorten the category,
     }    
     return ret
 }
-*/
 
-app.get('/',(req,res)=>{//i know there's a better way to do this but i'm lazy -derek
-    res.render('maintenance',{title:'App Down!'})
-});
+//app.get('/',(req,res)=>{//i know there's a better way to do this but i'm lazy -derek
+//    res.render('maintenance',{title:'App Down!'})
+//});
 
 app.use((req, res)=>{
     res.status(400);
