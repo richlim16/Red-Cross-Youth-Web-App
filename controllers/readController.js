@@ -78,7 +78,7 @@ exports.getAllChapters = async (req, res) => {
 exports.getCommitteesOfCouncil = async (req, res) => {
     let ret = await Committee.model.findAll({
         where: {
-            council_id: council      //get council_id from Session variable
+            council_id: req.session.user_id      //get council_id from Session variable
         }
     });
 

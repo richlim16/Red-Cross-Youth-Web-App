@@ -316,18 +316,18 @@ app.get('/committeeMembershipForm', async (req,res)=>{
     if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
-        let committees = await Read.getCommitteesOfCouncil()
+        let committees = await Read.getCommitteesOfCouncil(req)
         res.render('committeeMembershipForm',{title: "Membership Form", session: req.session,councilName:"USC",councilType:"College Council"});
     }
 });
 
-app.get('/committeeMembershipForm', (req,res)=>{
-    if(req.session.logged_in!=true){
-        res.send(false);
-    }else{
-        res.render('committeeMembershipForm',{title: "Committee Membership Form",councilName:"USC",councilType:"College Council"});
-    }
-});
+// app.get('/committeeMembershipForm', (req,res)=>{
+//     if(req.session.logged_in!=true){
+//         res.send(false);
+//     }else{
+//         res.render('committeeMembershipForm',{title: "Committee Membership Form",councilName:"USC",councilType:"College Council"});
+//     }
+// });
 
 //When a specific committee is selected
 app.get('/generatedCommitteeMembershipForm/:type&:userId', urlEncodedParser, async (req,res)=>{
