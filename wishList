@@ -10,3 +10,52 @@ Things for the far future:
 	Change the images of the forms to something else, maybe some graphics napud
 	In about change the group photo to something else, preferably the logo lang or another graphic
 	Team, change the content to something totally different or make it dynamic?(making it adapt to the different chapters is data intensive; storage-wise)
+
+
+ORIGINAL
+app.get('/', (req,res)=>{
+	if(req.session.logged_in!=true){
+        res.redirect("/login");
+    }else{
+        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
+        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        res.setHeader('Access-Control-Allow-Credentials', true);
+        res.render('home',{
+            title:"Home",
+            nav:{name:req.session.council_name,category:req.session.council_category}
+        });
+    }
+});
+
+VERSION A
+app.get('/', (req,res)=>{
+    if(req.session.logged_in!=true){
+        res.redirect("/login");
+    }else{
+        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
+        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        res.setHeader('Access-Control-Allow-Credentials', true);
+        if(req.session.type == 'Council' || req.session.type == 'Council Advisor'){
+        	res.render('home',{
+            	title:"Home",
+            	nav:{name:req.session.council_name,category:req.session.council_category}
+        	});
+        }else{
+        	let docs = await Read.getDocsFromCouncils();
+        	let councils = await Read.getAllCouncils();
+        	if(docs != null && councils != null){            
+	            res.render('adminHome',{
+                	title: "Home",
+                	adminNav:{name:req.session.username,position:req.session.type},
+                	forms:docs,
+                	council:councils
+            	});
+        	}
+        }        
+    }
+});
+
+req.session.type == 'Council' || req.session.type == 'Council Advisor'
+req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'
