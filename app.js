@@ -18,13 +18,6 @@ const session = require("express-session");
 const bcrypt = require("bcrypt");
 const saltR = 10;
 const mysql = require("mysql");
-const connection =  mysql.createConnection({
-    multipleStatements: true,
-    host: "127.0.0.1",
-    user: "root",
-    password: "",
-    database: "rcy_db"
-});
 
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
@@ -37,7 +30,6 @@ app.use(session({
 
 
 app.get('/', async(req,res)=>{
-
     if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
@@ -48,7 +40,10 @@ app.get('/', async(req,res)=>{
         if(req.session.type == 'Council' || req.session.type == 'Council Advisor'){
             res.render('home',{
                 title:"Home",
-                nav:{name:req.session.council_name,category:req.session.council_category}
+                nav:{
+                    name:req.session.council_name,
+                    category:req.session.council_category
+                }
             });
         }else{
             let docs = await Read.getDocsFromCouncils();
@@ -74,8 +69,8 @@ app.get('/adminProfile',(req,res)=>{ //inaccessible
         res.render('adminEditProf',{
             title: "Edit Profile",
             adminNav: {
-                name: req.session.name, 
-                chapter: req.session.chapter.name
+                name: req.session.user_name, 
+                chapter: 'some random string'
             }
         });
     }
@@ -89,30 +84,31 @@ app.get('/login', (req,res)=>{ //inverse persistent
     }
 });
 
-app.post('/login', urlEncodedParser, async (req,res)=>{
+app.post('/login', urlEncodedParser, async (req,res)=>{//the login failuer handling can be better but with how it is right now it works for all cases of failed logins
     console.log(req.body)
-    let result = await Read.getUser(req)
-    if (result != null) {
+    let result = await Read.getUser(req)    
+    if (result !== null){
         if (bcrypt.compareSync(req.body.pass, result['password'])){
             req.session.logged_in=true;
             req.session.user_id=result['id'];
             req.session.username=result['username'];
             req.session.type=result['type'];
-            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){                
+            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
                 let data = await Read.getChapterUser(req);
-                req.session.chapter_id=data.chapter_personnel['chapter_id'];                                    
-            }
-            else if(req.session.type == 'Council' || req.session.type == 'Council Advisor'){
-                let data = await Read.getCouncilUser(req)                
+                req.session.chapter_id=data.chapter_personnel['chapter_id'];
+            }else if(req.session.type == 'Council' || req.session.type == 'Council Advisor'){
+                let data = await Read.getCouncilUser(req)
                 req.session.council_id=data.council['id']
                 req.session.council_name=data.council['name']
                 req.session.council_category=data.council['category']                
             }
             res.redirect('/');//if login failed it should redirect them to login anyway
         }else{
-            console.log("login failed");
-            res.send("wrong")
+            //this runs when username is correct but password is not
+            res.redirect('/')
         }
+    }else{
+        res.redirect('/')
    };
 })
 
@@ -145,31 +141,6 @@ app.post('/signup', urlEncodedParser, async (req,res)=>{
     await Create.signUp(req);
     res.redirect('/login');
 });
-
-/*app.post('/signup', urlEncodedParser, (req,res)=>{
-    let salt= bcrypt.genSaltSync(saltR);
-    let pass= bcrypt.hashSync(req.body.pass, salt);
-    connection.query("INSERT INTO `users` (`id`,`username`, `password`, `type`,`createdAt`,`updatedAt`) VALUES (0,'"+req.body.username+"', '"+pass+"', '"+req.body.type+"',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)",(err,result)=>{
-        if(err)throw(err);
-        if(req.body.type == 'Chapter Admin' || req.body.type == 'Chapter Youth Advisor'){
-            connection.query("INSERT INTO `chapter_personnels` (user_id`, `chapter_id`, `position`) VALUES ('"+result.insertId+"', '"+req.body.chapter+"', '"+req.body.type+"');",(err,result)=>{
-                res.redirect('/');
-            });
-        }else if(req.body.type == 'Council'){ //addCouncil right? yes
-            connection.query("INSERT INTO `councils` (`user_id`,`chapter_id`, `category`, `name`, `createdAt`) VALUES ('"+result.insertId+"','"+req.body.chapter+"', '"+req.body.category+"', '"+req.body.username+"',CURRENT_TIMESTAMP);",(err,result)=>{
-                res.redirect('/');
-            });
-        }else{
-            connection.query("INSERT INTO `council_advisors` (`user_id`, `council_id`) VALUES ('"+result.insertId+"', '"+req.body.council+"');",(err,result)=>{
-                res.redirect('/');
-            });
-        }
-    }
-    else{
-        res.send("wrong")
-    }
-});
-*/
 
 app.get('/about', (req,res)=>{
     if(req.session.logged_in!=true){
@@ -238,9 +209,20 @@ app.get('/adminCouncils', (req,res) =>{ //not directly acessible
 });
 
 app.get('/addCouncil', async (req,res) =>{
-       let chapters = await Read.getAllChapters();
-       //res.send(chapters)//idk why this is here is it because vue uses res.send? -derek
-       res.render('addCouncil',{title:'Councils',chapters:chapters});//going to remove chapters since the sessions work na
+    let chapters = await Read.getAllChapters();
+    //res.send(chapters)//idk why this is here is it because vue uses res.send? -derek
+    res.render('addCouncil',{
+        title:'Councils',
+        chapters:chapters,
+        nav:{
+            name:req.session.council_name,
+            category:req.session.council_category
+        },
+        adminNav:{
+            name:req.session.council_name,
+            category:req.session.council_category
+        }
+    });//going to remove chapters since the sessions work na
 });
 
 app.get('/allCouncils', async (req,res) =>{

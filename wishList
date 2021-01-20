@@ -28,34 +28,27 @@ app.get('/', (req,res)=>{
     }
 });
 
-VERSION A
-app.get('/', (req,res)=>{
-    if(req.session.logged_in!=true){
-        res.redirect("/login");
-    }else{
-        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
-        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-        res.setHeader('Access-Control-Allow-Credentials', true);
-        if(req.session.type == 'Council' || req.session.type == 'Council Advisor'){
-        	res.render('home',{
-            	title:"Home",
-            	nav:{name:req.session.council_name,category:req.session.council_category}
-        	});
+/*app.post('/signup', urlEncodedParser, (req,res)=>{
+    let salt= bcrypt.genSaltSync(saltR);
+    let pass= bcrypt.hashSync(req.body.pass, salt);
+    connection.query("INSERT INTO `users` (`id`,`username`, `password`, `type`,`createdAt`,`updatedAt`) VALUES (0,'"+req.body.username+"', '"+pass+"', '"+req.body.type+"',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)",(err,result)=>{
+        if(err)throw(err);
+        if(req.body.type == 'Chapter Admin' || req.body.type == 'Chapter Youth Advisor'){
+            connection.query("INSERT INTO `chapter_personnels` (user_id`, `chapter_id`, `position`) VALUES ('"+result.insertId+"', '"+req.body.chapter+"', '"+req.body.type+"');",(err,result)=>{
+                res.redirect('/');
+            });
+        }else if(req.body.type == 'Council'){ //addCouncil right? yes
+            connection.query("INSERT INTO `councils` (`user_id`,`chapter_id`, `category`, `name`, `createdAt`) VALUES ('"+result.insertId+"','"+req.body.chapter+"', '"+req.body.category+"', '"+req.body.username+"',CURRENT_TIMESTAMP);",(err,result)=>{
+                res.redirect('/');
+            });
         }else{
-        	let docs = await Read.getDocsFromCouncils();
-        	let councils = await Read.getAllCouncils();
-        	if(docs != null && councils != null){            
-	            res.render('adminHome',{
-                	title: "Home",
-                	adminNav:{name:req.session.username,position:req.session.type},
-                	forms:docs,
-                	council:councils
-            	});
-        	}
-        }        
+            connection.query("INSERT INTO `council_advisors` (`user_id`, `council_id`) VALUES ('"+result.insertId+"', '"+req.body.council+"');",(err,result)=>{
+                res.redirect('/');
+            });
+        }
+    }
+    else{
+        res.send("wrong")
     }
 });
-
-req.session.type == 'Council' || req.session.type == 'Council Advisor'
-req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'
+*/
