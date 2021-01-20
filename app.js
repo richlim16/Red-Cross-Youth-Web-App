@@ -21,6 +21,7 @@ const mysql = require("mysql");
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 
+/*
 app.use(session({
     secret: "EyeYam-bUk1u!?",
     saveUninitialized: true,
@@ -477,27 +478,13 @@ app.post('/memForm/advReject/:id', async (req,res)=>{
     let member = await Read.getFilledMemForm(req)
     res.send({sig:member.council_adv_sig})
 });
+*/
 
 app.listen(process.env.PORT || 3000,()=>{
     console.log("Server is running!");
 });
-
-app.get('/test',urlEncodedParser,async(req,res)=>{//derek uses this to test functions kay tapolan siya
-    let test=await Read.docsUnifReqs(req);
-    res.send(test);
-})
-
-app.use((req, res)=>{
-    res.status(400);
-    res.render('noPage',{title: "Error!404"});    
-});
-
-app.use((req, res)=>{
-    res.status(500);
-    res.render('errorPage',{title: "Error!500"});
-});
-
-function shortenCateg(category){
+/*
+function shortenCateg(category){//this is used on login to shorten the category, placed at the bottom in case this function can be used elsewhere
     let ret=''
     switch(category){
         case "Junior Red Cross Youth":ret="Junior Council";break;
@@ -509,3 +496,18 @@ function shortenCateg(category){
     }    
     return ret
 }
+*/
+
+app.get('/',(req,res)=>{//i know there's a better way to do this but i'm lazy -derek
+    res.render('maintenance',{title:'App Down!'})
+});
+
+app.use((req, res)=>{
+    res.status(400);
+    res.render('noPage',{title: "Error!404"});    
+});
+
+app.use((req, res)=>{
+    res.status(500);
+    res.render('errorPage',{title: "Error!500"});
+});
