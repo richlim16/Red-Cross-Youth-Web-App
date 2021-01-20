@@ -35,7 +35,9 @@ app.use(session({
     resave: true
 }));
 
+
 app.get('/', async(req,res)=>{
+
     if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
@@ -100,7 +102,7 @@ app.post('/login', urlEncodedParser, async (req,res)=>{
                 let data = await Read.getChapterUser(req);
                 req.session.chapter_id=data.chapter_personnel['chapter_id'];                                    
             }
-            else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
+            else if(req.session.type == 'Council' || req.session.type == 'Council Advisor'){
                 let data = await Read.getCouncilUser(req)                
                 req.session.council_id=data.council['id']
                 req.session.council_name=data.council['name']
@@ -267,17 +269,6 @@ app.get('/docs', (req,res)=>{
     }
 });
 
-app.get('/addReport', (req,res)=>{
-    if(req.session.logged_in!=true){
-        res.redirect("/login");
-    }else{
-        res.render('addReport', {
-            title: "Add Report",
-            council: req.session.council
-        });
-    }
-});
-
 app.get('/activityForm', (req,res)=>{
     if(req.session.logged_in!=true){
         res.redirect("/login");
@@ -291,9 +282,12 @@ app.get('/activityForm', (req,res)=>{
 
 app.get('/membershipForm', async (req,res)=>{
     res.render('membershipForm',{
-        title: "Membership Form", 
-        session:req.session,
-        council: req.session.council
+        title: "Membership Form",
+        user:req.session.type,
+        nav:{
+            name:req.session.council_name,
+            category:req.session.council_category
+        }
     });
 });
 
@@ -509,3 +503,7 @@ app.get('/test',urlEncodedParser,async(req,res)=>{//derek uses this to test func
     let test=await Read.docsUnifReqs(req);
     res.send(test);
 })
+
+app.use((req, res)=>{
+    res.render('noPage');    
+});

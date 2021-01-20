@@ -381,7 +381,7 @@
               <div class="col-md-6 text-center">            
               </div>
               <div class="col-md-6 text-center">
-                <% if (session.type == 'Council Advisor') { %>
+                <% if (user == 'Council Advisor') { %>
                   <button type="button" id="advApprove" class="btn btn-success">Approve</button>
                   <button type="button" id="advReject" class="btn btn-danger">Reject</button>
                 <% } %>  
@@ -390,11 +390,9 @@
                 <p>Council Advisor</p>
               </div>
             </div>
-
-            <hr class="my-4">          
-            <button type='submit' id="test" class="btn btn-danger btn-lg btn-block text-white">Submit</button>        
-          </form>
-            <!--<a href="activities.php">Back</a> -->
+            <hr class="my-4">
+            <button type='submit' id="test" class="btn btn-danger btn-lg btn-block text-white">Submit</button>
+          </form>            
         </div>
       </div>
     </div>
