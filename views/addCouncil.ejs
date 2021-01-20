@@ -1,65 +1,62 @@
-<%-include ("partials/header.ejs") %> 
-<%-include ("partials/formsNav.ejs") %> 
-    <!-- ======= Breadcrumbs ======= -->
-    <section class="breadcrumbs">
-        <div class="container">
-  
-          <div class="d-flex justify-content-between align-items-center">
-            <h2>Add Council</h2>
-            <ol>
-              <li><a href="/adminActivity">Back To Activity Page</a></li>
-              <li>Adding Council</li>
-            </ol>
-          </div>
-  
-        </div>
-      </section><!-- End Breadcrumbs -->
-  
-      <section class="inner-page">
-        <div class="container">
-          <p>Fill out the following fields to create a new council</p>
+<%-include('./partials/adminHeader.ejs') %> 
+  <div class="wrapper ">
+    <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
+      <!--
+        Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
-          <div class="row">
-            <div class="col-md-8 order-md-1">
-              <form id="addForm" class="needs-validation" method="POST">
-                <div class="row mb-5">
-                    <label for="councilName">Council name</label>
-                    <input type="text" class="form-control" id="councilName" name="councilName" placeholder="Council Name" value="" required="">
-                    <div class="invalid-feedback">
-                        Valid council name is required.
-                    </div>
-                </div>
+        Tip 2: you can also add an image using data-image tag
+    -->
+      <div class="logo"><a href="/admin" class="simple-text logo-normal">
+          Home</a></div>
+      <%-include('./partials/adminSidebar.ejs') %> 
+    <div class="main-panel">
+      <!-- Navbar -->
+      <%-include('./partials/adminNavbar.ejs') %> 
 
+<div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header card-header-danger">
+              <h4 class="card-title">Add a council</h4>
+              <p class="card-category">Adding a council also makes their council's account!</p>
+            </div>
+            <div class="card-body">              
+              <form>              
                 <div class="row">
-                  <div class="form-group col-md-6">
-                  <label for="chapter">Chapter</label>
-                  <select class="form-control" id="chapter" name="chapter">
-                    <% for (let i=0; i < chapters.length; i++){%>
-                        <option disabled selected value> -- select an option -- </option>
-                        <option value="<%= chapters[i].id%>"><%= chapters[i].name%></option>
-                    <%}%>                    
-                  </select>
-                  </div>
-                  <div class="form-group col-md-6">
-                    <label for="category">Category</label>
-                    <select class="form-control" id="category" name="category">
-                      <option disabled selected value> -- select an option -- </option>
-                      <option value="Junior Red Cross Youth">Junior Red Cross Youth</option>
-                      <option value="Senior Red Cross Youth">Senior Red Cross Youth</option>
-                      <option value="Senior Plus Red Cross Youth">Senior Plus Red Cross Youth</option>
-                      <option value="College Red Cross Youth">College Red Cross Youth</option>
-                      <option value="Community Red Cross Youth">Community Red Cross Youth</option>
-                    </select>
-                  </div>
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="bmd-label-floating">School Name or Council Name</label>
+                      <input type="text" class="form-control" id="councilName" name="councilName" required="">
+                    </div>
+                  </div>                  
                 </div>
-                <hr class="mb-4">        
-                <button type='submit' class="btn btn-danger btn-lg btn-block text-white">Add</button>        
-              </form>
-                <a href="activities.php">Back</a>
+                
+                <div class="row">
+                  <div class="col-md-7">
+                    <div class="form-group">
+                      <label for="category">Category</label>
+                      <select class="form-control" id="category" name="category">
+                        <option disabled selected value> -- Select a category -- </option>
+                        <option value="Junior Red Cross Youth">Junior Red Cross Youth</option>
+                        <option value="Senior Red Cross Youth">Senior Red Cross Youth</option>
+                        <option value="Senior Plus Red Cross Youth">Senior Plus Red Cross Youth</option>
+                        <option value="College Red Cross Youth">College Red Cross Youth</option>
+                        <option value="Community Red Cross Youth">Community Red Cross Youth</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>            
+                <button type="submit" class="btn btn-danger pull-right">Add Council</button>
+                <div class="clearfix"></div>
+              </form>              
             </div>
           </div>
         </div>
-        </div>
-      </section>
+      </div>
+    </div>
+  </div>
 
-<%-include ('partials/footer.ejs') %> 
+
+<%-include('./partials/adminFooter.ejs') %>
