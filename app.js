@@ -83,8 +83,7 @@ app.get('/login', (req,res)=>{ //inverse persistent
     }
 });
 
-app.post('/login', urlEncodedParser, async (req,res)=>{//the login failuer handling can be better but with how it is right now it works for all cases of failed logins
-    console.log(req.body)
+app.post('/login', urlEncodedParser, async (req,res)=>{//the login failure handling can be better but with how it is right now it works for all cases of failed logins    
     let result = await Read.getUser(req)    
     if (result !== null){
         if (bcrypt.compareSync(req.body.pass, result['password'])){
@@ -99,7 +98,7 @@ app.post('/login', urlEncodedParser, async (req,res)=>{//the login failuer handl
                 let data = await Read.getCouncilUser(req)
                 req.session.council_id=data.council['id']
                 req.session.council_name=data.council['name']
-                req.session.council_category=data.council['category']                
+                req.session.council_category=shortenCateg(data.council['category']);                
             }
             res.redirect('/');//if login failed it should redirect them to login anyway
         }else{
@@ -238,8 +237,7 @@ app.get('/allCouncils', async (req,res) =>{
 app.get('/docs', (req,res)=>{
     if(req.session.logged_in!=true){
         res.redirect("/login");
-    }else{
-        console.log(req.session)
+    }else{        
         res.render('docs',{
             title: "Documents",
             nav:{
@@ -387,13 +385,17 @@ app.get('/filledMemForm/:id', async (req,res)=>{
     let member = await Read.getFilledMemForm(req);
     let trainings = await Read.getMemTrainings(member);
     let orgs = await Read.getMemOrgs(member);
-    res.render('filledMembershipForm', {
+    res.render('filledMembershipForm',{
         title: "Membership Form",
-        council: req.session.council, 
-        session:req.session, 
-        mem: member, 
-        trainings: trainings, 
-        orgs: orgs
+        council: req.session.council,
+        session:req.session,
+        mem: member,
+        trainings: trainings,
+        orgs: orgs,
+        nav:{
+            name:req.session.council_name,
+            category:req.session.council_category
+        }
     });    
 });
 
@@ -494,3 +496,16 @@ app.use((req, res)=>{
     res.status(500);
     res.render('errorPage',{title: "Error!500"});
 });
+
+function shortenCateg(category){
+    let ret=''
+    switch(category){
+        case "Junior Red Cross Youth":ret="Junior Council";break;
+        case "Senior Red Cross Youth":ret="Senior Council";break;
+        case "Senior Plus Red Cross Youth":ret="S+ Council";break;
+        case "College Red Cross Youth":ret="College Council";break;
+        case "Community Red Cross Youth":ret="Community Council";break;
+        default:ret="This should not occur so this is an error easter egg"
+    }    
+    return ret
+}
