@@ -489,3 +489,8 @@ app.use((req, res)=>{
     res.status(400);
     res.render('noPage',{title: "Error!404"});    
 });
+
+app.use((req, res)=>{
+    res.status(500);
+    res.render('errorPage',{title: "Error!500"});
+});
