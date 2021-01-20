@@ -486,5 +486,6 @@ app.get('/test',urlEncodedParser,async(req,res)=>{//derek uses this to test func
 })
 
 app.use((req, res)=>{
-    res.render('noPage');    
+    res.status(400);
+    res.render('noPage',{title: "Error!404"});    
 });

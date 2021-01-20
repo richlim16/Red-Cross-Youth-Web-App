@@ -52,3 +52,7 @@ app.get('/', (req,res)=>{
     }
 });
 */
+
+<!--<div class="col-8">
+<a href="/signup" class="text-white text-center"><u>No account? Click here</u></a>
+</div>-->
