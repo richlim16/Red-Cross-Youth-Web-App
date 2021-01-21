@@ -238,14 +238,15 @@ app.get('/allCouncils', async (req,res) =>{
 app.get('/docs', (req,res)=>{
     if(req.session.logged_in!=true){
         res.redirect("/login");
-    }else{        
-        res.render('docs',{
+    }else{
+        res.render('pageMaintenance',{title:'Maintenance'});
+       /* res.render('docs',{
             title: "Documents",
             nav:{
                 name:req.session.council_name,
                 category:req.session.council_category
             }
-        });
+        });*/
     }
 });
 
@@ -479,7 +480,7 @@ app.post('/memForm/advReject/:id', async (req,res)=>{
     res.send({sig:member.council_adv_sig})
 });
 
-app.listen(process.env.PORT || 3000,()=>{
+app.listen(process.env.PORT || 4000,()=>{
     console.log("Server is running!");
 });
 
