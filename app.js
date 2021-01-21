@@ -162,7 +162,7 @@ app.get('/officerActivity/:type', async (req,res) =>{
 
 app.get('/viewDocs',async (req,res) =>{
     let members=await Read.docsMemForms(req);
-    let uniformRequests=await Read.docsUnifReqs(req);
+    let uniformRequests=await Read.docsUnifReqs(req);    
     if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
