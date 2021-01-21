@@ -43,31 +43,43 @@ async function getCouncilId(userId){
 }
 
 //For adding a council
-exports.addCouncil = async (req, res) => {
-    Council.model.hasMany(Committee.model, {foreignKey: 'council_id',sourceKey: 'id'});
-    console.log(req.body)
-    await Council.model.create({
-        user_id: user_id+1,
-        chapter_id: req.body.chapterId,
-        category: req.body.category,
-        name: req.body.name,
-        committees: [
-            {type: 'DRRM', no_of_members:0},
-            {type: 'Pledge 25', no_of_members:0},
-            {type: 'Trainings', no_of_members:0},
-            {type: 'Council Dev', no_of_members:0},
-            {type: 'YAPE', no_of_members:0},
-            {type: 'YPE', no_of_members:0},
-            {type: 'Health Services', no_of_members:0},
-            {type: 'Welfare', no_of_members:0},
-            {type: 'Awards and Recognition', no_of_members:0},
-            {type: 'Safety', no_of_members:0}
-        ]
-    }, {
-        include: [Committee.model]
-    })
-}
 
+exports.addCouncil=async(req, res)=>{
+    console.log(req.session)
+    console.log(req.body)
+    let salt= bcrypt.genSaltSync(saltR);
+    let pass= bcrypt.hashSync(req.body.secret, salt);
+
+    User.model.hasMany(Council.model,{foreignKey:'user_id',sourceKey:'id'})
+    Council.model.hasMany(Committee.model, {foreignKey: 'council_id',sourceKey: 'id'});
+    await User.model.create({
+        username: req.body.newName,//from the derek magic
+        password: pass,
+        type:'Council',        
+        councils:{
+            chapter_id: req.session.chapter_id,
+            category: req.body.category,
+            name: req.body.councilName,
+            committees:[
+                {type: 'DRRM', no_of_members:0},
+                {type: 'Pledge 25', no_of_members:0},
+                {type: 'Trainings', no_of_members:0},
+                {type: 'Council Dev', no_of_members:0},
+                {type: 'YAPE', no_of_members:0},
+                {type: 'YPE', no_of_members:0},
+                {type: 'Health Services', no_of_members:0},
+                {type: 'Welfare', no_of_members:0},
+                {type: 'Awards and Recognition', no_of_members:0},
+                {type: 'Safety', no_of_members:0}
+            ],
+            include:[Committee.model]
+        },
+    },{
+        include:[Council.model]
+    })
+    console.log(User.model)
+    console.log("addCouncil function finished!");
+}
 
 //For adding a member in Membership Form
 

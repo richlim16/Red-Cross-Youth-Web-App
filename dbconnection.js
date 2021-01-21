@@ -1,5 +1,6 @@
 const {Sequelize} = require('sequelize');
 const sequelize = new Sequelize('rcy_db', 'root', '', {
+    logging:false,//na samokan ko when i was running my tests, remove this line if you need to see the logs lang
     host: 'localhost',
     dialect: 'mysql',
     pool: {

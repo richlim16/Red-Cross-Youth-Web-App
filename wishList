@@ -1,54 +1,100 @@
 Things for the immediate future:
-
-	Host on Heroku when at least 95% functional (backend-wise)
+	
 	Clean the code
 	Optimization
 	Testing
 
 Things for the far future:
-	Get someone to make a background image for the app so that it doesn't look like it's just for the Cebu Chapter
+	Get someone to make a background image for the app so that it doesn't look like it's just for the Cebu Chapter[DONE]
 	Change the images of the forms to something else, maybe some graphics napud
-	In about change the group photo to something else, preferably the logo lang or another graphic
-	Team, change the content to something totally different or make it dynamic?(making it adapt to the different chapters is data intensive; storage-wise)
+	In about change the group photo to something else, preferably the logo lang or another graphic[DONE]
+	Team, change the content to something totally different or make it dynamic?(making it adapt to the different chapters is data intensive; storage-wise)[DONE]
 
+//OLD CODE BUT WE COULD STILL USE THIS
+<!-- End About Section -->
 
-ORIGINAL
-app.get('/', (req,res)=>{
-	if(req.session.logged_in!=true){
-        res.redirect("/login");
-    }else{
-        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:8080');
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT PATCH, DELETE');
-        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-        res.setHeader('Access-Control-Allow-Credentials', true);
-        res.render('home',{
-            title:"Home",
-            nav:{name:req.session.council_name,category:req.session.council_category}
-        });
-    }
-});
-
-/*app.post('/signup', urlEncodedParser, (req,res)=>{
-    let salt= bcrypt.genSaltSync(saltR);
-    let pass= bcrypt.hashSync(req.body.pass, salt);
-    connection.query("INSERT INTO `users` (`id`,`username`, `password`, `type`,`createdAt`,`updatedAt`) VALUES (0,'"+req.body.username+"', '"+pass+"', '"+req.body.type+"',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)",(err,result)=>{
-        if(err)throw(err);
-        if(req.body.type == 'Chapter Admin' || req.body.type == 'Chapter Youth Advisor'){
-            connection.query("INSERT INTO `chapter_personnels` (user_id`, `chapter_id`, `position`) VALUES ('"+result.insertId+"', '"+req.body.chapter+"', '"+req.body.type+"');",(err,result)=>{
-                res.redirect('/');
-            });
-        }else if(req.body.type == 'Council'){ //addCouncil right? yes
-            connection.query("INSERT INTO `councils` (`user_id`,`chapter_id`, `category`, `name`, `createdAt`) VALUES ('"+result.insertId+"','"+req.body.chapter+"', '"+req.body.category+"', '"+req.body.username+"',CURRENT_TIMESTAMP);",(err,result)=>{
-                res.redirect('/');
-            });
-        }else{
-            connection.query("INSERT INTO `council_advisors` (`user_id`, `council_id`) VALUES ('"+result.insertId+"', '"+req.body.council+"');",(err,result)=>{
-                res.redirect('/');
-            });
-        }
-    }
-    else{
-        res.send("wrong")
-    }
-});
-*/
+         <!-- ======= Team Section ======= -->
+    <!--<section id="team" class="team section-bg">
+        <div class="container" data-aos="fade-up">  
+          <div class="section-title">
+            <h2>Chapter Youth Council</h2>
+            <h3>Our Hardworking <span>Team</span></h3>
+            <p class="font-italic">"To give and to not to count the cost..."</p>
+            <p class="font-italic">-Sto.Ignacio de Loyola</p>
+          </div>
+          <div class="row">
+            <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+              <div class="member">
+                <div class="member-img">
+                  <img src="/images/jojoSiwa.jpg" class="team-img img-fluid" alt="">
+                  <div class="social">
+                    <a href=""><i class="icofont-twitter"></i></a>
+                    <a href=""><i class="icofont-facebook"></i></a>
+                    <a href=""><i class="icofont-instagram"></i></a>
+                    <a href=""><i class="icofont-linkedin"></i></a>
+                  </div>
+                </div>
+                <div class="member-info">
+                  <h4>Jojo Siwa</h4>
+                  <span>Chief Executive Officer</span>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+              <div class="member">
+                <div class="member-img">
+                  <img src="/images/karen.jpg" class="team-img img-fluid" alt="">
+                  <div class="social">
+                    <a href=""><i class="icofont-twitter"></i></a>
+                    <a href=""><i class="icofont-facebook"></i></a>
+                    <a href=""><i class="icofont-instagram"></i></a>
+                    <a href=""><i class="icofont-linkedin"></i></a>
+                  </div>
+                </div>
+                <div class="member-info">
+                  <h4>Karen</h4>
+                  <span>Useless Person</span>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
+              <div class="member">
+                <div class="member-img">
+                  <img src="/images/lilPichu.png" class="team-img img-fluid" alt="">
+                  <div class="social">
+                    <a href=""><i class="icofont-twitter"></i></a>
+                    <a href=""><i class="icofont-facebook"></i></a>
+                    <a href=""><i class="icofont-instagram"></i></a>
+                    <a href=""><i class="icofont-linkedin"></i></a>
+                  </div>
+                </div>
+                <div class="member-info">
+                  <h4>LilyPichu</h4>
+                  <span>CTO</span>
+                </div>
+              </div>
+            </div>
+  
+            <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
+              <div class="member">
+                <div class="member-img">
+                  <img src="https://pbs.twimg.com/media/EfM-mcPVAAMuAGs.jpg" class="team-img img-fluid" alt="">
+                  <div class="social">
+                    <a href=""><i class="icofont-twitter"></i></a>
+                    <a href=""><i class="icofont-facebook"></i></a>
+                    <a href=""><i class="icofont-instagram"></i></a>
+                    <a href=""><i class="icofont-linkedin"></i></a>
+                  </div>
+                </div>
+                <div class="member-info">
+                  <h4>Michael Reeves</h4>
+                  <span>Accountant</span>
+                </div>
+              </div>
+            </div>
+          </div>  
+        </div>
+      </section>-->
+      <!-- End Team Section -->

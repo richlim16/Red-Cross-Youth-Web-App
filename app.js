@@ -12,7 +12,7 @@ const Create = require('./controllers/createController');
 const Update = require('./controllers/updateController');
 const Read = require('./controllers/readController');
 
-// const routes = require ('./routes/routes')
+// const routes = require ('./routes/routes') //idk what this is for -derek
 
 const session = require("express-session");
 const bcrypt = require("bcrypt");
@@ -27,7 +27,6 @@ app.use(session({
     saveUninitialized: true,
     resave: true
 }));
-
 
 app.get('/', async(req,res)=>{
     if(req.session.logged_in!=true){
@@ -62,21 +61,21 @@ app.get('/', async(req,res)=>{
 
 //GETS START HERE
 
-app.get('/adminProfile',(req,res)=>{ //inaccessible
+app.get('/adminProfile',(req,res)=>{
     if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
         res.render('adminEditProf',{
             title: "Edit Profile",
             adminNav: {
-                name: req.session.user_name, 
-                chapter: 'some random string'
+                name: req.session.username, 
+                position: req.session.type
             }
         });
     }
 });
 
-app.get('/login', (req,res)=>{ //inverse persistent
+app.get('/login', (req,res)=>{
     if(req.session.logged_in==true){
         res.redirect("/");
     }else{
@@ -84,7 +83,7 @@ app.get('/login', (req,res)=>{ //inverse persistent
     }
 });
 
-app.post('/login', urlEncodedParser, async (req,res)=>{//the login failuer handling can be better but with how it is right now it works for all cases of failed logins
+app.post('/login', urlEncodedParser, async (req,res)=>{//the login failure handling can be better but with how it is right now it works for all cases of failed logins
     console.log(req.body)
     let result = await Read.getUser(req)    
     if (result !== null){
@@ -95,14 +94,16 @@ app.post('/login', urlEncodedParser, async (req,res)=>{//the login failuer handl
             req.session.type=result['type'];
             if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
                 let data = await Read.getChapterUser(req);
-                req.session.chapter_id=data.chapter_personnel['chapter_id'];
+                req.session.type=(req.session.type==='Chapter Youth Advisor')?'RCY Service Representative':'Chapter Administrator';
+                req.session.chapter_id=data.chapter_personnel['chapter_id'];                
             }else if(req.session.type == 'Council' || req.session.type == 'Council Advisor'){
                 let data = await Read.getCouncilUser(req)
                 req.session.council_id=data.council['id']
                 req.session.council_name=data.council['name']
-                req.session.council_category=data.council['category']                
+                req.session.council_category=shortenCateg(data.council['category'])
             }
-            res.redirect('/');//if login failed it should redirect them to login anyway
+            res.send(req.session)
+            //res.redirect('/');//if login failed it should redirect them to login anyway
         }else{
             //this runs when username is correct but password is not
             res.redirect('/')
@@ -114,31 +115,6 @@ app.post('/login', urlEncodedParser, async (req,res)=>{//the login failuer handl
 
 app.get('/logout', (req,res)=>{ //no persistent
     req.session.logged_in=false;
-    res.redirect('/login');
-});
-
-app.get('/signup', (req,res)=>{ //no persistent
-    connection.query("SELECT id, name FROM `councils`",(err,result)=>{
-        let councils=result;
-        console.log(result+" "+"Result 1")
-        connection.query("SELECT id, name FROM `chapters`",(err,result)=>{
-            let chapters=result;
-            console.log(result+" "+"Result 2")
-            res.render('signup', {
-                title: "Sign Up",
-                user:{
-                    name: "Red Cross", 
-                    type: "Youth"
-                },
-                councils:councils,
-                chapters:chapters
-            });
-        });
-    });    
-});
-
-app.post('/signup', urlEncodedParser, async (req,res)=>{
-    await Create.signUp(req);
     res.redirect('/login');
 });
 
@@ -154,8 +130,7 @@ app.get('/officerActivity/:type', async (req,res) =>{
     if (req.params.type == 'Council'){
         let result = await Read.getCouncilPendingMemForms()
         res.send(result)
-    }
-    else if (req.params.type == 'Council Advisor'){
+    }else if (req.params.type == 'Council Advisor'){
         let result = await Read.getCouncilAdvPendingMemForms()
         res.send(result)
     }
@@ -188,7 +163,7 @@ app.get('/adminForms', (req,res) =>{
             title: "Forms",
             adminNav: {
                 name: req.session.name, 
-                chapter: req.session.chapter.name
+                position: req.session.type
             }
         });
     }
@@ -201,8 +176,8 @@ app.get('/adminCouncils', (req,res) =>{ //not directly acessible
         res.render('adminCouncils',{
             title: "Councils",
             adminNav: {
-                name: req.session.name, 
-                chapter: req.session.chapter.name
+                name: req.session.username, 
+                position: req.session.type
             }
         });
     }
@@ -214,15 +189,44 @@ app.get('/addCouncil', async (req,res) =>{
     res.render('addCouncil',{
         title:'Councils',
         chapters:chapters,
-        nav:{
-            name:req.session.council_name,
-            category:req.session.council_category
-        },
+        message:'Adding a council also makes their council\'s account!',        
         adminNav:{
-            name:req.session.council_name,
-            category:req.session.council_category
+            name:req.session.username,
+            position: req.session.type
         }
-    });//going to remove chapters since the sessions work na
+    });
+});
+
+app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{
+    console.log("=================================");
+        let result=await Read.findCouncil(req);
+        if(result === null){
+            if(!req.body.category){
+                console.log(!req.body.category)
+                res.render('addCouncil',{title:'Try again',message:'You forgot to pick a council category!'});
+                console.log("NO CATEGORY CHOSEN");
+            }else{
+                req.body.shortHand=councilUserCateg(req.body.category);
+                req.body.newName=makeUserName(req.body.councilName)+req.body.shortHand;
+                req.body.secret=makeUserName(req.body.councilName)+req.body.shortHand+"12349876";
+                console.log("name "+req.body.newName);
+                console.log("secret "+req.body.secret);
+                console.log("GREAT SUCCESS");
+                await Create.addCouncil(req)
+                res.redirect('/');//successful insert na pare chong bro
+            }
+        }else{
+            res.render('addCouncil',{
+                title:'Try again',
+                message:'That name is already taken please try another!',                
+                adminNav:{
+                    name:req.session.council_name,
+                    position: req.session.type
+                }
+            });
+            console.log("COUNCIL EXISTS");
+        }
+    console.log("=================================");    
 });
 
 app.get('/allCouncils', async (req,res) =>{
@@ -406,11 +410,6 @@ app.post('/signup', urlEncodedParser, async(req,res)=>{
     res.redirect('/');
 });
 
-app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{  
-    await Create.addCouncil(req)
-    res.redirect('/addCouncil');
-});
-
 app.post('/act/addMemberForm', urlEncodedParser, async (req,res) =>{    
     await Create.addMemberForm(req)
     console.log("ADDING NEW FORM");
@@ -482,10 +481,67 @@ app.listen(port,()=>{
 });
 
 app.get('/test',urlEncodedParser,async(req,res)=>{//derek uses this to test functions kay tapolan siya
-    let test=await Read.docsUnifReqs(req);
-    res.send(test);
+    res.render('test',{title:'yawa',message:'Wassup'});
+})
+app.post('/test',urlEncodedParser,async(req,res)=>{
+    console.log("=================================");
+    let result=await Read.findCouncil(req);
+    if(result === null){
+        if(!req.body.category){
+            console.log(!req.body.category)
+            res.render('test',{title:'Try again',message:'You forgot to pick a council category!'});
+        }else{
+            let shortHand=councilUserCateg(req.body.category);
+            let newName=makeUserName(req.body.councilName);
+            let secret=makeUserName(req.body.councilName)+shortHand+"12349876";
+            console.log("name "+newName);
+            console.log("secret "+secret);
+            res.redirect('/test')
+        }
+    }else{
+        res.render('test',{title:'Try again',message:'That name is already taken please try another!'});
+    }
+    console.log("=================================");
 })
 
+function makeUserName(username){
+    return username.replace(/[^A-Z]/g,'')
+}
+
+function councilUserCateg(category){//this is used on login to shorten the category, placed at the bottom in case this function can be used elsewhere
+    let ret=''
+    switch(category){
+        case "Junior Red Cross Youth":ret="_JC";break;
+        case "Senior Red Cross Youth":ret="_SC";break;
+        case "Senior Plus Red Cross Youth":ret="_S+C";break;
+        case "College Red Cross Youth":ret="_CC";break;
+        case "Community Red Cross Youth":ret="_Comm";break;
+        default:ret=null
+    }    
+    return ret
+}
+
+function shortenCateg(category){//this is used on login to shorten the category, placed at the bottom in case this function can be used elsewhere
+    let ret=''
+    switch(category){
+        case "Junior Red Cross Youth":ret="Junior Council";break;
+        case "Senior Red Cross Youth":ret="Senior Council";break;
+        case "Senior Plus Red Cross Youth":ret="S+ Council";break;
+        case "College Red Cross Youth":ret="College Council";break;
+        case "Community Red Cross Youth":ret="Community Council";break;
+        default:ret="This should not occur so this is an error easter egg"
+    }    
+    return ret
+}
+
+
 app.use((req, res)=>{
-    res.render('noPage');    
+    //res.send('lmao error 404 page not found bitch')
+    res.render('noPage',{title:'ERROR!404'});
+});
+
+app.use((req, res)=>{
+    res.status(500);
+    res.send('ERROR 500 OCCURED')
+    //res.render('errorPage',{title: "Error!500"});
 });
