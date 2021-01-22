@@ -1,0 +1,207 @@
+<%-include ("partials/header.ejs") %> 
+<%-include ("partials/formsNav.ejs") %> 
+
+<!-- ======= Breadcrumbs ======= -->
+<section class="breadcrumbs">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>SCHOOL COUNCIL MONTHLY REPORT</h2>
+        <ol>
+          <li><a href="/docs">Go Back Back To The Past...Samurai Jack</a></li>
+          <li>Adding Report</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+<!-- End Breadcrumbs -->
+
+  <section class="inner-page">
+    <div class="container">
+      <div class="row d-flex">
+        <div class="col-md-3 mb-3">
+          <label for="councilName">School Council</label>
+          <input type="text" class="form-control" name="councilName" placeholder="automatic" value="" required="">
+        </div>
+      </div>
+
+          <div class="row d-flex">
+            <div class="col-md-3 mb-5">
+              <label for="month">For the month of</label>
+              <select id="month" type="text" class="form-control" name="month" required="">
+                <option disabled selected value>-select type-</option>
+                <option value="1">January</option>
+                <option value="2">February</option>
+                <option value="3">March</option>
+                <option value="4">April</option>
+                <option value="5">May</option>
+                <option value="6">June</option>
+                <option value="7">July</option>
+                <option value="8">August</option>
+                <option value="9">September</option>
+                <option value="10">October</option>
+                <option value="11">November</option>
+                <option value="12">December</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+                <p>INSTRUCTIONS: This form shall be accomplished by the chapter council secretary in triplicate copies and shall be submitted to the Area Coordinator at the end of every month.  
+                One (1) copy for the Chapter Administrator, one(1) copy for the Area Coordinator and one (1) copy for the file.
+                </p>
+          </div>
+
+
+          <table class="table table-bordered text-center">
+            <thead>
+              <tr>
+                <th>Name of Activity</th>
+                <th>Nature of Activity</th>
+                <th>Accomplishments</th>
+                <th>Objective</th>
+                <th>No. of RCY Participants</th>
+                <th>Remarks</th>
+              </tr>
+            </thead>
+            <tbody id="activityTable">
+
+            </tbody>
+          </table>
+
+          <!-- Button trigger modal -->
+          <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Add an Activity</button>
+          </div>
+
+
+
+          <div class="row mt-5 mb-3">
+            <div class="col-md-2 text-right">Prepared by: </div>
+            <div class="col-md-4 text-center">     
+              <% if (session.type == 'Council') { %>
+                <button type="button" id="secApprove" class="btn btn-success">Approve</button>
+                <button type="button" id="secReject" class="btn btn-danger">Reject</button>
+              <% } %>         
+              <h5 name="councilSec" id="councilSec"></h5>
+              <hr class="my-1">  
+              <p>School Council Secretary</p>
+            </div>
+            <div class="col-md-2 text-right">Submitted by: </div>
+            <div class="col-md-4 text-center">
+              <% if (session.type == 'Council') { %>
+                <button type="button" id="presApprove" class="btn btn-success">Approve</button>
+                <button type="button" id="presReject" class="btn btn-danger">Reject</button>
+              <% } %>  
+              <h5 name="councilPres" id="councilPres"></h5>
+              <hr class="my-1">  
+              <p>School Council President</p>
+            </div>
+          </div>
+
+          <div class="row mt-3 mb-3">
+            <div class="col-md-2 text-right">Noted by: </div>
+            <div class="col-md-4 text-center">           
+              <% if (session.type == 'Council Advisor') { %>
+                <button type="button" id="councilAdvApprove" class="btn btn-success">Approve</button>
+                <button type="button" id="councilAdvReject" class="btn btn-danger">Reject</button>
+              <% } %>   
+              <h5 name="councilAdv" id="councilAdv"></h5>
+              <hr class="my-1">  
+              <p>CSR-RCY</p>
+            </div>
+            
+        <div class="col-md-2 text-right">Approved by: </div>
+            <div class="col-md-4 text-center">           
+              <% if (session.type == 'Council Advisor') { %>
+                <button type="button" id="councilAdvApprove" class="btn btn-success">Approve</button>
+                <button type="button" id="councilAdvReject" class="btn btn-danger">Reject</button>
+              <% } %>   
+              <h5 name="councilAdv" id="councilAdv"></h5>
+              <hr class="my-1">  
+              <p>School Council Adviser</p>
+            </div>
+        </div>
+
+
+          <hr class="mb-4">        
+          <button class="btn btn-danger btn-lg btn-block text-white">Post</button>        
+
+          <a href="activities.php">Back</a>
+    </div>
+    </div>
+  </section>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Activity Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="monthlyReportForm">
+        <div class="modal-body">
+            <div class="row d-flex mb-3">
+                <div class="col-md-7">
+                  <label for="actName">Name of Activity</label>
+                  <input type="text" class="form-control" id="actName" name="actName" placeholder="Name of Activity" value="" required="">
+                  <div class="invalid-feedback">
+                    Valid bloodtype is required.
+                  </div>
+                </div>
+
+                <div class="col-md-5">
+                    <label for="actNature">Nature of Activity</label>
+                    <input type="text" class="form-control" id="actNature" name="actNature" placeholder="Nature of Activity" value="" required="">
+                    <div class="invalid-feedback">
+                      Valid bloodtype is required.
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row d-flex mb-3">
+                <div class="col-md-3">
+                    <label for="numParticipants">No. of RCY Participants</label>
+                    <input type="number" class="form-control" id="numParticipants" name="numParticipants" placeholder="# of Participants" value="" required="">
+                </div>
+            </div>
+
+
+            <div class="row d-flex">
+                <div class="col-md-12 mb-3">
+                    <label for="accomplishments">Accomplishments</label>
+                    <textarea class="form-control" id="accomplishments" name="accomplishments" placeholder="Accomplishments"></textarea>
+                </div>
+            </div>
+
+
+            <div class="row d-flex">
+                <div class="col-md-12 mb-3">
+                    <label for="objectives">Objectives</label>
+                    <textarea class="form-control" id="objectives" name="objectives" placeholder="Objectives"></textarea>
+                </div>
+            </div>
+
+
+            <div class="row d-flex">
+                <div class="col-md-12 mb-3">
+                    <label for="remarks">Remarks</label>
+                    <textarea class="form-control" id="remarks" name="remarks" placeholder="Remarks"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button id="submitBtn" type="submit" class="btn btn-primary">Submit</button>
+          <button id="closeModal" type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<%-include ('partials/footer.ejs') %> 

@@ -279,18 +279,18 @@ app.get('/committeeMembershipForm', async (req,res)=>{
     if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
-        let committees = await Read.getCommitteesOfCouncil()
-        res.render('committeeMembershipForm',{title: "Membership Form", session: req.session,councilName:"USC",councilType:"College Council"});
+        let committees = await Read.getCommitteesOfCouncil(req)
+        res.render('committeeMembershipForm',{title: "Committee Membership Form", session: req.session,councilName:"USC",councilType:"College Council"});
     }
 });
-//what's the difference between the two routes?
-app.get('/committeeMembershipForm', (req,res)=>{
-    if(req.session.logged_in!=true){
-        res.send(false);
-    }else{
-        res.render('committeeMembershipForm',{title: "Committee Membership Form",councilName:"USC",councilType:"College Council"});
-    }
-});
+
+// app.get('/committeeMembershipForm', (req,res)=>{
+//     if(req.session.logged_in!=true){
+//         res.send(false);
+//     }else{
+//         res.render('committeeMembershipForm',{title: "Committee Membership Form",councilName:"USC",councilType:"College Council"});
+//     }
+// });
 
 //When a specific committee is selected
 app.get('/generatedCommitteeMembershipForm/:type&:userId', urlEncodedParser, async (req,res)=>{
@@ -319,6 +319,27 @@ app.get('/getNoneCommitteeMembers', urlEncodedParser, async (req,res)=>{
     let members = await Read.getNoneCommitteeMembers()
     res.send(members);
 });
+
+
+app.get('/councilMonthlyReportForm', async (req,res)=>{
+    res.render('councilMonthlyReportForm',{
+        title: "Council Monthly Report Form", 
+        session:req.session,
+        nav:{
+            name:req.session.council_name,                
+            category:req.session.council_category
+        }
+    });
+});
+
+
+//When a specific committee is selected
+app.get('/generateCouncilMonthlyReport/:month', urlEncodedParser, async (req,res)=>{
+    let activities = await Read.getCouncilActivitiesForMonth(req)
+      res.send(activities);
+});
+
+
 
 app.get('/activityRequestForm', (req,res)=>{
     if(req.session.logged_in!=true){
@@ -432,6 +453,12 @@ app.post('/act/addUnifReq',urlEncodedParser,async(req,res)=>{
     }
     res.redirect('/docs');
 });
+
+app.post('/act/addCouncilMonthlyReport', urlEncodedParser, async (req,res) =>{
+    await Create.addCouncilMonthlyReport(req)
+    res.send('success');
+});
+
 
 app.get('/filledMemForm/:id', async (req,res)=>{
     let member = await Read.getFilledMemForm(req);

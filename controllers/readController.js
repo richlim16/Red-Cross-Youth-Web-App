@@ -78,7 +78,7 @@ exports.getAllChapters = async (req, res) => {
 exports.getCommitteesOfCouncil = async (req, res) => {
     let ret = await Committee.model.findAll({
         where: {
-            council_id: council      //get council_id from Session variable
+            council_id: req.session.user_id      //get council_id from Session variable
         }
     });
 
@@ -241,5 +241,15 @@ exports.docsUnifReqs=async (req,res)=>{
             council_id:req.session.council_id
         }
     })
+    return ret;
+}
+
+
+exports.getCouncilActivitiesForMonth = async (req, res) => {
+    let ret = await CouncilMonthlyReport.model.findAll({
+        where:{
+            for_the_month_of: req.params.month
+        }
+    });
     return ret;
 }
