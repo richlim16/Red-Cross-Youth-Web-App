@@ -234,3 +234,13 @@ exports.docsUnifReqs=async (req,res)=>{
     })
     return ret;
 }
+
+
+exports.getCouncilActivitiesForMonth = async (req, res) => {
+    let ret = await CouncilMonthlyReport.model.findAll({
+        where:{
+            for_the_month_of: req.params.month
+        }
+    });
+    return ret;
+}

@@ -164,7 +164,7 @@ exports.addMemberForm = async (req, res) => {
 
 //For adding a member to a committee
 exports.addCommitteeMember = async (req, res) => {
-    let council = await getCouncilId(req.body.sessionUserId)
+    let council = await getCouncilId(req.body.session.UserId)
     let committee = await Committee.model.findOne({
         where: {
             council_id: council.id,     //get council_id from Session variable
@@ -180,6 +180,25 @@ exports.addCommitteeMember = async (req, res) => {
           }
     });
 }
+
+
+//For Council Monthly Report Form
+exports.addCouncilMonthlyReport = async (req, res) => {
+    let council = await getCouncilId(req.session.user_id)
+
+    await CouncilMonthlyReport.model.create({ 
+        council_id: council.id,
+        for_the_month_of: req.body.month,
+        year: new Date().getFullYear(),
+        name_of_activity: req.body.name_of_activity,
+        nature_of_activity: req.body.nature_of_activity,
+        accomplishments: req.body.accomplishments,
+        objective: req.body.objective,
+        no_of_rcy_participants: req.body.num_of_participants,
+        remarks: req.body.remarks,
+    });
+}
+
 
 //For uniform request form
 exports.addUniformRequest = async (req, res) => {
