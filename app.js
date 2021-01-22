@@ -1,4 +1,3 @@
-const port=3000;
 const express = require('express');
 const ejs = require('ejs');
 const bodyParser = require("body-parser");
@@ -12,19 +11,12 @@ const Create = require('./controllers/createController');
 const Update = require('./controllers/updateController');
 const Read = require('./controllers/readController');
 
-// const routes = require ('./routes/routes')
+// const routes = require ('./routes/routes') //idk what this is for -derek
 
 const session = require("express-session");
 const bcrypt = require("bcrypt");
 const saltR = 10;
 const mysql = require("mysql");
-const connection =  mysql.createConnection({
-    multipleStatements: true,
-    host: "127.0.0.1",
-    user: "root",
-    password: "",
-    database: "rcy_db"
-});
 
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
@@ -46,7 +38,10 @@ app.get('/', async(req,res)=>{
         if(req.session.type == 'Council' || req.session.type == 'Council Advisor'){
             res.render('home',{
                 title:"Home",
-                nav:{name:req.session.council_name,category:req.session.council_category}
+                nav:{
+                    name:req.session.council_name,
+                    category:req.session.council_category
+                }
             });
         }else{
             let docs = await Read.getDocsFromCouncils();
@@ -65,21 +60,21 @@ app.get('/', async(req,res)=>{
 
 //GETS START HERE
 
-app.get('/adminProfile',(req,res)=>{ //inaccessible
+app.get('/adminProfile',(req,res)=>{
     if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
         res.render('adminEditProf',{
             title: "Edit Profile",
             adminNav: {
-                name: req.session.name, 
-                chapter: req.session.chapter.name
+                name: req.session.username, 
+                position: req.session.type
             }
         });
     }
 });
 
-app.get('/login', (req,res)=>{ //inverse persistent
+app.get('/login', (req,res)=>{
     if(req.session.logged_in==true){
         res.redirect("/");
     }else{
@@ -87,30 +82,32 @@ app.get('/login', (req,res)=>{ //inverse persistent
     }
 });
 
-app.post('/login', urlEncodedParser, async (req,res)=>{
-    console.log(req.body)
-    let result = await Read.getUser(req)
-    if (result != null) {
+app.post('/login', urlEncodedParser, async (req,res)=>{//the login failure handling can be better but with how it is right now it works for all cases of failed logins    
+    let result = await Read.getUser(req)    
+    if (result !== null){
         if (bcrypt.compareSync(req.body.pass, result['password'])){
             req.session.logged_in=true;
             req.session.user_id=result['id'];
             req.session.username=result['username'];
             req.session.type=result['type'];
-            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){                
+            if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
                 let data = await Read.getChapterUser(req);
-                req.session.chapter_id=data.chapter_personnel['chapter_id'];                                    
-            }
-            else if (req.session.type == 'Council' || req.session.type == 'Council Advisor'){
-                let data = await Read.getCouncilUser(req)                
+                req.session.type=(req.session.type==='Chapter Youth Advisor')?'RCY Service Representative':'Chapter Administrator';
+                req.session.chapter_id=data.chapter_personnel['chapter_id'];                
+            }else if(req.session.type == 'Council' || req.session.type == 'Council Advisor'){
+                let data = await Read.getCouncilUser(req)
                 req.session.council_id=data.council['id']
                 req.session.council_name=data.council['name']
-                req.session.council_category=data.council['category']                
+                req.session.council_category=shortenCateg(data.council['category'])
             }
-            res.redirect('/');//if login failed it should redirect them to login anyway
+            res.send(req.session)
+            //res.redirect('/');//if login failed it should redirect them to login anyway
         }else{
-            console.log("login failed");
-            res.send("wrong")
+            //this runs when username is correct but password is not
+            res.redirect('/')
         }
+    }else{
+        res.redirect('/')
    };
 })
 
@@ -118,56 +115,6 @@ app.get('/logout', (req,res)=>{ //no persistent
     req.session.logged_in=false;
     res.redirect('/login');
 });
-
-app.get('/signup', (req,res)=>{ //no persistent
-    connection.query("SELECT id, name FROM `councils`",(err,result)=>{
-        let councils=result;
-        console.log(result+" "+"Result 1")
-        connection.query("SELECT id, name FROM `chapters`",(err,result)=>{
-            let chapters=result;
-            console.log(result+" "+"Result 2")
-            res.render('signup', {
-                title: "Sign Up",
-                user:{
-                    name: "Red Cross", 
-                    type: "Youth"
-                },
-                councils:councils,
-                chapters:chapters
-            });
-        });
-    });    
-});
-
-app.post('/signup', urlEncodedParser, async (req,res)=>{
-    await Create.signUp(req);
-    res.redirect('/login');
-});
-
-/*app.post('/signup', urlEncodedParser, (req,res)=>{
-    let salt= bcrypt.genSaltSync(saltR);
-    let pass= bcrypt.hashSync(req.body.pass, salt);
-    connection.query("INSERT INTO `users` (`id`,`username`, `password`, `type`,`createdAt`,`updatedAt`) VALUES (0,'"+req.body.username+"', '"+pass+"', '"+req.body.type+"',CURRENT_TIMESTAMP,CURRENT_TIMESTAMP)",(err,result)=>{
-        if(err)throw(err);
-        if(req.body.type == 'Chapter Admin' || req.body.type == 'Chapter Youth Advisor'){
-            connection.query("INSERT INTO `chapter_personnels` (user_id`, `chapter_id`, `position`) VALUES ('"+result.insertId+"', '"+req.body.chapter+"', '"+req.body.type+"');",(err,result)=>{
-                res.redirect('/');
-            });
-        }else if(req.body.type == 'Council'){ //addCouncil right? yes
-            connection.query("INSERT INTO `councils` (`user_id`,`chapter_id`, `category`, `name`, `createdAt`) VALUES ('"+result.insertId+"','"+req.body.chapter+"', '"+req.body.category+"', '"+req.body.username+"',CURRENT_TIMESTAMP);",(err,result)=>{
-                res.redirect('/');
-            });
-        }else{
-            connection.query("INSERT INTO `council_advisors` (`user_id`, `council_id`) VALUES ('"+result.insertId+"', '"+req.body.council+"');",(err,result)=>{
-                res.redirect('/');
-            });
-        }
-    }
-    else{
-        res.send("wrong")
-    }
-});
-*/
 
 app.get('/about', (req,res)=>{
     if(req.session.logged_in!=true){
@@ -181,8 +128,7 @@ app.get('/officerActivity/:type', async (req,res) =>{
     if (req.params.type == 'Council'){
         let result = await Read.getCouncilPendingMemForms()
         res.send(result)
-    }
-    else if (req.params.type == 'Council Advisor'){
+    }else if (req.params.type == 'Council Advisor'){
         let result = await Read.getCouncilAdvPendingMemForms()
         res.send(result)
     }
@@ -215,7 +161,7 @@ app.get('/adminForms', (req,res) =>{
             title: "Forms",
             adminNav: {
                 name: req.session.name, 
-                chapter: req.session.chapter.name
+                position: req.session.type
             }
         });
     }
@@ -228,17 +174,57 @@ app.get('/adminCouncils', (req,res) =>{ //not directly acessible
         res.render('adminCouncils',{
             title: "Councils",
             adminNav: {
-                name: req.session.name, 
-                chapter: req.session.chapter.name
+                name: req.session.username, 
+                position: req.session.type
             }
         });
     }
 });
 
 app.get('/addCouncil', async (req,res) =>{
-       let chapters = await Read.getAllChapters();
-       //res.send(chapters)//idk why this is here is it because vue uses res.send? -derek
-       res.render('addCouncil',{title:'Councils',chapters:chapters});//going to remove chapters since the sessions work na
+    let chapters = await Read.getAllChapters();
+    //res.send(chapters)//idk why this is here is it because vue uses res.send? -derek
+    res.render('addCouncil',{
+        title:'Councils',
+        chapters:chapters,
+        message:'Adding a council also makes their council\'s account!',        
+        adminNav:{
+            name:req.session.username,
+            position: req.session.type
+        }
+    });
+});
+
+app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{
+    console.log("=================================");
+        let result=await Read.findCouncil(req);
+        if(result === null){
+            if(!req.body.category){
+                console.log(!req.body.category)
+                res.render('addCouncil',{title:'Try again',message:'You forgot to pick a council category!'});
+                console.log("NO CATEGORY CHOSEN");
+            }else{
+                req.body.shortHand=councilUserCateg(req.body.category);
+                req.body.newName=makeUserName(req.body.councilName)+req.body.shortHand;
+                req.body.secret=makeUserName(req.body.councilName)+req.body.shortHand+"12349876";
+                console.log("name "+req.body.newName);
+                console.log("secret "+req.body.secret);
+                console.log("GREAT SUCCESS");
+                await Create.addCouncil(req)
+                res.redirect('/');//successful insert na pare chong bro
+            }
+        }else{
+            res.render('addCouncil',{
+                title:'Try again',
+                message:'That name is already taken please try another!',                
+                adminNav:{
+                    name:req.session.council_name,
+                    position: req.session.type
+                }
+            });
+            console.log("COUNCIL EXISTS");
+        }
+    console.log("=================================");    
 });
 
 app.get('/allCouncils', async (req,res) =>{
@@ -255,25 +241,13 @@ app.get('/allCouncils', async (req,res) =>{
 app.get('/docs', (req,res)=>{
     if(req.session.logged_in!=true){
         res.redirect("/login");
-    }else{
-        console.log(req.session)
+    }else{        
         res.render('docs',{
             title: "Documents",
             nav:{
                 name:req.session.council_name,
                 category:req.session.council_category
             }
-        });
-    }
-});
-
-app.get('/addReport', (req,res)=>{
-    if(req.session.logged_in!=true){
-        res.redirect("/login");
-    }else{
-        res.render('addReport', {
-            title: "Add Report",
-            council: req.session.council
         });
     }
 });
@@ -291,11 +265,10 @@ app.get('/activityForm', (req,res)=>{
 
 app.get('/membershipForm', async (req,res)=>{
     res.render('membershipForm',{
-        title: "Membership Form", 
-        session:req.session,
-        council: req.session.council,
+        title: "Membership Form",
+        user:req.session.type,
         nav:{
-            name:req.session.council_name,                
+            name:req.session.council_name,
             category:req.session.council_category
         }
     });
@@ -455,11 +428,6 @@ app.post('/signup', urlEncodedParser, async(req,res)=>{
     res.redirect('/');
 });
 
-app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{  
-    await Create.addCouncil(req)
-    res.redirect('/addCouncil');
-});
-
 app.post('/act/addMemberForm', urlEncodedParser, async (req,res) =>{    
     await Create.addMemberForm(req)
     console.log("ADDING NEW FORM");
@@ -532,11 +500,68 @@ app.post('/memForm/advReject/:id', async (req,res)=>{
     res.send({sig:member.council_adv_sig})
 });
 
-app.listen(port,()=>{
-    console.log("Server is running");
+app.listen(process.env.PORT || 3000,()=>{
+    console.log("Server is running!");
 });
 
 app.get('/test',urlEncodedParser,async(req,res)=>{//derek uses this to test functions kay tapolan siya
-    let test=await Read.docsUnifReqs(req);
-    res.send(test);
+    res.render('test',{title:'yawa',message:'Wassup'});
 })
+app.post('/test',urlEncodedParser,async(req,res)=>{    
+    let result=await Read.findCouncil(req);
+    if(result === null){
+        if(!req.body.category){
+            console.log(!req.body.category)
+            res.render('test',{title:'Try again',message:'You forgot to pick a council category!'});
+        }else{
+            let shortHand=councilUserCateg(req.body.category);
+            let newName=makeUserName(req.body.councilName);
+            let secret=makeUserName(req.body.councilName)+shortHand+"12349876";            
+            res.redirect('/test')
+        }
+    }else{
+        res.render('test',{title:'Try again',message:'That name is already taken please try another!'});
+    }    
+})
+
+function makeUserName(username){
+    return username.replace(/[^A-Z]/g,'')
+}
+
+function councilUserCateg(category){//this is used on login to shorten the category, placed at the bottom in case this function can be used elsewhere
+    let ret=''
+    switch(category){
+        case "Junior Red Cross Youth":ret="_JC";break;
+        case "Senior Red Cross Youth":ret="_SC";break;
+        case "Senior Plus Red Cross Youth":ret="_S+C";break;
+        case "College Red Cross Youth":ret="_CC";break;
+        case "Community Red Cross Youth":ret="_Comm";break;
+        default:ret=null
+    }    
+    return ret
+}
+
+function shortenCateg(category){//this is used on login to shorten the category, placed at the bottom in case this function can be used elsewhere
+    let ret=''
+    switch(category){
+        case "Junior Red Cross Youth":ret="Junior Council";break;
+        case "Senior Red Cross Youth":ret="Senior Council";break;
+        case "Senior Plus Red Cross Youth":ret="S+ Council";break;
+        case "College Red Cross Youth":ret="College Council";break;
+        case "Community Red Cross Youth":ret="Community Council";break;
+        default:ret="This should not occur so this is an error easter egg"
+    }    
+    return ret
+}
+
+
+app.use((req, res)=>{
+    //res.send('lmao error 404 page not found bitch')
+    res.render('noPage',{title:'ERROR!404'});
+});
+
+app.use((req, res)=>{
+    res.status(500);
+    res.send('ERROR 500 OCCURED')
+    //res.render('errorPage',{title: "Error!500"});
+});

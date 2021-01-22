@@ -5,13 +5,13 @@
         Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
         Tip 2: you can also add an image using data-image tag
-    -->
-      <div class="logo"><a href="http://www.creative-tim.com" class="simple-text logo-normal">
-        Profile</a></div>
-      <%-include('./partials/adminSidebar.ejs') %> 
+      -->
+      <div class="logo"><a href="/adminProfile" class="simple-text logo-normal">
+      Profile</a></div>
+      <%-include('./partials/adminSidebar.ejs') %>
     <div class="main-panel">
       <!-- Navbar -->
-      <%-include('./partials/adminNavbar.ejs') %> 
+      <%-include('./partials/adminNavbar.ejs') %>
       
       <div class="content">
         <div class="container-fluid">
@@ -55,7 +55,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header card-header-danger">
-                  <h4 class="card-title">Chapter Councils:</h4>
+                  <h4 class="card-title">Councils:</h4>
                 </div>
                 <div class="card-body">
                   <table class="table table-striped table-sm">
@@ -71,7 +71,7 @@
                       <%for(var i=0;i<council.length; i++){%>
                         <tr>
                           <td>
-                            <img src="http://imgur.com/GaBdGdz.png" class="mx-2" style="height: 5em;">
+                            <img src="../images/1.png" class="mx-2" style="height: 5em;">
                             <span><%= council[i].name %></span>
                           </td>
                           <td><%= council[i].category %></td>
@@ -105,12 +105,7 @@
                 <a href="http://blog.creative-tim.com">
                   Blog
                 </a>
-              </li>
-              <li>
-                <a href="https://www.creative-tim.com/license">
-                  Licenses
-                </a>
-              </li>
+              </li>              
             </ul>
           </nav>
         </div>

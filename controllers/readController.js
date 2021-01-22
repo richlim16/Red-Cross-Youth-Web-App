@@ -193,6 +193,15 @@ exports.getAllCouncils = async (req, res) => {
     return ret;
 }
 
+exports.findCouncil=async(req, res)=>{
+    let ret = await Council.model.findOne({
+        where:{
+            name:req.body.councilName
+        }
+    });
+    return ret;
+}
+
 exports.getCouncilUser=async(req,res)=>{        
     const council = User.model.hasOne(Council.model, {foreignKey:'user_id'});
     let ret=await User.model.findOne({

@@ -1,13 +1,45 @@
-<p>
-	lmao poggers
-	if you are seeing this, this is where derek tests functions before implementing them instead of doing unit tests because "seeing is believing"
-</p>
-
-<%for(var i=0;i<results.length; i++){%>
-	<p>=================================================</p>
-	<b><p>Name:"<%=results[i].name%>"</p></b>
-	<%for(var x=0;x<results[i].documents.length; x++){%>
-		<p>id:<%=results[i].documents[x]['id']%> type:<%=results[i].documents[x]['type']%></p>
-	<%}%>
-<%}%>
-<p>=================================================</p>
+<div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header card-header-danger">
+            	<h1><%=message%></h1>
+              <h4 class="card-title">Add a council</h4>
+              <p class="card-category">Adding a council also makes their council's account!</p>
+            </div>
+            <div class="card-body">              
+              <form id="addForm" action="test" class="needs-validation" method="POST">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="bmd-label-floating">School Name or Council Name</label>
+                      <input type="text" class="form-control" id="councilName" name="councilName" required="">
+                    </div>
+                  </div>                  
+                </div>
+                
+                <div class="row">
+                  <div class="col-md-7">
+                    <div class="form-group">
+                      <label for="category">Category</label>
+                      <select class="form-control" id="category" name="category" required="">
+                        <option disabled selected value> -- Select a category -- </option>
+                        <option value="Junior Red Cross Youth">Junior Red Cross Youth</option>
+                        <option value="Senior Red Cross Youth">Senior Red Cross Youth</option>
+                        <option value="Senior Plus Red Cross Youth">Senior Plus Red Cross Youth</option>
+                        <option value="College Red Cross Youth">College Red Cross Youth</option>
+                        <option value="Community Red Cross Youth">Community Red Cross Youth</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>            
+                <button type="submit" class="btn btn-danger pull-right">Add Council</button>
+                <div class="clearfix"></div>
+              </form>              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
