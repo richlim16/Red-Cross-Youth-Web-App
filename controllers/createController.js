@@ -44,15 +44,12 @@ async function getCouncilId(userId){
 
 //For adding a council
 
-exports.addCouncil=async(req, res)=>{
-    console.log(req.session)
-    console.log(req.body)
+exports.addCouncil=async(req, res)=>{    
     let salt= bcrypt.genSaltSync(saltR);
     let pass= bcrypt.hashSync(req.body.secret, salt);
-
     User.model.hasMany(Council.model,{foreignKey:'user_id',sourceKey:'id'})
-    Council.model.hasMany(Committee.model, {foreignKey: 'council_id',sourceKey: 'id'});
-    await User.model.create({
+    Council.model.hasMany(Committee.model, {foreignKey: 'council_id',sourceKey: 'id'});    
+    const userInstance=await User.model.create({
         username: req.body.newName,//from the derek magic
         password: pass,
         type:'Council',        
@@ -60,25 +57,22 @@ exports.addCouncil=async(req, res)=>{
             chapter_id: req.session.chapter_id,
             category: req.body.category,
             name: req.body.councilName,
-            committees:[
-                {type: 'DRRM', no_of_members:0},
-                {type: 'Pledge 25', no_of_members:0},
-                {type: 'Trainings', no_of_members:0},
-                {type: 'Council Dev', no_of_members:0},
-                {type: 'YAPE', no_of_members:0},
-                {type: 'YPE', no_of_members:0},
-                {type: 'Health Services', no_of_members:0},
-                {type: 'Welfare', no_of_members:0},
-                {type: 'Awards and Recognition', no_of_members:0},
-                {type: 'Safety', no_of_members:0}
-            ],
-            include:[Committee.model]
         },
     },{
         include:[Council.model]
     })
-    console.log(User.model)
-    console.log("addCouncil function finished!");
+    Committee.model.bulkCreate([
+                {council_id:userInstance.councils[0].dataValues['id'],type: 'DRRM', no_of_members:0},
+                {council_id:userInstance.councils[0].dataValues['id'],type: 'Pledge 25', no_of_members:0},
+                {council_id:userInstance.councils[0].dataValues['id'],type: 'Trainings', no_of_members:0},
+                {council_id:userInstance.councils[0].dataValues['id'],type: 'Council Dev', no_of_members:0},
+                {council_id:userInstance.councils[0].dataValues['id'],type: 'YAPE', no_of_members:0},
+                {council_id:userInstance.councils[0].dataValues['id'],type: 'YPE', no_of_members:0},
+                {council_id:userInstance.councils[0].dataValues['id'],type: 'Health Services', no_of_members:0},
+                {council_id:userInstance.councils[0].dataValues['id'],type: 'Welfare', no_of_members:0},
+                {council_id:userInstance.councils[0].dataValues['id'],type: 'Awards and Recognition', no_of_members:0},
+                {council_id:userInstance.councils[0].dataValues['id'],type: 'Safety', no_of_members:0}            
+    ])    
 }
 
 //For adding a member in Membership Form

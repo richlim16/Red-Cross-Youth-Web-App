@@ -82,8 +82,7 @@ app.get('/login', (req,res)=>{
     }
 });
 
-app.post('/login', urlEncodedParser, async (req,res)=>{//the login failure handling can be better but with how it is right now it works for all cases of failed logins
-    console.log(req.body)
+app.post('/login', urlEncodedParser, async (req,res)=>{//the login failure handling can be better but with how it is right now it works for all cases of failed logins    
     let result = await Read.getUser(req)    
     if (result !== null){
         if (bcrypt.compareSync(req.body.pass, result['password'])){
@@ -242,8 +241,7 @@ app.get('/allCouncils', async (req,res) =>{
 app.get('/docs', (req,res)=>{
     if(req.session.logged_in!=true){
         res.redirect("/login");
-    }else{
-        console.log(req.session)
+    }else{        
         res.render('docs',{
             title: "Documents",
             nav:{
@@ -482,8 +480,7 @@ app.listen(process.env.PORT || 3000,()=>{
 app.get('/test',urlEncodedParser,async(req,res)=>{//derek uses this to test functions kay tapolan siya
     res.render('test',{title:'yawa',message:'Wassup'});
 })
-app.post('/test',urlEncodedParser,async(req,res)=>{
-    console.log("=================================");
+app.post('/test',urlEncodedParser,async(req,res)=>{    
     let result=await Read.findCouncil(req);
     if(result === null){
         if(!req.body.category){
@@ -492,15 +489,12 @@ app.post('/test',urlEncodedParser,async(req,res)=>{
         }else{
             let shortHand=councilUserCateg(req.body.category);
             let newName=makeUserName(req.body.councilName);
-            let secret=makeUserName(req.body.councilName)+shortHand+"12349876";
-            console.log("name "+newName);
-            console.log("secret "+secret);
+            let secret=makeUserName(req.body.councilName)+shortHand+"12349876";            
             res.redirect('/test')
         }
     }else{
         res.render('test',{title:'Try again',message:'That name is already taken please try another!'});
-    }
-    console.log("=================================");
+    }    
 })
 
 function makeUserName(username){
