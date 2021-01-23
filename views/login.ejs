@@ -1,6 +1,5 @@
 <%-include ('partials/header.ejs')%>
 <%-include ('partials/loginNavbar.ejs')%>
-  <!-- ======= Hero Section ======= -->
   <section id="hero" class="d-flex align-items-center">
     <div class="container" data-aos="zoom-out" data-aos-delay="100">
       <div class="row">
@@ -13,10 +12,7 @@
             <div class="m-3 p-3 bg-danger rounded-lg">
                 <h2 class="text-center text-white">Log In</h2>
                 <form action="/login" method="POST">
-                    <!-- <div class="form-group">
-                      <label for="email">Email address</label>
-                      <input type="email" class="form-control" id="email" required>
-                    </div><br> -->
+                    
                     <div class="form-group">
                       <label for="username">Username</label>
                       <input type="text" class="form-control" id="username" name="username" required>
@@ -32,16 +28,13 @@
                     <div class="row">
                         <div class="col-4">
                             <button type="submit" class="btn btn-light">Log In</button>
-                        </div>
-                        <div class="col-8">
-                            <a href="/signup" class="text-white text-center"><u>No account? Click here</u></a>
-                        </div>
+                        </div>                        
                     </div>
                   </form>
-                  
+
             </div>
         </div>
       </div>
     </div><br>
-  </section><!-- End Hero --> 
+  </section>
   <%-include ('partials/footer.ejs')%>

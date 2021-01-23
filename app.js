@@ -21,6 +21,7 @@ const mysql = require("mysql");
 app.use(express.static("public"));
 app.set('view engine', 'ejs');
 
+
 app.use(session({
     secret: "EyeYam-bUk1u!?",
     saveUninitialized: true,
@@ -91,6 +92,7 @@ app.post('/login', urlEncodedParser, async (req,res)=>{//the login failure handl
             req.session.username=result['username'];
             req.session.type=result['type'];            
             if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
+                req.session.type=(req.session.type == 'Chapter Youth Advisor')?'RCY Service Representative':'Chapter Administrator'
                 let data = await Read.getChapterUser(req);
                 req.session.type=(req.session.type==='Chapter Youth Advisor')?'RCY Service Representative':'Chapter Administrator';
                 req.session.chapter_id=data.chapter_personnel['chapter_id'];                
@@ -145,7 +147,7 @@ app.get('/officerActivity/:type', async (req,res) =>{
 
 app.get('/viewDocs',async (req,res) =>{
     let members=await Read.docsMemForms(req);
-    let uniformRequests=await Read.docsUnifReqs(req);
+    let uniformRequests=await Read.docsUnifReqs(req);    
     if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
@@ -251,8 +253,9 @@ app.get('/allCouncils', async (req,res) =>{
 app.get('/docs', (req,res)=>{
     if(req.session.logged_in!=true){
         res.redirect("/login");
-    }else{        
-        res.render('docs',{
+    }else{
+        res.render('pageMaintenance',{title:'Maintenance'});
+       res.render('docs',{
             title: "Documents",
             nav:{
                 name:req.session.council_name,
@@ -493,7 +496,7 @@ app.post('/memForm/advReject/:id', async (req,res)=>{
     res.send({sig:member.council_adv_sig})
 });
 
-app.listen(process.env.PORT || 3000,()=>{
+app.listen(process.env.PORT || 4000,()=>{
     console.log("Server is running!");
 });
 
@@ -550,5 +553,9 @@ app.use((req, res)=>{
 
 app.use((req, res)=>{
     res.status(500);
-    res.send('ERROR 500 OCCURED')    
+    res.send('ERROR 500 OCCURED')
+/*
+app.get('/',(req,res)=>{//i know there's a better way to do this but i'm lazy -derek
+    res.render('maintenance',{title:'App Down!'})
 });
+*/
