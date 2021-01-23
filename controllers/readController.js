@@ -93,6 +93,15 @@ async function getCouncilId(userId){
     return ret
 }
 
+exports.getCouncilInstance=async(id)=>{
+    let ret = await Council.model.findOne({
+        where:{
+            id:id
+        }
+    })
+    return ret
+}
+
 //Used in Committee Membership Form
 exports.getMembersOfCommittee = async(req, res) => {
     let council = await getCouncilId(req.params.userId)
@@ -196,7 +205,8 @@ exports.getAllCouncils = async (req, res) => {
 exports.findCouncil=async(req, res)=>{
     let ret = await Council.model.findOne({
         where:{
-            name:req.body.councilName
+            name:req.body.councilName,
+            category:req.body.category
         }
     });
     return ret;
@@ -214,6 +224,18 @@ exports.getCouncilUser=async(req,res)=>{
     return ret;
 }
 
+exports.getCouncilAdvisorUser=async(req,res)=>{        
+    const councilAdvisor = User.model.hasOne(CouncilAdvisor.model, {foreignKey:'user_id'});
+    let ret=await User.model.findOne({
+        include:councilAdvisor,
+        where:{
+            type:'Council Advisor',
+            id:req.session.user_id
+        }
+    })
+    return ret;
+}
+
 exports.getChapterUser=async(req,res)=>{    
     const chap_personnel = User.model.hasOne(ChapterPersonnel.model, {foreignKey:'user_id'});
     let ret=await User.model.findOne({
@@ -225,9 +247,26 @@ exports.getChapterUser=async(req,res)=>{
 
 exports.getDocsFromCouncils=async(req, res)=>{//should give a better name?
     const doc= Council.model.hasMany(Document.model,{foreignKey:'council_id'});
-    let ret = await Council.model.findAll({
+    let ret = await Council.model.findAll({//make a where clause for when other chapters are involved
         include:doc,
-        //where:{chapter_id:1}// 1 should be a value from the session variable, do this when chapter side login is complete
+    });
+    return ret;
+}
+
+exports.getDocsFromACouncil=async(req, res)=>{//should give a better name?    
+    let ret = await Document.model.findAll({
+        where:{
+            council_id:req.body.councilId
+        }
+    });
+    return ret;
+}
+
+exports.getAdvisorsFromCouncil=async(req, res)=>{
+    let ret = await CouncilAdvisor.model.findAll({
+        where:{
+            council_id:req.body.councilId
+        }
     });
     return ret;
 }
@@ -244,10 +283,10 @@ exports.docsUnifReqs=async (req,res)=>{
     return ret;
 }
 
-
 exports.getCouncilActivitiesForMonth = async (req, res) => {
     let ret = await CouncilMonthlyReport.model.findAll({
         where:{
+            council_id:req.session.council_id,
             for_the_month_of: req.params.month
         }
     });

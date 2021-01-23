@@ -1,0 +1,48 @@
+<%-include('./partials/adminHeader.ejs')%>
+  <div class="wrapper ">
+    <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
+      <div class="logo"><a href="/" class="simple-text logo-normal">Home</a></div>
+      <%-include('./partials/adminSidebar.ejs') %>
+    <div class="main-panel">
+      <!-- Navbar -->
+      <%-include('./partials/adminNavbar.ejs') %>
+
+<div class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header card-header-danger">
+              <h4 class="card-title"><%=message%></h4>              
+            </div>
+            <div class="card-body">
+              <form id="addForm" action="/addAdvisor/<%=councilId%>" class="needs-validation" method="POST">
+                <input type="hidden" class="form-control" name="council_id" value="<%=councilId%>" required="">
+                <div class="row">
+                  <div class="col-md-4">
+                    <div class="form-group">
+                      <label class="bmd-label-floating">First Name</label>
+                      <input type="text" class="form-control" name="firstName" required="">
+                    </div>
+
+                    <div class="form-group">
+                      <label class="bmd-label-floating">Middle Name</label>
+                      <input type="text" class="form-control" name="middleName" required="">
+                    </div>
+
+                    <div class="form-group">
+                      <label class="bmd-label-floating">Last Name</label>
+                      <input type="text" class="form-control" name="lastName" required="">
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-danger pull-right">Add Advisor</button>
+              </form>              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<%-include('./partials/adminFooter.ejs') %>

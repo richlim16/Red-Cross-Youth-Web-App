@@ -26,9 +26,6 @@ $(document).ready(function(){
     }
 }
 
-
-
-
   $('#monthlyReportForm').on('submit', function(event){
       event.preventDefault();
       if ($('#month').val() == null){

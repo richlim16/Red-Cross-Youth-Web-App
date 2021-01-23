@@ -83,22 +83,30 @@ app.get('/login', (req,res)=>{
 });
 
 app.post('/login', urlEncodedParser, async (req,res)=>{//the login failure handling can be better but with how it is right now it works for all cases of failed logins    
-    let result = await Read.getUser(req)    
+    let result = await Read.getUser(req)
     if (result !== null){
         if (bcrypt.compareSync(req.body.pass, result['password'])){
             req.session.logged_in=true;
             req.session.user_id=result['id'];
             req.session.username=result['username'];
-            req.session.type=result['type'];
+            req.session.type=result['type'];            
             if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
                 let data = await Read.getChapterUser(req);
                 req.session.type=(req.session.type==='Chapter Youth Advisor')?'RCY Service Representative':'Chapter Administrator';
                 req.session.chapter_id=data.chapter_personnel['chapter_id'];                
-            }else if(req.session.type == 'Council' || req.session.type == 'Council Advisor'){
-                let data = await Read.getCouncilUser(req)
-                req.session.council_id=data.council['id']
-                req.session.council_name=data.council['name']
-                req.session.council_category=shortenCateg(data.council['category'])
+            }else if(req.session.type == 'Council' || req.session.type == 'Council Advisor'){                 
+                if(req.session.type==='Council'){//i realise that i can abstract this so council side can share one function, but deadlines are real
+                    let data=await Read.getCouncilUser(req);
+                    req.session.council_id=data.council['id'];
+                    req.session.council_name=data.council['name'];
+                    req.session.council_category=shortenCateg(data.council['category']);
+                }else{
+                    let data=await Read.getCouncilAdvisorUser(req);
+                    let council=await Read.getCouncilInstance(data.council_advisor['council_id'])
+                    req.session.council_id=data.council_advisor['council_id'];
+                    req.session.council_name=council.name;
+                    req.session.council_category=shortenCateg(council.category);                    
+                }
             }
             res.send(req.session)
             //res.redirect('/');//if login failed it should redirect them to login anyway
@@ -113,6 +121,7 @@ app.post('/login', urlEncodedParser, async (req,res)=>{//the login failure handl
 
 app.get('/logout', (req,res)=>{ //no persistent
     req.session.logged_in=false;
+    req.session.destroy()
     res.redirect('/login');
 });
 
@@ -124,7 +133,7 @@ app.get('/about', (req,res)=>{
     }
 });
 
-app.get('/officerActivity/:type', async (req,res) =>{    
+app.get('/officerActivity/:type', async (req,res) =>{
     if (req.params.type == 'Council'){
         let result = await Read.getCouncilPendingMemForms()
         res.send(result)
@@ -167,26 +176,9 @@ app.get('/adminForms', (req,res) =>{
     }
 });
 
-app.get('/adminCouncils', (req,res) =>{ //not directly acessible
-    if(req.session.logged_in!=true){
-        res.redirect("/login");
-    }else{
-        res.render('adminCouncils',{
-            title: "Councils",
-            adminNav: {
-                name: req.session.username, 
-                position: req.session.type
-            }
-        });
-    }
-});
-
 app.get('/addCouncil', async (req,res) =>{
-    let chapters = await Read.getAllChapters();
-    //res.send(chapters)//idk why this is here is it because vue uses res.send? -derek
     res.render('addCouncil',{
-        title:'Councils',
-        chapters:chapters,
+        title:'Councils',        
         message:'Adding a council also makes their council\'s account!',        
         adminNav:{
             name:req.session.username,
@@ -195,36 +187,54 @@ app.get('/addCouncil', async (req,res) =>{
     });
 });
 
-app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{
-    console.log("=================================");
-        let result=await Read.findCouncil(req);
-        if(result === null){
-            if(!req.body.category){
-                console.log(!req.body.category)
-                res.render('addCouncil',{title:'Try again',message:'You forgot to pick a council category!'});
-                console.log("NO CATEGORY CHOSEN");
-            }else{
-                req.body.shortHand=councilUserCateg(req.body.category);
-                req.body.newName=makeUserName(req.body.councilName)+req.body.shortHand;
-                req.body.secret=makeUserName(req.body.councilName)+req.body.shortHand+"12349876";
-                console.log("name "+req.body.newName);
-                console.log("secret "+req.body.secret);
-                console.log("GREAT SUCCESS");
-                await Create.addCouncil(req)
-                res.redirect('/');//successful insert na pare chong bro
-            }
-        }else{
-            res.render('addCouncil',{
-                title:'Try again',
-                message:'That name is already taken please try another!',                
-                adminNav:{
-                    name:req.session.council_name,
-                    position: req.session.type
-                }
-            });
-            console.log("COUNCIL EXISTS");
+app.get('/addAdvisor/:council', async(req,res)=>{
+    const council_id=req.params.council;
+    const council=await Read.getCouncilInstance(council_id);
+    category=shortenCateg(council.category);
+
+    res.render('addAdvisor',{
+        title:council.name,
+        message:'Add an adviser for '+council.name+' '+category+'!',
+        councilId:council_id,
+        adminNav:{
+            name:req.session.username,
+            position: req.session.type
         }
-    console.log("=================================");    
+    });
+});
+
+app.post('/addAdvisor/:council', async(req,res)=>{
+    let username=req.body.firstName+req.body.middleName+req.body.lastName;
+    const council=req.params.council;    
+    req.body.username=makeUserName(username)+'_CA';
+    req.body.secret=req.body.username+543216789
+    await Create.addCouncilAdvisor(req)
+    res.redirect('/')
+});
+
+app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{
+    let result=await Read.findCouncil(req);        
+    if(result === null){
+        if(!req.body.category){
+            console.log(!req.body.category)
+            res.render('addCouncil',{title:'Try again',message:'You forgot to pick a council category!'});
+        }else{
+            req.body.shortHand=councilUserCateg(req.body.category);
+            req.body.newName=makeUserName(req.body.councilName)+req.body.shortHand;
+            req.body.secret=req.body.newName+"12349876";                
+            await Create.addCouncil(req)
+            res.redirect('/');//successful insert na pare chong bro
+        }
+    }else{
+        res.render('addCouncil',{
+        title:'Try again',
+        message:'That council already exists!',
+        adminNav:{
+            name:req.session.council_name,
+            position: req.session.type
+        }
+        });
+    }
 });
 
 app.get('/allCouncils', async (req,res) =>{
@@ -283,14 +293,6 @@ app.get('/committeeMembershipForm', async (req,res)=>{
         res.render('committeeMembershipForm',{title: "Committee Membership Form", session: req.session,councilName:"USC",councilType:"College Council"});
     }
 });
-
-// app.get('/committeeMembershipForm', (req,res)=>{
-//     if(req.session.logged_in!=true){
-//         res.send(false);
-//     }else{
-//         res.render('committeeMembershipForm',{title: "Committee Membership Form",councilName:"USC",councilType:"College Council"});
-//     }
-// });
 
 //When a specific committee is selected
 app.get('/generatedCommitteeMembershipForm/:type&:userId', urlEncodedParser, async (req,res)=>{
@@ -363,23 +365,21 @@ app.get('/activityReportForm', (req,res)=>{
     }
 });
 
-app.get('/unifRequest', (req,res)=>{
+app.get('/unifRequest', async(req,res)=>{
     if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{        
-        connection.query("SELECT id, username as name FROM `users`",(err,result)=>{
-            console.log("User type == "+req.session.type+" "+"User ID =="+req.session.id);
-            let people=result;
-            res.render('uniformRequest',{
-                title: "Uniform Request",
-                council: req.session.council,
-                peoples: people
-            });
-        });        
+        res.render('uniformRequest',{
+            title: "Uniform Request",
+            nav:{
+                name:req.session.council_name,
+                category:req.session.council_category
+            }
+        });
     }
 });
 
-app.get('/unifClaim', (req,res)=>{
+app.get('/unifClaim',(req,res)=>{
     if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
@@ -407,27 +407,21 @@ app.get('/serviceReq', (req,res)=>{
 });
 
 app.get('/filledMemForm/:id', async (req,res)=>{
-    let member = await Read.getFilledMemForm(req);
+    res.render('maintenance',{title:'Maintenance'})
+/*    let member = await Read.getFilledMemForm(req);
     let trainings = await Read.getMemTrainings(member);
     let orgs = await Read.getMemOrgs(member);
-    res.render('filledMembershipForm', {
+    res.render('filledMembershipForm',{
         title: "Membership Form",
         council: req.session.council, 
         session:req.session, 
         mem: member, 
         trainings: trainings, 
         orgs: orgs
-    });    
+    });*/
 });
 
 //DOCUMENTS END HERE
-
-app.post('/signup', urlEncodedParser, async(req,res)=>{
-    await Create.signUp(req);        
-    console.log("Account has been made!");
-    res.redirect('/');
-});
-
 app.post('/act/addMemberForm', urlEncodedParser, async (req,res) =>{    
     await Create.addMemberForm(req)
     console.log("ADDING NEW FORM");
@@ -459,13 +453,12 @@ app.post('/act/addCouncilMonthlyReport', urlEncodedParser, async (req,res) =>{
     res.send('success');
 });
 
-
-app.get('/filledMemForm/:id', async (req,res)=>{
+/*app.get('/filledMemForm/:id', async (req,res)=>{
     let member = await Read.getFilledMemForm(req);
     let trainings = await Read.getMemTrainings(member);
     let orgs = await Read.getMemOrgs(member);  
     res.send({member: member, trainings: trainings, orgs: orgs}) 
-});
+});*/
   
 // For approval/rejection of forms
 app.post('/memForm/presApprove/:id', async (req,res)=>{
@@ -504,26 +497,6 @@ app.listen(process.env.PORT || 3000,()=>{
     console.log("Server is running!");
 });
 
-app.get('/test',urlEncodedParser,async(req,res)=>{//derek uses this to test functions kay tapolan siya
-    res.render('test',{title:'yawa',message:'Wassup'});
-})
-app.post('/test',urlEncodedParser,async(req,res)=>{    
-    let result=await Read.findCouncil(req);
-    if(result === null){
-        if(!req.body.category){
-            console.log(!req.body.category)
-            res.render('test',{title:'Try again',message:'You forgot to pick a council category!'});
-        }else{
-            let shortHand=councilUserCateg(req.body.category);
-            let newName=makeUserName(req.body.councilName);
-            let secret=makeUserName(req.body.councilName)+shortHand+"12349876";            
-            res.redirect('/test')
-        }
-    }else{
-        res.render('test',{title:'Try again',message:'That name is already taken please try another!'});
-    }    
-})
-
 function makeUserName(username){
     return username.replace(/[^A-Z]/g,'')
 }
@@ -554,14 +527,28 @@ function shortenCateg(category){//this is used on login to shorten the category,
     return ret
 }
 
+app.get('/viewCouncil/:council',async(req,res)=>{
+    req.body.councilId=req.params.council
+    let docs =await Read.getDocsFromACouncil(req)
+    let advisors=await Read.getAdvisorsFromCouncil(req)
+    res.render('adminCouncils',{
+        title:'View Council',
+        message:'You are checking this council out!',
+        councilId:req.body.councilId,
+        documents:docs,
+        advisors:advisors,
+        adminNav:{
+            name:req.session.username,
+            position:req.session.type
+        }
+    });    
+})
 
 app.use((req, res)=>{
-    //res.send('lmao error 404 page not found bitch')
     res.render('noPage',{title:'ERROR!404'});
 });
 
 app.use((req, res)=>{
     res.status(500);
-    res.send('ERROR 500 OCCURED')
-    //res.render('errorPage',{title: "Error!500"});
+    res.send('ERROR 500 OCCURED')    
 });

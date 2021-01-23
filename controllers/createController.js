@@ -60,7 +60,7 @@ exports.addCouncil=async(req, res)=>{
         },
     },{
         include:[Council.model]
-    })
+    })    
     Committee.model.bulkCreate([
                 {council_id:userInstance.councils[0].dataValues['id'],type: 'DRRM', no_of_members:0},
                 {council_id:userInstance.councils[0].dataValues['id'],type: 'Pledge 25', no_of_members:0},
@@ -73,6 +73,26 @@ exports.addCouncil=async(req, res)=>{
                 {council_id:userInstance.councils[0].dataValues['id'],type: 'Awards and Recognition', no_of_members:0},
                 {council_id:userInstance.councils[0].dataValues['id'],type: 'Safety', no_of_members:0}            
     ])    
+}
+
+exports.addCouncilAdvisor=async(req, res)=>{    
+    let salt= bcrypt.genSaltSync(saltR);
+    let pass= bcrypt.hashSync(req.body.secret, salt);
+    User.model.hasMany(CouncilAdvisor.model,{foreignKey:'user_id',sourceKey:'id'})
+    const userInstance=await User.model.create({
+        username: req.body.username,
+        password: pass,
+        type:'Council Advisor',
+        council_advisors:{
+            council_id:req.body.council_id,
+            first_name:req.body.firstName,
+            middle_name:req.body.middleName,
+            last_name:req.body.lastName
+        },
+    },{
+        include:[CouncilAdvisor.model]
+    })
+    console.log(req.body.secret)
 }
 
 //For adding a member in Membership Form
@@ -190,9 +210,10 @@ exports.addCommitteeMember = async (req, res) => {
 
 //For Council Monthly Report Form
 exports.addCouncilMonthlyReport = async (req, res) => {
+    const Doc = CouncilMonthlyReport.model.belongsTo(Document.model, {foreignKey:'document_id'});
     let council = await getCouncilId(req.session.user_id)
 
-    await CouncilMonthlyReport.model.create({ 
+    await CouncilMonthlyReport.model.create({
         council_id: council.id,
         for_the_month_of: req.body.month,
         year: new Date().getFullYear(),
@@ -202,7 +223,14 @@ exports.addCouncilMonthlyReport = async (req, res) => {
         objective: req.body.objective,
         no_of_rcy_participants: req.body.num_of_participants,
         remarks: req.body.remarks,
-    });
+        document:{
+            type: 'COUNCIL_MONTHLY_REPORT',
+            chapter_id: council.chapter_id,  //get from Session variable
+            council_id: council.id,  //get from Session variable
+        }
+    },{
+        include:[Doc]
+    })
 }
 
 

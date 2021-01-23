@@ -3,27 +3,12 @@
     <div class="docs">
         <div class="container" data-aos="zoom-out" data-aos-delay="100">
             <h1>Documents</h1>
-            <nav class="navbar navbar-expand-lg navbar-light">
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav justify-content-end">
-                        <li class="nav-item">
-                            <button class="btn btn-light active" onclick="listView()">List</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="btn" onclick="gridView()">Grid</button>
-                        </li>
-                    </ul>
-                </div>
-            </nav>                
-                <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-                <button class="btn btn-primary" onclick="listView()"><i class="fa fa-bars"></i> List</button>
-                <button class="btn btn-primary" onclick="gridView()"><i class="fa fa-th-large"></i> Grid</button>-->
-                                
-                <section id="team2" >
-                    <div class="container" data-aos="fade-up" >  
+
+                <section id="team2">
+                    <div class="container" data-aos="fade-up">
                       <div class="row team section-bg2">
                         <div class="row ">
-                        <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+                        <!--<div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
                           <div class="member">
                             <div class="member-img">
                               <img src="/images/1.png" class="team-img img-fluid" alt="">
@@ -33,10 +18,33 @@
                               <a href="membershipForm" class="btn btn-danger">Make Form</a>
                             </div>
                           </div>
+                        </div>-->
+                            
+                        <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
+                          <div class="member">
+                            <div class="member-img">
+                              <img src="/images/1.png" class="team-img img-fluid" alt="">
+                            </div>
+                            <div class="member-info">
+                              <h4>Council Monthly Reports</h4>
+                              <a href="/councilMonthlyReportForm" class="btn btn-danger">Make Form</a>
+                            </div>
+                          </div>
                         </div>
-              
-              <!-- rework the controllers
-                        <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
+
+                        <!--<div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
+                          <div class="member">
+                            <div class="member-img">
+                              <img src="/images/1.png" class="team-img img-fluid" alt="">
+                            </div>
+                            <div class="member-info">
+                              <h4>Uniform Request Forms</h4>
+                              <a href="unifRequest" class="btn btn-danger">Make Form</a>
+                            </div>
+                          </div>
+                        </div>-->
+
+                        <!--<div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
                           <div class="member">
                             <div class="member-img">
                               <img src="/images/1.png" class="team-img img-fluid" alt="">
@@ -46,8 +54,13 @@
                               <a href="committeeMembershipForm" class="btn btn-danger">Make Form</a>
                             </div>
                           </div>
-                        </div>
-              
+                        </div>-->
+
+                    </div>
+
+                     <div class="container" data-aos="fade-up" >  
+                      <!--<div class="row team section-bg2">
+                        <div class="row ">                        
                         <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
                           <div class="member">
                             <div class="member-img">
@@ -72,24 +85,8 @@
                             </div>
                           </div>
                         </div>
-                      </div>  
-                    </div>
-                     <div class="container" data-aos="fade-up" >  
-                      <div class="row team section-bg2">
-                        <div class="row ">
-                        <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
-                          <div class="member">
-                            <div class="member-img">
-                              <img src="/images/1.png" class="team-img img-fluid" alt="">
-                            </div>
-                            <div class="member-info">
-                              <h4>Uniform Request Forms</h4>
-                              <a href="unifRequest" class="btn btn-danger">Make Form</a>
-                              
-                            </div>
-                          </div>
-                        </div>
-              
+                      </div>
+
                         <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
                           <div class="member">
                             <div class="member-img">
@@ -97,28 +94,14 @@
                             </div>
                             <div class="member-info">
                               <h4>Service Request Forms</h4>
-                              <a href="serviceReq" class="btn btn-danger">Make Form</a>
-                              
+                              <a href="serviceReq" class="btn btn-danger">Make Form</a>                            
                             </div>
                           </div>
-                        </div>
-              
-                        <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
-                          <div class="member">
-                            <div class="member-img">
-                              <img src="/images/1.png" class="team-img img-fluid" alt="">
-                            </div>
-                            <div class="member-info">
-                              <h4>Council Monthly Reports</h4>
-                              <a href="/docs" class="btn btn-danger">Make Form</a>
-                            </div>
-                          </div>
-                        </div>
+                        </div>-->                    
                       </div>  
                     </div>
-                  </section>
-                  rework the controllers -->
-        </div>
+                  </section>                  
+                </div>
     </div>  
 </section>
 <%-include ('partials/footer.ejs')%>

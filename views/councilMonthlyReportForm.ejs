@@ -7,7 +7,7 @@
       <div class="d-flex justify-content-between align-items-center">
         <h2>SCHOOL COUNCIL MONTHLY REPORT</h2>
         <ol>
-          <li><a href="/docs">Go Back Back To The Past...Samurai Jack</a></li>
+          <li><a href="/docs">Go Back</a></li>
           <li>Adding Report</li>
         </ol>
       </div>
@@ -17,18 +17,17 @@
 
   <section class="inner-page">
     <div class="container">
-      <div class="row d-flex">
+      <!--<div class="row d-flex">
         <div class="col-md-3 mb-3">
           <label for="councilName">School Council</label>
-          <input type="text" class="form-control" name="councilName" placeholder="automatic" value="" required="">
+          <input type="text" class="form-control" name="councilName" placeholder="<%=nav.name%>" value="<%=nav.name%>" required="">
         </div>
-      </div>
-
+      </div>-->
           <div class="row d-flex">
             <div class="col-md-3 mb-5">
               <label for="month">For the month of</label>
               <select id="month" type="text" class="form-control" name="month" required="">
-                <option disabled selected value>-select type-</option>
+                <option disabled selected value>-Select Month-</option>
                 <option value="1">January</option>
                 <option value="2">February</option>
                 <option value="3">March</option>
@@ -73,9 +72,7 @@
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">Add an Activity</button>
           </div>
 
-
-
-          <div class="row mt-5 mb-3">
+<!--      <div class="row mt-5 mb-3">
             <div class="col-md-2 text-right">Prepared by: </div>
             <div class="col-md-4 text-center">     
               <% if (session.type == 'Council') { %>
@@ -122,17 +119,13 @@
             </div>
         </div>
 
-
           <hr class="mb-4">        
-          <button class="btn btn-danger btn-lg btn-block text-white">Post</button>        
+          <button class="btn btn-danger btn-lg btn-block text-white">Post</button>-->
 
-          <a href="activities.php">Back</a>
+          <a href="/docs">Back</a>
     </div>
     </div>
   </section>
-
-
-
 
 <!-- Modal -->
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">

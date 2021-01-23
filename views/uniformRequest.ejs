@@ -28,18 +28,12 @@
           <div class="row d-flex mb-4">
             <div class="col-md">
               <label for="volunteer">Name of Requesting Volunteer</label>
-              <input type="text" class="form-control" name="volunteer" placeholder="" value="" required="">
-              <!-- <select id="volunteer" type="text" class="form-control" name="volunteer" required>
-                <option style="display:none"></option>
-                <% peoples.forEach( aa => { %>
-                  <option value="<%= aa.id%>"><%= aa.name %> </option>
-                <% }) %>
-              </select> -->
+              <input type="text" class="form-control" name="volunteer" placeholder="" value="" required="">              
             </div>
             <div class="col-md">
               <label for="activity">Name of Council</label>
               <select type="text" class="form-control" name="council" required>
-                  <option value="<%= council.id%>"><%= council.name %> </option>
+                  <option value="#id"><%=nav.name%></option>
               </select>
             </div>
           </div>
@@ -75,53 +69,9 @@
               <input type="radio" name="design" placeholder="" value="1" required>
             </div>
           </div>
-          
-            <!--<div class="row mb-4">
-              <div class="col-md-4">
-                <label for="rcys">Receipt Number:</label>
-                <input type="text" class="form-control" name="Receipt" placeholder="" value="" required>
-              </div>
-            </div>
 
-          <h6>Approved by:</h6>
-          <div class="row mb-3 mt-5">
-            <div class="col-md-6">
-              <div class="mt-4 text-center">
-                <h5 name="councilPres" id="councilPres"></h5>
-                <hr class="my-1">
-                <p>Council President</p>
-              </div>          
-          </div>
-
-          <div class="col-md-6">
-              <div class="mt-4 text-center">
-                <h5 name="councilAdv" id="councilAdv"></h5>
-                <hr class="my-1">
-                <p>Council Adviser</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="row mb-3 mt-5">
-            <div class="col-md-6">
-              <div class="mt-4 text-center">
-                <h5 name="councilPres" id="councilPres"></h5>
-                <hr class="my-1">
-                <p>Treasurer</p>
-              </div>
-              
-            </div>
-            <div class="col-md-6">
-              <div class="mt-4 text-center">
-                <h5 name="councilAdv" id="councilAdv"></h5>
-                <hr class="my-1">
-                <p>Chapter Bookkeeper</p>
-              </div>
-            </div>           
-          </div> -->
-
-          <hr class="mb-4">        
-          <button type='submit' class="btn btn-danger btn-lg btn-block text-white">Post</button>        
+          <hr class="mb-4">
+          <button type='submit' class="btn btn-danger btn-lg btn-block text-white">Post</button>
         </form>
           <a href="/docs">Back</a>
         </div>
