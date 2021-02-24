@@ -6,8 +6,7 @@
 
         Tip 2: you can also add an image using data-image tag
     -->
-      <div class="logo"><a href="/admin" class="simple-text logo-normal">
-          Home</a></div>
+      <div class="logo"><a href="/" class="simple-text logo-normal">Home</a></div>
       <%-include('./partials/adminSidebar.ejs') %> 
     <div class="main-panel">
       <!-- Navbar -->
@@ -18,7 +17,7 @@
       <div class="row">
         <div class="col-md-12">
           <div class="card">
-            <div class="card-header card-header-primary">
+            <div class="card-header card-header-danger">
               <h4 class="card-title">Edit Profile</h4>
               <p class="card-category">Complete your profile</p>
             </div>
@@ -92,7 +91,7 @@
                     </div>
                   </div>
                 </div>
-                <button type="submit" class="btn btn-primary pull-right">Update Profile</button>
+                <button type="submit" class="btn btn-danger pull-right">Update Profile</button>
                 <div class="clearfix"></div>
               </form>
             </div>
@@ -102,4 +101,4 @@
     </div>
   </div>
 
-<%-include('./partials/adminFooter.ejs') %> 
+<%-include('./partials/adminFooter.ejs') %>
