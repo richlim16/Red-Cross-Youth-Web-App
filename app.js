@@ -47,7 +47,7 @@ app.get('/', async(req,res)=>{
         }else{
             let docs = await Read.getDocsFromCouncils();
             let councils = await Read.getAllCouncils();
-            if(docs != null && councils != null){            
+            if(docs != null && councils != null){
                 res.render('adminHome',{
                     title: "Home",
                     adminNav:{name:req.session.username,position:req.session.type},
@@ -55,7 +55,7 @@ app.get('/', async(req,res)=>{
                     council:councils
                 });
             }
-        }        
+        }
     }
 });
 
@@ -68,7 +68,7 @@ app.get('/adminProfile',(req,res)=>{
         res.render('adminEditProf',{
             title: "Edit Profile",
             adminNav: {
-                name: req.session.username, 
+                name: req.session.username,
                 position: req.session.type
             }
         });
@@ -83,20 +83,20 @@ app.get('/login', (req,res)=>{
     }
 });
 
-app.post('/login', urlEncodedParser, async (req,res)=>{//the login failure handling can be better but with how it is right now it works for all cases of failed logins    
+app.post('/login', urlEncodedParser, async (req,res)=>{//the login failure handling can be better but with how it is right now it works for all cases of failed logins
     let result = await Read.getUser(req)
     if (result !== null){
         if (bcrypt.compareSync(req.body.pass, result['password'])){
             req.session.logged_in=true;
             req.session.user_id=result['id'];
             req.session.username=result['username'];
-            req.session.type=result['type'];            
+            req.session.type=result['type'];
             if (req.session.type == 'Chapter Admin' || req.session.type == 'Chapter Youth Advisor'){
                 req.session.type=(req.session.type == 'Chapter Youth Advisor')?'RCY Service Representative':'Chapter Administrator'
                 let data = await Read.getChapterUser(req);
                 req.session.type=(req.session.type==='Chapter Youth Advisor')?'RCY Service Representative':'Chapter Administrator';
-                req.session.chapter_id=data.chapter_personnel['chapter_id'];                
-            }else if(req.session.type == 'Council' || req.session.type == 'Council Advisor'){                 
+                req.session.chapter_id=data.chapter_personnel['chapter_id'];
+            }else if(req.session.type == 'Council' || req.session.type == 'Council Advisor'){
                 if(req.session.type==='Council'){//i realise that i can abstract this so council side can share one function, but deadlines are real
                     let data=await Read.getCouncilUser(req);
                     req.session.council_id=data.council['id'];
@@ -107,7 +107,7 @@ app.post('/login', urlEncodedParser, async (req,res)=>{//the login failure handl
                     let council=await Read.getCouncilInstance(data.council_advisor['council_id'])
                     req.session.council_id=data.council_advisor['council_id'];
                     req.session.council_name=council.name;
-                    req.session.council_category=shortenCateg(council.category);                    
+                    req.session.council_category=shortenCateg(council.category);
                 }
             }
             res.send(req.session)
@@ -147,7 +147,7 @@ app.get('/officerActivity/:type', async (req,res) =>{
 
 app.get('/viewDocs',async (req,res) =>{
     let members=await Read.docsMemForms(req);
-    let uniformRequests=await Read.docsUnifReqs(req);    
+    let uniformRequests=await Read.docsUnifReqs(req);
     if(req.session.logged_in!=true){
         res.redirect("/login");
     }else{
@@ -157,7 +157,7 @@ app.get('/viewDocs',async (req,res) =>{
             memForm:members,
             unifReqs:uniformRequests,
             nav:{
-                name:req.session.council_name,                
+                name:req.session.council_name,
                 category:req.session.council_category
             }
         });
@@ -171,7 +171,7 @@ app.get('/adminForms', (req,res) =>{
         res.render('adminActivity',{ //inconsistent naming
             title: "Forms",
             adminNav: {
-                name: req.session.name, 
+                name: req.session.name,
                 position: req.session.type
             }
         });
@@ -180,8 +180,8 @@ app.get('/adminForms', (req,res) =>{
 
 app.get('/addCouncil', async (req,res) =>{
     res.render('addCouncil',{
-        title:'Councils',        
-        message:'Adding a council also makes their council\'s account!',        
+        title:'Councils',
+        message:'Adding a council also makes their council\'s account!',
         adminNav:{
             name:req.session.username,
             position: req.session.type
@@ -207,7 +207,7 @@ app.get('/addAdvisor/:council', async(req,res)=>{
 
 app.post('/addAdvisor/:council', async(req,res)=>{
     let username=req.body.firstName+req.body.middleName+req.body.lastName;
-    const council=req.params.council;    
+    const council=req.params.council;
     req.body.username=makeUserName(username)+'_CA';
     req.body.secret=req.body.username+543216789
     await Create.addCouncilAdvisor(req)
@@ -215,7 +215,7 @@ app.post('/addAdvisor/:council', async(req,res)=>{
 });
 
 app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{
-    let result=await Read.findCouncil(req);        
+    let result=await Read.findCouncil(req);
     if(result === null){
         if(!req.body.category){
             console.log(!req.body.category)
@@ -223,7 +223,7 @@ app.post('/act/addCouncil', urlEncodedParser, async (req,res) =>{
         }else{
             req.body.shortHand=councilUserCateg(req.body.category);
             req.body.newName=makeUserName(req.body.councilName)+req.body.shortHand;
-            req.body.secret=req.body.newName+"12349876";                
+            req.body.secret=req.body.newName+"12349876";
             await Create.addCouncil(req)
             res.redirect('/');//successful insert na pare chong bro
         }
@@ -243,10 +243,10 @@ app.get('/allCouncils', async (req,res) =>{
     let councils = await Read.getAllCouncils()
     res.send(councils)
     res.render('addCouncil',{
-      title: "Add Council", 
+      title: "Add Council",
       chapters: req.session.chapter,
       council: req.session.chapter //yes, poor naming lmao poggers
-    });    
+    });
 });
 
 //DOCUMENTS START HERE
@@ -267,7 +267,7 @@ app.get('/docs', (req,res)=>{
 app.get('/activityForm', (req,res)=>{
     if(req.session.logged_in!=true){
         res.redirect("/login");
-    }else{ 
+    }else{
         res.render('addReport',{
             title: "Activity Form",
             council: req.session.council
@@ -307,11 +307,11 @@ app.get('/generatedCommitteeMembershipForm/:type&:userId', urlEncodedParser, asy
 app.get('/generatedCommitteeMembershipForm/:type', urlEncodedParser, async (req,res)=>{
     let members = await Read.getNoneCommitteeMembers()
 });
-  
+
 //When a adding members to a committee, show all members of that council without a committee yet
 app.get('/getNoneCommitteeMembers', urlEncodedParser, async (req,res)=>{
     try{
-        let members = await Read.getNoneCommitteeMembers();        
+        let members = await Read.getNoneCommitteeMembers();
         res.send(members);
     }catch(e){
         console.log("Error! : ",e);
@@ -327,10 +327,10 @@ app.get('/getNoneCommitteeMembers', urlEncodedParser, async (req,res)=>{
 
 app.get('/councilMonthlyReportForm', async (req,res)=>{
     res.render('councilMonthlyReportForm',{
-        title: "Council Monthly Report Form", 
+        title: "Council Monthly Report Form",
         session:req.session,
         nav:{
-            name:req.session.council_name,                
+            name:req.session.council_name,
             category:req.session.council_category
         }
     });
@@ -370,7 +370,7 @@ app.get('/activityReportForm', (req,res)=>{
 app.get('/unifRequest', async(req,res)=>{
     if(req.session.logged_in!=true){
         res.redirect("/login");
-    }else{        
+    }else{
         res.render('uniformRequest',{
             title: "Uniform Request",
             nav:{
@@ -415,16 +415,16 @@ app.get('/filledMemForm/:id', async (req,res)=>{
     let orgs = await Read.getMemOrgs(member);
     res.render('filledMembershipForm',{
         title: "Membership Form",
-        council: req.session.council, 
-        session:req.session, 
-        mem: member, 
-        trainings: trainings, 
+        council: req.session.council,
+        session:req.session,
+        mem: member,
+        trainings: trainings,
         orgs: orgs
     });*/
 });
 
 //DOCUMENTS END HERE
-app.post('/act/addMemberForm', urlEncodedParser, async (req,res) =>{    
+app.post('/act/addMemberForm', urlEncodedParser, async (req,res) =>{
     await Create.addMemberForm(req)
     console.log("ADDING NEW FORM");
     res.redirect('/membershipForm');
@@ -435,14 +435,14 @@ app.post('/act/addCommitteeMember', urlEncodedParser, async (req,res) =>{
     res.send('success');
 });
 
-app.post('/act/addSerReq',urlEncodedParser,(req,res)=>{    
+app.post('/act/addSerReq',urlEncodedParser,(req,res)=>{
     console.log("INSERT INTO `service_request_forms`(`reciever`, `date_and_time`, `name_of_activity`,`council_id`, `requesting_person`, `position`) VALUES ('"+req.body.chapAdmin+"', '"+req.body.dateFiled+"', '"+req.body.activity+"', '"+req.body.reqCouncil+"', '"+req.body.reqPerson+"', '"+req.body.position+"', '"+req.body.itemPerson+"', '"+req.body.purpose+"')")
     res.redirect('/docs');
 });
 
-app.post('/act/addUnifReq',urlEncodedParser,async(req,res)=>{    
+app.post('/act/addUnifReq',urlEncodedParser,async(req,res)=>{
     try{
-        await Create.addUniformRequest(req);        
+        await Create.addUniformRequest(req);
         console.log('Uniform Request sent!');
     }catch (e){
         console.log('ERROR! ',e);
@@ -458,39 +458,39 @@ app.post('/act/addCouncilMonthlyReport', urlEncodedParser, async (req,res) =>{
 /*app.get('/filledMemForm/:id', async (req,res)=>{
     let member = await Read.getFilledMemForm(req);
     let trainings = await Read.getMemTrainings(member);
-    let orgs = await Read.getMemOrgs(member);  
-    res.send({member: member, trainings: trainings, orgs: orgs}) 
+    let orgs = await Read.getMemOrgs(member);
+    res.send({member: member, trainings: trainings, orgs: orgs})
 });*/
-  
+
 // For approval/rejection of forms
 app.post('/memForm/presApprove/:id', async (req,res)=>{
-    await Update.memFormPresApprove(req);  
+    await Update.memFormPresApprove(req);
     let member = await Read.getFilledMemForm(req)
     res.send({sig:member.council_pres_sig})
 });
 app.post('/memForm/presReject/:id', async (req,res)=>{
-    await Update.memFormPresReject(req);  
+    await Update.memFormPresReject(req);
     let member = await Read.getFilledMemForm(req)
     console.log(member)
     res.send({sig:member.council_pres_sig})
 });
 app.post('/memForm/memApprove/:id', async (req,res)=>{
-    await Update.memFormMemApprove(req);  
+    await Update.memFormMemApprove(req);
     let member = await Read.getFilledMemForm(req)
     res.send({sig:member.member_sig})
 });
 app.post('/memForm/memReject/:id', async (req,res)=>{
-    await Update.memFormMemReject(req);  
+    await Update.memFormMemReject(req);
     let member = await Read.getFilledMemForm(req)
-    res.send({sig:member.member_sig}) 
+    res.send({sig:member.member_sig})
 });
 app.post('/memForm/advApprove/:id', async (req,res)=>{
-    await Update.memFormAdvApprove(req);  
+    await Update.memFormAdvApprove(req);
     let member = await Read.getFilledMemForm(req)
     res.send({sig:member.council_adv_sig})
 });
 app.post('/memForm/advReject/:id', async (req,res)=>{
-    await Update.memFormAdvReject(req);  
+    await Update.memFormAdvReject(req);
     let member = await Read.getFilledMemForm(req)
     res.send({sig:member.council_adv_sig})
 });
@@ -512,7 +512,7 @@ function councilUserCateg(category){//this is used on login to shorten the categ
         case "College Red Cross Youth":ret="_CC";break;
         case "Community Red Cross Youth":ret="_Comm";break;
         default:ret=null
-    }    
+    }
     return ret
 }
 
@@ -525,7 +525,7 @@ function shortenCateg(category){//this is used on login to shorten the category,
         case "College Red Cross Youth":ret="College Council";break;
         case "Community Red Cross Youth":ret="Community Council";break;
         default:ret="This should not occur so this is an error easter egg"
-    }    
+    }
     return ret
 }
 
@@ -543,7 +543,7 @@ app.get('/viewCouncil/:council',async(req,res)=>{
             name:req.session.username,
             position:req.session.type
         }
-    });    
+    });
 })
 
 app.use((req, res)=>{
@@ -552,7 +552,7 @@ app.use((req, res)=>{
 
 app.use((req, res)=>{
     res.status(500);
-    res.send('ERROR 500 OCCURED')
+    res.send('ERROR 500 OCCURED');
 });
 /*
 app.get('/',(req,res)=>{//i know there's a better way to do this but i'm lazy -derek

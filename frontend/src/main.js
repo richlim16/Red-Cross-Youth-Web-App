@@ -5,6 +5,8 @@ import App from './App.vue'
 import home from './views/Home.vue'
 import docs from './views/docs.vue'
 import membership from './views/membershipForm.vue'
+import oldmembership from './views/oldmembershipForm.vue'
+
 import committee from './views/committeeForm.vue'
 import index from './views/index.vue'
 import login from './views/login.vue'
@@ -29,6 +31,7 @@ const router = new VueRouter({
       name: "login",
       component: login,
     },
+
     {
       path: "/docs",
       name: "docs",
@@ -38,6 +41,11 @@ const router = new VueRouter({
       path: "/membershipForm",
       name: "membershipform",
       component: membership
+    },
+    {
+      path: "/oldmembershipForm",
+      name: "oldmembershipform",
+      component: oldmembership
     },
     {
       path: "/committeeForm",

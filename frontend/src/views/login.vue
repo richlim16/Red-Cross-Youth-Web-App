@@ -1,51 +1,28 @@
 <template>
-    <div class="login">
-      <section id="hero" class="d-flex align-items-center">
-          <div class="container" data-aos="zoom-out" data-aos-delay="100">
-          <div class="row">
-              <div class="col-md-8 col-sm-8 col-xs-12">
-                  <h1>Welcome to <span>The Red Cross Youth Document Management System</span>
-                  </h1>
-                  <h2>Siamo Tutti Fratellil!</h2>
-              </div>
-              <div class="ml-auto col-md-4 col-sm-4 col-xs-12 text-white">
-                  <div class="m-3 p-3 bg-danger rounded-lg">
-                      <h2 class="text-center text-white">Log In</h2>
-                      <form @submit="login">
-                          <!-- <div class="form-group">
-                          <label for="email">Email address</label>
-                          <input type="email" class="form-control" id="email" required>
-                          </div><br> -->
-                          <div class="form-group">
-                          <label for="username">Username</label>
-                          <input type="text" class="form-control" v-model="username" id="username" name="username" required>
-                          </div><br>
-                          <div class="form-group">
-                          <label for="pass">Password</label>
-                          <input type="password" class="form-control" v-model="password" id="pass" name="pass" required>
-                          </div><br>
-                          <div class="form-group form-check">
-                          <input type="checkbox" class="form-check-input" id="remember">
-                          <label class="form-check-label" for="remember">Remember me </label>
-                          </div><br>
-                          <div class="row">
-                              <div class="col-4">
-                                  <button type="submit" class="btn btn-light">Log In</button>
-                              </div>
-                              <div class="col-8">
-                                  <a href="/signup" class="text-white text-center"><u>No account? Click here</u></a>
-                              </div>
-                          </div>
-                      </form>
-                      
-                  </div>
-              </div>
+  <div class="container">
+    <div class="main">
+      <div class="welcome-message">
+        <h1>Welcome to <span>The Red Cross Youth Document Management System</span>
+        </h1>
+        <h2>Siamo Tutti Fratellil!</h2>
+      </div>
+      <div class="form-area">
+        <h2>Login</h2>
+        <form @submit="login">
+          <label for="username">Username</label>
+          <input type="text" v-model="username" id="username" name="username" required>
+          <label for="password">Password</label>
+          <input type="password" v-model="password" id="pass" name="pass" required>
+          <div class="checkbox">
+            <input type="checkbox" id="remember">
+            <label for="remember">Remember me</label>
           </div>
-          </div><br>
-      </section><!-- End Hero --> 
-      <f/>
+          <button type="submit">Log In</button>
+        </form>
+      </div>
     </div>
-      
+    <f/>
+  </div>
 </template>
 <script>
 import footer from '../components/footer.vue'
@@ -78,12 +55,12 @@ console.log(this.session)
         }
         else if (JSON.parse(JSON.stringify(this.session)).userType == "Chapter Admin") {
           this.$store.commit('setUserId', JSON.parse(JSON.stringify(this.session)).userId)
-          this.$store.commit('setUserType', JSON.parse(JSON.stringify(this.session)).userType) 
+          this.$store.commit('setUserType', JSON.parse(JSON.stringify(this.session)).userType)
           this.$router.push({ path: `/adminHome` })
         }
         else if (JSON.parse(JSON.stringify(this.session)).userType == "Council") {
           this.$store.commit('setUserId', JSON.parse(JSON.stringify(this.session)).userId)
-          this.$store.commit('setUserType', JSON.parse(JSON.stringify(this.session)).userType) 
+          this.$store.commit('setUserType', JSON.parse(JSON.stringify(this.session)).userType)
           this.$router.push({ path: `/home` })
         }
         else if (JSON.parse(JSON.stringify(this.session)).userType == "Council Advisor") {
@@ -96,131 +73,75 @@ console.log(this.session)
 }
 </script>
 <style scoped>
-    /*--------------------------------------------------------------
-# Hero Section
---------------------------------------------------------------*/
-#hero {
-  width: 100%;
-  height: 75vh;
-  background: url("/images/background.jpg") top left;
-  background-size: cover;
-  position: relative;
+.container{
+  display: grid;
+  grid-template-rows: 500px 1fr;
+  row-gap: 50px;
 }
-
-#hero:before {
-  content: "";
-  background: rgba(255, 255, 255, 0.6);
-  position: absolute;
-  bottom: 0;
-  top: 0;
-  left: 0;
-  right: 0;
+.main{
+  display: grid;
+  column-gap: 30px;
+  grid-template-columns: repeat(4, 1fr);
+  padding-top: 100px;
 }
-
-#hero .container {
-  position: relative;
-  padding-top: 132px;
+.welcome-message{
+  grid-column: 1/4;
+  color: #111;
 }
-
-@media (max-width: 992px) {
-  #hero .container {
-    padding-top: 58px;
-  }
-}
-
-#hero h1 {
-  margin: 0;
-  font-size: 48px;
-  font-weight: 700;
-  line-height: 56px;
-  color: #222222;
-  font-family: "Poppins", sans-serif;
-}
-
-#hero h1 span {
-  color: #ea1010;
-}
-
-#hero h2 {
-  color: #555555;
-  margin: 5px 0 30px 0;
-  font-size: 24px;
-  font-weight: 400;
-}
-
-#hero .btn-get-started {
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  font-weight: 500;
-  font-size: 14px;
-  letter-spacing: 1px;
-  display: inline-block;
-  padding: 10px 28px;
-  border-radius: 4px;
-  transition: 0.5s;
-  color: #fff;
-  background: #ea1010;
-}
-
-#hero .btn-get-started:hover {
-  background: #e65b5b;
-}
-
-#hero .btn-watch-video {
-  font-size: 16px;
-  display: inline-block;
-  padding: 10px 25px 8px 40px;
-  transition: 0.5s;
-  margin-left: 25px;
-  color: #222222;
-  position: relative;
+.welcome-message h1{
   font-weight: 600;
 }
-
-#hero .btn-watch-video i {
-  color: #ea1010;
-  font-size: 32px;
-  position: absolute;
-  left: 0;
-  top: 7px;
-  transition: 0.3s;
+.welcome-message span{
+  color: red;
+  font-weight: 700;
 }
-
-#hero .btn-watch-video:hover {
-  color: #ea1010;
+.form-area{
+  grid-column: 4/5;
+  background: #eee;
+  border-radius: 3px;
+  box-shadow: 0px 20px 15px -10px rgba(255, 50, 50, .8);
+  padding: 20px;
 }
-
-#hero .btn-watch-video:hover i {
-  color: #eb5f5f;
+.form-area h2{
+  border-left: 5px solid red;
+  padding-left: 10px;
+  margin-bottom: 20px;
 }
-
-@media (min-width: 1024px) {
-  #hero {
-    background-attachment: fixed;
-  }
+form{
+  display: flex;
+  flex-direction: column;
 }
-
-@media (max-width: 768px) {
-  #hero {
-    height: 100vh;
-  }
-  #hero h1 {
-    font-size: 28px;
-    line-height: 36px;
-  }
-  #hero h2 {
-    font-size: 18px;
-    line-height: 24px;
-    margin-bottom: 30px;
-  }
-  #hero .btn-get-started, #hero .btn-watch-video {
-    font-size: 13px;
-  }
+input{
+  border: 0;
+  border-radius: 3px;
+  padding: 5px;
+  margin-bottom: 15px;
+  box-shadow: 0 3px 3px #aaa;
+  transition: .4s;
 }
+input:focus{
+  outline: none;
+  box-shadow: 0 3px 3px -1px #f00;
+}
+.checkbox{
+  margin: 10px 0 10px 0;
+}
+#remember{
+  margin-right: 10px
+}
+form button{
+  width: 100px;
+  padding: 5px;
+  border: 0;
+  border-radius: 5px;
+  background: #fff;
+  transition: .4s;
+  box-shadow: 0 3px 3px #aaa;
 
-@media (max-height: 500px) {
-  #hero {
-    height: 120vh;
-  }
+}
+form button:hover{
+  color: #fff;
+  background: rgba(255, 0, 0, .8);
+  box-shadow: none;
 }
 </style>
