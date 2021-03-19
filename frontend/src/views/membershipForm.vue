@@ -1,10 +1,9 @@
-<template>
-    <div id="membershipForm">
-        <n/>
-        <!-- ======= Breadcrumbs ======= -->
+<template lang="html">
+  <div class="container">
+    <n/>
+    <!-- ======= Breadcrumbs ======= -->
         <section class="breadcrumbs">
             <div class="container">
-
                 <div class="d-flex justify-content-between align-items-center">
                     <h2>Membership Form</h2>
                     <ol>
@@ -12,454 +11,418 @@
                     <li>Adding Report</li>
                     </ol>
                 </div>
-
             </div>
         </section><!-- End Breadcrumbs -->
-
         <section class="inner-page">
-            <div class="container">
-                <p>Fill out the following fields to apply for membership</p>
+          <div class="mainForm">
+            <p>Fill out the following fields to apply for membership</p>
+              <form id="addMemberForm" @submit="compile" class="needs-validation">
                 <div class="row">
-                    <div class="col-md-8 order-md-1">
-                        <form id="addMemberForm" @submit="compile" class="needs-validation">
-                            <div class="row d-flex justify-content-end">
-                                <div class="col-md-2 mb-1">
-                                    <label for="bloodType">Blood Type</label>
-                                    <select v-model="bloodType" class="form-control" name="bloodType">
-                                    <option disabled selected value>-select type-</option>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <option value="AB">AB</option>
-                                    <option value="O">O</option>
-                                    </select>
-                                </div>
-                                <div class="row d-flex justify-content-end">
-                                    <div class="col-md-4 mb-1">
-                                        <label for="rcyId">RCY ID No.</label>
-                                        <input type="number" class="form-control" v-model="rcyId" name="rcyId" placeholder="RCY ID No." value="" required="">
-                                        <div class="invalid-feedback">
-                                        Valid bloodtype is required.
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4 mb-1">
-                                        <label for="surName">Surname</label>
-                                        <input type="text" class="form-control" v-model="surname" name="surname" placeholder="Surname" value="" required="">
-                                        <div class="invalid-feedback">
-                                        Valid surname is required.
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-1">
-                                        <label for="firstName">First name</label>
-                                        <input type="text" class="form-control" v-model="firstname" name="firstname" placeholder="First Name" value="" required="">
-                                        <div class="invalid-feedback">
-                                        Valid first name is required.
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-1">
-                                        <label for="middleName">Middle name</label>
-                                        <input type="text" class="form-control" v-model="middlename" name="middlename" placeholder="Middle Name" value="" required="">
-                                        <div class="invalid-feedback">
-                                        Valid middle name is required.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-3 mb-4">
-                                    <label for="nickname">Nickname</label>
-                                    <input type="text" class="form-control" v-model="nickname" name="nickname" placeholder="Nickame" value="" required="">
-                                </div>
-                            </div>
+                  <div class="item">
+                    <label for="bloodType">Blood Type</label>
+                    <select v-model="bloodType" name="bloodType" id="bloodType">
+                    <option disabled selected hidden value="">-select type-</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="AB">AB</option>
+                    <option value="O">O</option>
+                    </select>
+                  </div>
 
-                            <div class="row">
-                                <div class="col-md-6 mb-4">
-                                    <label for="birthdate">Birthdate</label>
-                                    <input type="date" class="form-control" v-model="birthdate" name="birthdate" placeholder="Birthdate" value="" required="">
-                                </div>
-                                <div class="col-md-3 mb-4">
-                                    <label for="age">Age</label>
-                                    <input type="number" class="form-control" v-model="age" name="age" placeholder="Age" value="">
-                                </div>
-                                <div class="col-md-3 mb-4">
-                                    <label for="civilStatus">Civil Status</label>
-                                    <select v-model="civilStatus" class="form-control" name="civilStatus">
-                                    <option disabled selected value> -- select an option -- </option>
-                                    <option value="SINGLE">SINGLE</option>
-                                    <option value="MARRIED">MARRIED</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-2 mb-4">
-                                    <label for="height">Height</label>
-                                    <input type="number" class="form-control" v-model="height" name="height" placeholder="inches" value="" required=""> 
-                                </div>
-                                <div class="col-md-2 mb-4">
-                                    <label for="weight">Weight</label>
-                                    <input type="number" class="form-control" v-model="weight" name="weight" placeholder="kg" value="" required=""> 
-                                </div>
-                                <div class="col-md-4 mb-4">
-                                    <label for="nationality">Nationality</label>
-                                    <input type="text" class="form-control" v-model="nationality" name="nationality" placeholder="Nationality" value="" required="">
-                                </div>
-                                <div class="col-md-4 mb-4">
-                                    <label for="religion">Religion</label>
-                                    <input type="text" class="form-control" v-model="religion" name="religion" placeholder="Religion" value="" required="">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-4 mb-4">
-                                    <label for="contact">Contact Number</label>
-                                    <input type="text" class="form-control" v-model="contactNo" name="contactNo" placeholder="Contact No." value="" required="">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-8 mb-4">
-                                    <label for="cityAddress">City Address</label>
-                                    <input type="text" class="form-control" v-model="cityAdd" name="cityAdd" placeholder="City Address" value="" required="">
-                                </div>
-                                <div class="col-md-4 mb-4">
-                                    <label for="cityTel">City Telephone Number</label>
-                                    <input type="text" class="form-control" v-model="cityTel" name="cityTel" placeholder="City Telephone No." value="" required="">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-8 mb-4">
-                                    <label for="provincialAddress">Provincial Address</label>
-                                    <input type="text" class="form-control" v-model="provinceAdd" name="provinceAdd" placeholder="Provincial Address" value="" required="">
-                                </div>
-                                <div class="col-md-4 mb-4">
-                                    <label for="provincialTel">Provincial Telephone Number</label>
-                                    <input type="text" class="form-control" v-model="provinceTel" name="provinceTel" placeholder="Provincial Telephone No." value="" required="">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6 mb-4">
-                                    <label for="ailments">Ailments (separate each with a comma)</label>
-                                    <input type="text" class="form-control" v-model="ailments" name="ailments" placeholder="Ailments" value="" required="">
-                                </div>
-                                <div class="col-md-6 mb-4">
-                                    <label for="allergies">Allergies (separate each with a comma)</label>
-                                    <input type="text" class="form-control" v-model="allergies" name="allergies" placeholder="Allergies" value="" required="">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6 mb-4">
-                                    <label for="hobbies">Hobbies (separate each with a comma)</label>
-                                    <input type="text" class="form-control" v-model="hobbies" name="hobbies" placeholder="Hobbies" value="" required="">
-                                </div>
-                                <div class="col-md-6 mb-4">
-                                    <label for="specialSkills">Special Skills (separate each with a comma)</label>
-                                    <input type="text" class="form-control" v-model="specSkills" name="specSkills" placeholder="Special Skills" value="" required="">
-                                </div>
-                            </div>
-
-
-                            <div class="row">
-                                <div class="col-md-8 mb-1">
-                                    <label for="fathersName">Father's Name</label>
-                                    <input type="text" class="form-control" v-model="fathersName" name="fathersName" placeholder="Father's Name" value="" required="">
-                                </div>
-                                <div class="col-md-4 mb-1">
-                                    <label for="fathersOccupation">Father's Occupation</label>
-                                    <input type="text" class="form-control" v-model="fathersOcc" name="fathersOcc" placeholder="Father's Occupation" value="" required="">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-8 mb-4">
-                                    <label for="fathersAddress">Father's Address</label>
-                                    <input type="text" class="form-control" v-model="fathersAdd" name="fathersAdd" placeholder="Father's Addresss" value="" required="">
-                                </div>
-                                <div class="col-md-4 mb-4">
-                                    <label for="fathersTel">Father's Telephone Number</label>
-                                    <input type="text" class="form-control" v-model="fathersTel" name="fathersTel" placeholder="Father's Telephone No." value="" required="">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-8 mb-1">
-                                    <label for="mothersName">Mother's Name</label>
-                                    <input type="text" class="form-control" v-model="mothersName" name="mothersName" placeholder="Mother's Name" value="" required="">
-                                </div>
-                                <div class="col-md-4 mb-1">
-                                    <label for="mothersOccupation">Mother's Occupation</label>
-                                    <input type="text" class="form-control" v-model="mothersOcc" name="mothersOcc" placeholder="Mother's Occupation" value="" required="">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-8 mb-4">
-                                    <label for="mothersAddress">Mother's Address</label>
-                                    <input type="text" class="form-control" v-model="mothersAdd" name="mothersAdd" placeholder="Mother's Addresss" value="" required="">
-                                </div>
-                                <div class="col-md-4 mb-4">
-                                    <label for="mothersTel">Mother's Telephone Number</label>
-                                    <input type="text" class="form-control" v-model="mothersTel" name="mothersTel" placeholder="Mother's Telephone No." value="" required="">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-8 mb-1">
-                                    <label for="guardiansName">Guardian's Name</label>
-                                    <input type="text" class="form-control" v-model="guardiansName" name="guardiansName" placeholder="Guardian's Name" value="" required="">
-                                </div>
-                                <div class="col-md-4 mb-1">
-                                    <label for="guardiansOccupation">Guardian's Occupation</label>
-                                    <input type="text" class="form-control" v-model="guardiansOcc" name="guardiansOcc" placeholder="Guardian's Occupation" value="" required="">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-8 mb-5">
-                                    <label for="guardiansAddress">Guardian's Address</label>
-                                    <input type="text" class="form-control" v-model="guardiansAdd" name="guardiansAdd" placeholder="Guardian's Addresss" value="" required="">
-                                </div>
-                                <div class="col-md-4 mb-5">
-                                    <label for="guardiansTel">Guardian's Telephone Number</label>
-                                    <input type="text" class="form-control" v-model="guardiansTel" name="guardiansTel" placeholder="Guardian's Telephone No." value="" required="">
-                                </div>
-                            </div>
-
-
-                            <h4 class="mb-3">EDUCATIONAL BACKGROUND</h4>
-                            <div class="row">
-                                <div class="col-md-6 mb-1">
-                                    <label for="presentSchool">Present School</label>
-                                    <input type="text" class="form-control" v-model="presentSchool" name="presentSchool" placeholder="Present School" value="" required="">
-                                </div>
-                                <div class="col-md-3 mb-1">
-                                    <label for="course">Course</label>
-                                    <input type="text" class="form-control" v-model="course" name="course" placeholder="Course" value="" required="">
-                                </div>
-                                <div class="col-md-3 mb-1">
-                                    <label for="year">Year</label>
-                                    <input type="text" class="form-control" v-model="year" name="year" placeholder="Year" value="" required="">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-8 mb-4">
-                                    <label for="schoolAddress">School Address</label>
-                                    <input type="text" class="form-control" v-model="schoolAdd" name="schoolAdd" placeholder="School Address" value="" required="">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-8 mb-4">
-                                    <label for="elementarySchool">Elementary School</label>
-                                    <input type="text" class="form-control" v-model="elemSchool" name="elemSchool" placeholder="Elementary School" value="" required="">
-                                </div>
-                                <div class="col-md-4 mb-4">
-                                    <label for="elementaryDate">Date</label>
-                                    <input type="date" class="form-control" v-model="elemDate" name="elemDate" placeholder="" value="" required="">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-8 mb-4">
-                                    <label for="secondarySchool">Secondary School</label>
-                                    <input type="text" class="form-control" v-model="secondarySchool" name="secondarySchool" placeholder="Secondary School" value="" required="">
-                                </div>
-                                <div class="col-md-4 mb-4">
-                                    <label for="secondaryDate">Date</label>
-                                    <input type="date" class="form-control" v-model="secondaryDate" name="secondaryDate" placeholder="" value="" required="">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-8 mb-4">
-                                    <label for="collegeSchool">College School</label>
-                                    <input type="text" class="form-control" v-model="collegeSchool" name="collegeSchool" placeholder="College School" value="" required="">
-                                </div>
-                                <div class="col-md-4 mb-4">
-                                    <label for="collegeDate">Date</label>
-                                    <input type="date" class="form-control" v-model="collegeDate" name="collegeDate" placeholder="" value="" required="">
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-8 mb-5">
-                                    <label for="vocationalSchool">Vocational School</label>
-                                    <input type="text" class="form-control" v-model="vocSchool" name="vocSchool" placeholder="Vocational School" value="" required="">
-                                </div>
-                                <div class="col-md-4 mb-5">
-                                    <label for="vocationalDate">Date</label>
-                                    <input type="date" class="form-control" v-model="vocDate" name="vocDate" placeholder="" value="" required="">
-                                </div>
-                            </div>
-
-
-                            <h4 class="mb-3">RED CROSS TRAININGS ATTENDED</h4>
-                            <!-- JS to add more lines for trainingList -->
-                            <div id="trainingsList" v-if="trainings==null">
-                                <div class="row training">
-                                    <div class="col-md-6 mb-1 trainingDiv">
-                                        <label for="training">Training Attended</label>
-                                        <input type="text" class="form-control trainingAttended" name="training" placeholder="Training Attended" required="">
-                                    </div>
-                                    <div class="col-md-6 mb-1 certDiv">
-                                    <label for="cert">Certificate Number</label>
-                                    <input type="text" class="form-control certificateNo" name="cert" placeholder="Certificate Number" required="">
-                                     </div>
-                                    <div class="col-md-6 mb-4 placeDiv">
-                                        <label for="place">Place</label>
-                                        <input type="text" class="form-control place" name="place" placeholder="Place" required="">
-                                    </div>
-                                    <div class="col-md-3 mb-4 startDiv">
-                                        <label for="startDate">Start Date</label>
-                                        <input type="date" class="form-control startDate" name="startDate" placeholder="" required="">
-                                    </div>
-                                    <div class="col-md-3 mb-4 endDiv">
-                                        <label for="endDate">End Date</label>
-                                        <input type="date" class="form-control endDate" name="endDate" placeholder="" required="">
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div id="trainingsList" v-for="(training,i) in trainings" :key="i">
-                                <div class="row training">
-                                    <div class="col-md-6 mb-1 trainingDiv">
-                                        <label for="training">Training Attended</label>
-                                        <input type="text" class="form-control trainingAttended" name="training" :value=training.training_attended required="">
-                                    </div>
-                                    <div class="col-md-6 mb-1 certDiv">
-                                    <label for="cert">Certificate Number</label>
-                                    <input type="text" class="form-control certificateNo" name="cert" placeholder="Certificate Number" :value=training.certificate_no required="">
-                                     </div>
-                                    <div class="col-md-6 mb-4 placeDiv">
-                                        <label for="place">Place</label>
-                                        <input type="text" class="form-control place" name="place" placeholder="Place" :value=training.place required="">
-                                    </div>
-                                    <div class="col-md-3 mb-4 startDiv">
-                                        <label for="startDate">Start Date</label>
-                                        <input type="date" class="form-control startDate" name="startDate" placeholder="" :value=formatDate(training.start_date) required="">
-                                    </div>
-                                    <div class="col-md-3 mb-4 endDiv">
-                                        <label for="endDate">End Date</label>
-                                        <input type="date" class="form-control endDate" name="endDate" placeholder="" :value=formatDate(training.end_date) required="">
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="button" v-on:click="addTraining" class="col-md-3 btn btn-success">Add Another Training</button>
-
-
-
-                            <h4 class="mt-5 mb-3">AFFILIATION WITH OTHER ORGANIZATIONS</h4>
-                            <!-- JS to add more lines for orgAffiliations -->
-                            <div id="organizations">
-                                <div v-if="trainings==null" class="row organization">
-                                    <div class="col-md-6 mb-1 orgDiv">
-                                    <label for="organization">Organization</label>
-                                    <input type="text" class="form-control org" name="organization" placeholder="Organization" required="">
-                                    </div>
-                                    <div class="col-md-3 mb-1 startDiv">
-                                    <label for="startDate">Start Date</label>
-                                    <input type="date" class="form-control startDate" name="startDate" placeholder="" required="">
-                                    </div>
-                                    <div class="col-md-3 mb-1 endDiv">
-                                    <label for="endDate">End Date</label>
-                                    <input type="date" class="form-control endDate" name="endDate" placeholder="" required="">
-                                    </div>
-                                    <div class="col-md-6 mb-4 posDiv">
-                                    <label for="position">Position</label>
-                                    <input type="text" class="form-control position" name="position" placeholder="Position" required="">
-                                    </div>
-                                    <div class="col-md-6 mb-4 councilDiv">
-                                    <label for="council">Council</label>
-                                    <input type="text" class="form-control council" name="council" placeholder="Council" required="">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div id="organizations">
-                                <div class="row organization" v-for="(org,i) in organizations" :key="i">
-                                    <div class="col-md-6 mb-1 orgDiv">
-                                    <label for="organization">Organization</label>
-                                    <input type="text" class="form-control org" name="organization" placeholder="Organization" :value=org.organization required="">
-                                    </div>
-                                    <div class="col-md-3 mb-1 startDiv">
-                                    <label for="startDate">Start Date</label>
-                                    <input type="date" class="form-control startDate" name="startDate" placeholder="" :value=formatDate(org.start_date) required="">
-                                    </div>
-                                    <div class="col-md-3 mb-1 endDiv">
-                                    <label for="endDate">End Date</label>
-                                    <input type="date" class="form-control endDate" name="endDate" placeholder="" :value=formatDate(org.end_date) required="">
-                                    </div>
-                                    <div class="col-md-6 mb-4 posDiv">
-                                    <label for="position">Position</label>
-                                    <input type="text" class="form-control position" name="position" placeholder="Position" :value=org.position required="">
-                                    </div>
-                                    <div class="col-md-6 mb-4 councilDiv">
-                                    <label for="council">Council</label>
-                                    <input type="text" class="form-control council" name="council" placeholder="Council" :value=org.council required="">
-                                    </div>
-                                </div>
-                            </div>
-                            <button type="button" v-on:click="addOrg" class="col-md-4 btn btn-success">Add Another Organization</button>
-
-                            <hr class="my-4">          
-                        
-
-                            <div class="row mt-5 mb-2">
-                                <div class="d-flex justify-content-center">
-                                    <h6>I hereby certify to the correctness of the foregoing information</h6>
-                                </div>
-                            </div>
-                                
-                            <div class="row mt-3 mb-3 justify-content-center">
-                                <div class="col-md-6 text-center">   
-                                    <button v-if="council_pres_sig==1" class="btn btn-success">Approved</button>
-                                    <button v-if="council_pres_sig==2" class="btn btn-danger">Rejected</button>
-                                    <button v-if="council_pres_sig==0 && userType=='Council'" type="button" v-on:click="presApprove" class="btn btn-success">Approve</button>
-                                    <button v-if="council_pres_sig==0 && userType=='Council'" type="button" v-on:click="presReject" class="btn btn-danger">Reject</button>
-                                    <h5 name="cyc1" id="cyc1"></h5>
-                                    <hr class="my-1">  
-                                    <p>Council President</p>
-                                </div>
-                                <div class="col-md-6 text-center">
-                                    <button v-if="member_sig==1" class="btn btn-success">Approved</button>
-                                    <button v-if="member_sig==2" class="btn btn-danger">Rejected</button>
-                                    <button v-if="member_sig==0 && userType=='Council'" type="button" v-on:click="memApprove" class="btn btn-success">Approve</button>
-                                    <button v-if="member_sig==0 && userType=='Council'" type="button" v-on:click="memReject" class="btn btn-danger">Reject</button> 
-                                    <h5 name="cyc2" id="cyc2"></h5>
-                                    <hr class="my-1">  
-                                    <p>Signature of Member</p>
-                                </div>
-                            </div>
-
-                            <div class="row mt-5 mb-3 justify-content-center">
-                                <div class="col-md-6 text-center">            
-                                </div>
-                                <div class="col-md-6 text-center">
-                                    <button v-if="council_adv_sig==1" class="btn btn-success">Approved</button>
-                                    <button v-if="council_adv_sig==2" class="btn btn-danger">Rejected</button>
-                                    <button v-if="council_adv_sig==0 && userType=='Council Advisor'" type="button" v-on:click="advApprove" class="btn btn-success">Approve</button>
-                                    <button v-if="council_adv_sig==0 && userType=='Council Advisor'" type="button" v-on:click="advReject" class="btn btn-danger">Reject</button> 
-                                    <h5 name="cyc2" id="cyc2"></h5>
-                                    <hr class="my-1">  
-                                    <p>Council Advisor</p>
-                                </div>
-                            </div>
-                            <button v-if="newFlag==null" type='submit' id="test" class="btn btn-danger btn-lg btn-block text-white">Submit</button>        
-                        </form>
+                  <div class="item">
+                    <label for="rcyId">RCY ID No.</label>
+                    <input type="number" v-model="rcyId" name="rcyId" placeholder="RCY ID No." value="" required="">
+                    <div class="invalid-feedback">
+                    Valid bloodtype is required.
                     </div>
+                  </div>
+
                 </div>
-            </div>
+                <div class="row">
+                  <div class="item">
+                    <label for="surName">Surname</label>
+                    <input type="text" class="form-control" v-model="surname" name="surname" placeholder="Dela Cruz" value="" required="">
+                    <div class="invalid-feedback">
+                    Valid surname is required.
+                    </div>
+                  </div>
+                  <div class="item">
+                    <label for="firstname">First Name</label>
+                    <input type="text" class="form-control" v-model="firstname" name="firstname" placeholder="Juan" value="" required="">
+                    <div class="invalid-feedback">
+                    Valid first name is required.
+                    </div>
+                  </div>
+                  <div class="item">
+                    <label for="middleName">Middle name</label>
+                    <input type="text" class="form-control" v-model="middlename" name="middlename" placeholder="Pepito" value="" required="">
+                    <div class="invalid-feedback">
+                    Valid middle name is required.
+                    </div>
+                  </div>
+                  <div class="item">
+                    <label for="nickname">Nickname</label>
+                    <input type="text" class="form-control" v-model="nickname" name="nickname" placeholder="JuanD" value="" required="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="item">
+                    <label for="height">Height</label>
+                    <input type="number" class="form-control" v-model="height" name="height" placeholder="inches" value="" required="">
+                  </div>
+                  <div class="item">
+                    <label for="birthdate">Birthdate</label>
+                    <input type="date" class="form-control" v-model="birthdate" name="birthdate" placeholder="Birthdate" value="" required="">
+                  </div>
+                  <div class="item">
+                    <label for="age">Age</label>
+                    <input type="number" class="form-control" v-model="age" name="age" placeholder="21" value="">
+                  </div>
+                  <div class="item">
+                    <label for="civilStatus">Civil Status</label>
+                    <select v-model="civilStatus" class="form-control" name="civilStatus">
+                    <option disabled selected value hidden> -- select an option -- </option>
+                    <option value="SINGLE">SINGLE</option>
+                    <option value="MARRIED">MARRIED</option>
+                    </select>
+                  </div>
+                  <div class="item">
+                    <label for="nationality">Nationality</label>
+                    <input type="text" class="form-control" v-model="nationality" name="nationality" placeholder="Filipino" value="" required="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="item">
+                    <label for="religion">Religion</label>
+                    <input type="text" class="form-control" v-model="religion" name="religion" placeholder="Religion" value="" required="">
+                  </div>
+                  <div class="item">
+                    <label for="contact">Contact Number</label>
+                    <input type="text" class="form-control" v-model="contactNo" name="contactNo" placeholder="+63 917 123 4567" value="" required="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="item" id="widerInput" >
+                    <label for="cityAddress">City Address</label>
+                    <input type="text" class="form-control" v-model="cityAdd" name="cityAdd" placeholder="City Address" value="" required="">
+                  </div>
+                  <div class="item">
+                    <label for="cityTel">City Telephone Number</label>
+                    <input type="text" class="form-control" v-model="cityTel" name="cityTel" placeholder="City Telephone No." value="" required="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="item" id="widerInput" >
+                    <label for="provincialAddress">Provincial Address</label>
+                    <input type="text" class="form-control" v-model="provinceAdd" name="provinceAdd" placeholder="Provincial Address" value="" required="">
+                  </div>
+                  <div class="item">
+                    <label for="provincialTel">Provincial Telephone Number</label>
+                    <input type="text" class="form-control" v-model="provinceTel" name="provinceTel" placeholder="Provincial Telephone No." value="" required="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="item" id="wideInput">
+                    <label for="ailments">Ailments</label>
+                    <input type="text" class="form-control" v-model="ailments" name="ailments" placeholder="Chronic back pain, nausea, etc." value="" required="">
+                  </div>
+                  <div class="item" id="wideInput">
+                    <label for="allergies">Allergies</label>
+                    <input type="text" class="form-control" v-model="allergies" name="allergies" placeholder="nuts, shrimp, etc." value="" required="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="item" id="wideInput">
+                    <label for="hobbies">Hobbies</label>
+                    <input type="text" class="form-control" v-model="hobbies" name="hobbies" placeholder="Basketball, videogames, etc." value="" required="">
+                  </div>
+                  <div class="item" id="wideInput">
+                    <label for="specialSkills">Special Skills</label>
+                    <input type="text" class="form-control" v-model="specSkills" name="specSkills" placeholder="Magic tricks, beatboxing, etc." value="" required="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="item" id="widerInput">
+                    <label for="fathersName">Father's Name</label>
+                    <input type="text" class="form-control" v-model="fathersName" name="fathersName" placeholder="Pedro Dela Cruz" value="" required="">
+                  </div>
+                  <div class="item" id="wideInput">
+                    <label for="fathersOccupation">Father's Occupation</label>
+                    <input type="text" class="form-control" v-model="fathersOcc" name="fathersOcc" placeholder="Teacher" value="" required="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="item" id="widerInput">
+                    <label for="fathersAddress">Father's Address</label>
+                    <input type="text" class="form-control" v-model="fathersAdd" name="fathersAdd" placeholder="Father's Addresss" value="" required="">
+                  </div>
+                  <div class="item">
+                    <label for="fathersTel">Father's Telephone Number</label>
+                    <input type="text" class="form-control" v-model="fathersTel" name="fathersTel" placeholder="Father's Telephone No." value="" required="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="item" id="widerInput">
+                    <label for="mothersName">Mother's Name</label>
+                    <input type="text" class="form-control" v-model="mothersName" name="mothersName" placeholder="Mother's Name" value="" required="">
+                  </div>
+                  <div class="item" id="wideInput">
+                    <label for="mothersOccupation">Mother's Occupation</label>
+                    <input type="text" class="form-control" v-model="mothersOcc" name="mothersOcc" placeholder="Mother's Occupation" value="" required="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="item" id="widerInput">
+                    <label for="mothersAddress">Mother's Address</label>
+                    <input type="text" class="form-control" v-model="mothersAdd" name="mothersAdd" placeholder="Mother's Addresss" value="" required="">
+                  </div>
+                  <div class="item">
+                    <label for="mothersTel">Mother's Telephone Number</label>
+                    <input type="text" class="form-control" v-model="mothersTel" name="mothersTel" placeholder="Mother's Telephone No." value="" required="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="item" id="widerInput">
+                    <label for="guardiansName">Guardian's Name</label>
+                    <input type="text" class="form-control" v-model="guardiansName" name="guardiansName" placeholder="Guardian's Name" value="" required="">
+                  </div>
+                  <div class="item" id="wideInput">
+                    <label for="guardiansOccupation">Guardian's Occupation</label>
+                    <input type="text" class="form-control" v-model="guardiansOcc" name="guardiansOcc" placeholder="Guardian's Occupation" value="" required="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="item" id="widerInput">
+                    <label for="guardiansAddress">Guardian's Address</label>
+                    <input type="text" class="form-control" v-model="guardiansAdd" name="guardiansAdd" placeholder="Guardian's Addresss" value="" required="">
+                  </div>
+                  <div class="item">
+                    <label for="guardiansTel">Guardian's Telephone Number</label>
+                    <input type="text" class="form-control" v-model="guardiansTel" name="guardiansTel" placeholder="Guardian's Telephone No." value="" required="">
+                  </div>
+                </div>
+
+                <hr>
+                <h4>EDUCATIONAL BACKGROUND</h4>
+
+                <div class="row">
+                  <div class="item" id="widerInput">
+                    <label for="presentSchool">Present School</label>
+                    <input type="text" class="form-control" v-model="presentSchool" name="presentSchool" placeholder="Present School" value="" required="">
+                  </div>
+                  <div class="item">
+                    <label for="course">Course</label>
+                    <input type="text" class="form-control" v-model="course" name="course" placeholder="Course" value="" required="">
+                  </div>
+                  <div class="item">
+                    <label for="year">Year</label>
+                    <input type="text" class="form-control" v-model="year" name="year" placeholder="Year" value="" required="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="item" id="widerInput">
+                    <label for="schoolAddress">School Address</label>
+                    <input type="text" class="form-control" v-model="schoolAdd" name="schoolAdd" placeholder="School Address" value="" required="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="item" id="widerInput">
+                    <label for="elementarySchool">Elementary School</label>
+                    <input type="text" class="form-control" v-model="elemSchool" name="elemSchool" placeholder="Elementary School" value="" required="">
+                  </div>
+                  <div class="item">
+                    <label for="elementaryDate">Date</label>
+                    <input type="date" class="form-control" v-model="elemDate" name="elemDate" placeholder="" value="" required="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="item" id="widerInput">
+                    <label for="secondarySchool">Secondary School</label>
+                    <input type="text" class="form-control" v-model="secondarySchool" name="secondarySchool" placeholder="Secondary School" value="" required="">
+                  </div>
+                  <div class="item">
+                    <label for="secondaryDate">Date</label>
+                    <input type="date" class="form-control" v-model="secondaryDate" name="secondaryDate" placeholder="" value="" required="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="item" id="widerInput">
+                    <label for="collegeSchool">College School</label>
+                    <input type="text" class="form-control" v-model="collegeSchool" name="collegeSchool" placeholder="College School" value="" required="">
+                  </div>
+                  <div class="item">
+                    <label for="collegeDate">Date</label>
+                    <input type="date" class="form-control" v-model="collegeDate" name="collegeDate" placeholder="" value="" required="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="item" id="widerInput">
+                    <label for="vocationalSchool">Vocational School</label>
+                    <input type="text" class="form-control" v-model="vocSchool" name="vocSchool" placeholder="Vocational School" value="" required="">
+                  </div>
+                  <div class="item">
+                    <label for="vocationalDate">Date</label>
+                    <input type="date" class="form-control" v-model="vocDate" name="vocDate" placeholder="" value="" required="">
+                  </div>
+                </div>
+
+                <hr>
+                <h4>RED CROSS TRAININGS ATTENDED</h4>
+
+                <div id="trainingsList" v-if="trainings==null">
+                    <div class="row training">
+                        <div class="col-md-6 mb-1 trainingDiv">
+                            <label for="training">Training Attended</label>
+                            <input type="text" class="form-control trainingAttended" name="training" placeholder="Training Attended" required="">
+                        </div>
+                        <div class="col-md-6 mb-1 certDiv">
+                        <label for="cert">Certificate Number</label>
+                        <input type="text" class="form-control certificateNo" name="cert" placeholder="Certificate Number" required="">
+                         </div>
+                        <div class="col-md-6 mb-4 placeDiv">
+                            <label for="place">Place</label>
+                            <input type="text" class="form-control place" name="place" placeholder="Place" required="">
+                        </div>
+                        <div class="col-md-3 mb-4 startDiv">
+                            <label for="startDate">Start Date</label>
+                            <input type="date" class="form-control startDate" name="startDate" placeholder="" required="">
+                        </div>
+                        <div class="col-md-3 mb-4 endDiv">
+                            <label for="endDate">End Date</label>
+                            <input type="date" class="form-control endDate" name="endDate" placeholder="" required="">
+                        </div>
+                    </div>
+                  </div>
+
+                  <div id="trainingsList" v-for="(training,i) in trainings" :key="i">
+                      <div class="row training">
+                          <div class="col-md-6 mb-1 trainingDiv">
+                              <label for="training">Training Attended</label>
+                              <input type="text" class="form-control trainingAttended" name="training" :value=training.training_attended required="">
+                          </div>
+                          <div class="col-md-6 mb-1 certDiv">
+                          <label for="cert">Certificate Number</label>
+                          <input type="text" class="form-control certificateNo" name="cert" placeholder="Certificate Number" :value=training.certificate_no required="">
+                           </div>
+                          <div class="col-md-6 mb-4 placeDiv">
+                              <label for="place">Place</label>
+                              <input type="text" class="form-control place" name="place" placeholder="Place" :value=training.place required="">
+                          </div>
+                          <div class="col-md-3 mb-4 startDiv">
+                              <label for="startDate">Start Date</label>
+                              <input type="date" class="form-control startDate" name="startDate" placeholder="" :value=formatDate(training.start_date) required="">
+                          </div>
+                          <div class="col-md-3 mb-4 endDiv">
+                              <label for="endDate">End Date</label>
+                              <input type="date" class="form-control endDate" name="endDate" placeholder="" :value=formatDate(training.end_date) required="">
+                          </div>
+                      </div>
+                  </div>
+                  <button type="button" v-on:click="addTraining" class="col-md-3 btn btn-success">Add Another Training</button>
+
+                  <hr>
+                  <h4>AFFILIATION WITH OTHER ORGANIZATIONS</h4>
+
+                  <div id="organizations">
+                      <div v-if="trainings==null" class="row organization">
+                          <div class="col-md-6 mb-1 orgDiv">
+                          <label for="organization">Organization</label>
+                          <input type="text" class="form-control org" name="organization" placeholder="Organization" required="">
+                          </div>
+                          <div class="col-md-3 mb-1 startDiv">
+                          <label for="startDate">Start Date</label>
+                          <input type="date" class="form-control startDate" name="startDate" placeholder="" required="">
+                          </div>
+                          <div class="col-md-3 mb-1 endDiv">
+                          <label for="endDate">End Date</label>
+                          <input type="date" class="form-control endDate" name="endDate" placeholder="" required="">
+                          </div>
+                          <div class="col-md-6 mb-4 posDiv">
+                          <label for="position">Position</label>
+                          <input type="text" class="form-control position" name="position" placeholder="Position" required="">
+                          </div>
+                          <div class="col-md-6 mb-4 councilDiv">
+                          <label for="council">Council</label>
+                          <input type="text" class="form-control council" name="council" placeholder="Council" required="">
+                          </div>
+                      </div>
+                  </div>
+
+                  <div id="organizations">
+                      <div class="row organization" v-for="(org,i) in organizations" :key="i">
+                          <div class="col-md-6 mb-1 orgDiv">
+                          <label for="organization">Organization</label>
+                          <input type="text" class="form-control org" name="organization" placeholder="Organization" :value=org.organization required="">
+                          </div>
+                          <div class="col-md-3 mb-1 startDiv">
+                          <label for="startDate">Start Date</label>
+                          <input type="date" class="form-control startDate" name="startDate" placeholder="" :value=formatDate(org.start_date) required="">
+                          </div>
+                          <div class="col-md-3 mb-1 endDiv">
+                          <label for="endDate">End Date</label>
+                          <input type="date" class="form-control endDate" name="endDate" placeholder="" :value=formatDate(org.end_date) required="">
+                          </div>
+                          <div class="col-md-6 mb-4 posDiv">
+                          <label for="position">Position</label>
+                          <input type="text" class="form-control position" name="position" placeholder="Position" :value=org.position required="">
+                          </div>
+                          <div class="col-md-6 mb-4 councilDiv">
+                          <label for="council">Council</label>
+                          <input type="text" class="form-control council" name="council" placeholder="Council" :value=org.council required="">
+                          </div>
+                      </div>
+                  </div>
+                  <button type="button" v-on:click="addOrg" class="col-md-4 btn btn-success">Add Another Organization</button>
+
+                  <hr class="my-4">
+
+
+                  <div class="row mt-5 mb-2">
+                      <div class="d-flex justify-content-center">
+                          <h6>I hereby certify to the correctness of the foregoing information</h6>
+                      </div>
+                  </div>
+
+                  <div class="row mt-3 mb-3 justify-content-center">
+                      <div class="col-md-6 text-center">
+                          <button v-if="council_pres_sig==1" class="btn btn-success">Approved</button>
+                          <button v-if="council_pres_sig==2" class="btn btn-danger">Rejected</button>
+                          <button v-if="council_pres_sig==0 && userType=='Council'" type="button" v-on:click="presApprove" class="btn btn-success">Approve</button>
+                          <button v-if="council_pres_sig==0 && userType=='Council'" type="button" v-on:click="presReject" class="btn btn-danger">Reject</button>
+                          <h5 name="cyc1" id="cyc1"></h5>
+                          <hr class="my-1">
+                          <p>Council President</p>
+                      </div>
+                      <div class="col-md-6 text-center">
+                          <button v-if="member_sig==1" class="btn btn-success">Approved</button>
+                          <button v-if="member_sig==2" class="btn btn-danger">Rejected</button>
+                          <button v-if="member_sig==0 && userType=='Council'" type="button" v-on:click="memApprove" class="btn btn-success">Approve</button>
+                          <button v-if="member_sig==0 && userType=='Council'" type="button" v-on:click="memReject" class="btn btn-danger">Reject</button>
+                          <h5 name="cyc2" id="cyc2"></h5>
+                          <hr class="my-1">
+                          <p>Signature of Member</p>
+                      </div>
+                  </div>
+
+                  <div class="row mt-5 mb-3 justify-content-center">
+                      <div class="col-md-6 text-center">
+                      </div>
+                      <div class="col-md-6 text-center">
+                          <button v-if="council_adv_sig==1" class="btn btn-success">Approved</button>
+                          <button v-if="council_adv_sig==2" class="btn btn-danger">Rejected</button>
+                          <button v-if="council_adv_sig==0 && userType=='Council Advisor'" type="button" v-on:click="advApprove" class="btn btn-success">Approve</button>
+                          <button v-if="council_adv_sig==0 && userType=='Council Advisor'" type="button" v-on:click="advReject" class="btn btn-danger">Reject</button>
+                          <h5 name="cyc2" id="cyc2"></h5>
+                          <hr class="my-1">
+                          <p>Council Advisor</p>
+                      </div>
+                  </div>
+                  <button v-if="newFlag==null" type='submit' id="test" class="btn btn-danger btn-lg btn-block text-white">Submit</button>
+              </form>
+          </div>
         </section>
-
-    </div>
+  </div>
 </template>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <script>
@@ -529,7 +492,7 @@ export default {
             memId: null,
             newFlag: null
         }
-    }, 
+    },
     async mounted(){
         this.sessionUserId = this.$store.getters.getUserId
         this.userType = this.$store.getters.getUserType
@@ -601,11 +564,11 @@ export default {
             let month = (date.getMonth()+1).toString()
             let year = date.getFullYear()
             let day = (date.getDate()).toString()
-            if (month.length < 2) 
+            if (month.length < 2)
                 month = '0' + month;
-            if (day.length < 2) 
+            if (day.length < 2)
                 day = '0' + day;
-        
+
             let ret = year + "-" + month + "-" + day
             return ret
         },
@@ -619,7 +582,7 @@ export default {
             axios({
                 method: 'POST',
                 url: 'http://localhost:3000/memForm/presReject/' + this.memId,
-                
+
             }).then(response => this.council_pres_sig = response.data.sig)
         },
         memApprove: function(){
@@ -632,7 +595,7 @@ export default {
             axios({
                 method: 'POST',
                 url: 'http://localhost:3000/memForm/memReject/' + this.memId,
-                
+
             }).then(response => this.member_sig = response.data.sig)
         },
         advApprove: function(){
@@ -645,16 +608,16 @@ export default {
             axios({
                 method: 'POST',
                 url: 'http://localhost:3000/memForm/advReject/' + this.memId,
-                
+
             }).then(response => this.council_adv_sig = response.data.sig)
         },
-        
+
         addTraining: function(){
             let training = $( ".training" ).first().clone();
             training.children(".trainingDiv").children(".trainingAttended").val("");
             training.children(".certDiv").children(".certificateNo").val("");
             training.children(".placeDiv").children(".place").val("");
-            training.appendTo( "#trainingsList" ); 
+            training.appendTo( "#trainingsList" );
             console.log(this.sessionUserId)
         },
         addOrg: function(){
@@ -662,7 +625,7 @@ export default {
             org.children(".orgDiv").children(".org").val("");
             org.children(".posDiv").children(".position").val("");
             org.children(".councilDiv").children(".council").val("");
-            org.appendTo( "#organizations" ); 
+            org.appendTo( "#organizations" );
         },
         addMember: function(){
             axios({
@@ -755,8 +718,8 @@ export default {
 }
 </script>
 
-<style scoped>
-    .breadcrumbs {
+<style lang="css" scoped>
+.breadcrumbs {
     padding: 20px 0;
     background-color: #f1f6fe;
     min-height: 40px;
@@ -811,5 +774,70 @@ export default {
     .breadcrumbs ol li {
         display: inline-block;
     }
+    }
+    .inner-page{
+      margin-top: 50px;
+      margin-bottom: 50px;
+      padding: 30px;
+      background: #f9f9f9;
+      box-shadow: 0 20px 20px #aaa;
+    }
+    .mainForm{
+      padding: 20px;
+    }
+    .row{
+      display: flex;
+      width: 100%;
+      margin: auto;
+    }
+    .item{
+      display: flex;
+      flex-direction: column;
+      margin-right: 25px;
+      margin-bottom: 15px;
+    }
+    .row input, .row select{
+      height: 4vh;
+      padding: 5px;
+      border: 0;
+      border-radius: 3px;
+      transition: .4s;
+      box-shadow: 0 3px 3px -1px rgba(0, 0, 0, .5);
+    }
+    .item input:focus, .item select:focus{
+      outline:none;
+      box-shadow: 0 5px 3px -1px rgba(200, 0, 0, .8);
+    }
+    #widerInput{
+      width: 50%;
+    }
+    #wideInput{
+      width: 30%;
+    }
+    hr{
+      margin-top: 5vh;
+      height: 5px;
+      background: #e00;
+      border-radius: 3px;
+    }
+    .my-4{
+      height: 1px;
+      background: #aaa;
+    }
+    .my-1{
+      height: .5px;
+      background: #aaa;
+    }
+    #test{
+      margin-left: 65%;
+      width: 30%;
+
+      box-shadow: 0 5px 5px rgba(0, 0, 0, .5);
+      transition: .4s;
+    }
+    #test:hover{
+      background: #f00;
+      margin-top: 5px;
+      box-shadow: none;
     }
 </style>

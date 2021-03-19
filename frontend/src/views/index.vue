@@ -10,18 +10,18 @@
                 <a href="https://www.youtube.com/watch?v=AUs7aUUgW-4" class="venobox btn-watch-video" data-vbtype="video" data-autoplay="true"> Watch Video <i class="icofont-play-alt-2"></i></a>
             </div>
             </div>
-        </section><!-- End Hero --> 
+        </section><!-- End Hero -->
 
             <!-- ======= About Section ======= -->
             <section id="about" class="about section-bg">
                 <div class="container" data-aos="fade-up">
-        
+
                 <div class="section-title">
                     <h2>About</h2>
                     <h3>Find Out More <span>About Us</span></h3>
                     <p>Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.</p>
                 </div>
-        
+
                 <div class="row">
                     <div class="col-lg-6" data-aos="fade-right" data-aos-delay="100">
                     <img src="https://www.sunstar.com.ph/uploads/images/2019/06/16/153516.jpg" class="img-fluid" alt="">
@@ -55,22 +55,22 @@
                     </p>
                     </div>
                 </div>
-        
+
                 </div>
             </section><!-- End About Section -->
 
                 <!-- ======= Team Section ======= -->
             <section id="team" class="team section-bg">
                 <div class="container" data-aos="fade-up">
-        
+
                 <div class="section-title">
                     <h2>Team</h2>
                     <h3>Our Hardworking <span>Team</span></h3>
                     <p>Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.</p>
                 </div>
-        
+
                 <div class="row">
-        
+
                     <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
                     <div class="member">
                         <div class="member-img">
@@ -88,7 +88,7 @@
                         </div>
                     </div>
                     </div>
-        
+
                     <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
                     <div class="member">
                         <div class="member-img">
@@ -106,7 +106,7 @@
                         </div>
                     </div>
                     </div>
-        
+
                     <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
                     <div class="member">
                         <div class="member-img">
@@ -124,7 +124,7 @@
                         </div>
                     </div>
                     </div>
-        
+
                     <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
                     <div class="member">
                         <div class="member-img">
@@ -142,27 +142,27 @@
                         </div>
                     </div>
                     </div>
-        
+
                 </div>
-        
+
                 </div>
             </section><!-- End Team Section -->
-        
+
 
                 <!-- ======= Frequently Asked Questions Section ======= -->
             <section id="faq" class="faq section-bg">
                 <div class="container" data-aos="fade-up">
-        
+
                 <div class="section-title">
                     <h2>F.A.Q</h2>
                     <h3>Frequently Asked <span>Questions</span></h3>
                     <p>Ut possimus qui ut temporibus culpa velit eveniet modi omnis est adipisci expedita at voluptas atque vitae autem.</p>
                 </div>
-        
+
                 <div class="row justify-content-center">
                     <div class="col-xl-10">
                     <ul class="faq-list" data-aos="fade-up" data-aos-delay="100">
-        
+
                         <li>
                         <a data-toggle="collapse" class="" href="#faq1">Non consectetur a erat nam at lectus urna duis? <i class="icofont-simple-up"></i></a>
                         <div id="faq1" class="collapse show" data-parent=".faq-list">
@@ -171,7 +171,7 @@
                             </p>
                         </div>
                         </li>
-        
+
                         <li>
                         <a data-toggle="collapse" href="#faq2" class="collapsed">Feugiat scelerisque varius morbi enim nunc faucibus a pellentesque? <i class="icofont-simple-up"></i></a>
                         <div id="faq2" class="collapse" data-parent=".faq-list">
@@ -180,7 +180,7 @@
                             </p>
                         </div>
                         </li>
-        
+
                         <li>
                         <a data-toggle="collapse" href="#faq3" class="collapsed">Dolor sit amet consectetur adipiscing elit pellentesque habitant morbi? <i class="icofont-simple-up"></i></a>
                         <div id="faq3" class="collapse" data-parent=".faq-list">
@@ -189,7 +189,7 @@
                             </p>
                         </div>
                         </li>
-        
+
                         <li>
                         <a data-toggle="collapse" href="#faq4" class="collapsed">Ac odio tempor orci dapibus. Aliquam eleifend mi in nulla? <i class="icofont-simple-up"></i></a>
                         <div id="faq4" class="collapse" data-parent=".faq-list">
@@ -198,7 +198,7 @@
                             </p>
                         </div>
                         </li>
-        
+
                         <li>
                         <a data-toggle="collapse" href="#faq5" class="collapsed">Tempus quam pellentesque nec nam aliquam sem et tortor consequat? <i class="icofont-simple-up"></i></a>
                         <div id="faq5" class="collapse" data-parent=".faq-list">
@@ -207,7 +207,7 @@
                             </p>
                         </div>
                         </li>
-        
+
                         <li>
                         <a data-toggle="collapse" href="#faq6" class="collapsed">Tortor vitae purus faucibus ornare. Varius vel pharetra vel turpis nunc eget lorem dolor? <i class="icofont-simple-up"></i></a>
                         <div id="faq6" class="collapse" data-parent=".faq-list">
@@ -216,11 +216,11 @@
                             </p>
                         </div>
                         </li>
-        
+
                     </ul>
                     </div>
                 </div>
-        
+
                 </div>
             </section><!-- End Frequently Asked Questions Section -->
 
@@ -228,13 +228,13 @@
             <!-- ======= Contact Section ======= -->
             <section id="contact" class="contact">
                 <div class="container" data-aos="fade-up">
-        
+
                 <div class="section-title">
                     <h2>Contact</h2>
                     <h3><span>Contact Us</span></h3>
                     <p>Please do not use this to stalk us uwu</p>
                 </div>
-        
+
                 <div class="row" data-aos="fade-up" data-aos-delay="100">
                     <div class="col-lg-6">
                     <div class="info-box mb-4">
@@ -243,7 +243,7 @@
                         <p>A108 Adam Street, New York, NY 535022</p>
                     </div>
                     </div>
-        
+
                     <div class="col-lg-3 col-md-6">
                     <div class="info-box  mb-4">
                         <i class="bx bx-envelope"></i>
@@ -251,7 +251,7 @@
                         <p>contact@example.com</p>
                     </div>
                     </div>
-        
+
                     <div class="col-lg-3 col-md-6">
                     <div class="info-box  mb-4">
                         <i class="bx bx-phone-call"></i>
@@ -259,15 +259,15 @@
                         <p>+1 5589 55488 55</p>
                     </div>
                     </div>
-        
+
                 </div>
-        
+
                 <div class="row" data-aos="fade-up" data-aos-delay="100">
-        
+
                     <div class="col-lg-6 ">
                     <iframe class="mb-4 mb-lg-0" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621" frameborder="0" style="border:0; width: 100%; height: 384px;" allowfullscreen></iframe>
                     </div>
-        
+
                     <div class="col-lg-6">
                     <form action="forms/contact.php" method="post" role="form" class="php-email-form">
                         <div class="row">
@@ -285,7 +285,7 @@
                         <div class="validate"></div>
                         </div>
                         <div class="form-group">
-                        <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message"></textarea>
+                        <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message" ></textarea>
                         <div class="validate"></div>
                         </div>
                         <div class="mb-3">
@@ -296,9 +296,9 @@
                         <div class="text-center"><button type="submit">Send Message</button></div>
                     </form>
                     </div>
-        
+
                 </div>
-        
+
                 </div>
             </section><!-- End Contact Section -->
     </div>
@@ -726,6 +726,7 @@ export default {
 
     .contact .php-email-form textarea {
     padding: 12px 15px;
+    resize: none;
     }
 
     .contact .php-email-form button[type="submit"] {
