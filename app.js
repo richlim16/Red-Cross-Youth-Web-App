@@ -292,7 +292,12 @@ app.get('/committeeMembershipForm', async (req,res)=>{
         res.redirect("/login");
     }else{
         let committees = await Read.getCommitteesOfCouncil(req)
-        res.render('committeeMembershipForm',{title: "Committee Membership Form", session: req.session,councilName:"USC",councilType:"College Council"});
+        res.render('committeeMembershipForm', {
+            title: "Committee Membership Form", nav: {
+                name: req.session.council_name,
+                category: req.session.council_category
+            },
+        session: req.session, councilName: "USC", councilType: "College Council"});
     }
 });
 
@@ -351,7 +356,11 @@ app.get('/activityRequestForm', (req,res)=>{
     }else{
         res.render('activityRequestForm',{
             title: "Activity Request Form",
-            council: req.session.council
+            council: req.session.council,
+            nav: {
+                name: req.session.council_name,
+                category: req.session.council_category
+            }
         });
     }
 });
@@ -362,7 +371,11 @@ app.get('/activityReportForm', (req,res)=>{
     }else{
         res.render('activityReportForm',{
             title: "Activity Report Form",
-            council: req.session.council
+            council: req.session.council,
+            nav: {
+                name: req.session.council_name,
+                category: req.session.council_category
+            }
         });
     }
 });

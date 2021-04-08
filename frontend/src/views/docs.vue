@@ -14,19 +14,41 @@
                     <!-- <button class="btn btn-primary" onclick="listView()"><i class="fa fa-bars"></i> List</button> -->
                     <!-- <button class="btn btn-primary" onclick="gridView()"><i class="fa fa-th-large"></i> Grid</button> -->
                 <div class="formsContainer">
-                  <div class="item"></div>
-                  <div class="item"></div>
-                  <div class="item"></div>
-                  <div class="item"></div>
-                  <div class="item"></div>
-                  <div class="item"></div>
-                  <div class="item"></div>
-                  <div class="item"></div>
-                  <div class="item"></div>
-                  <div class="item"></div>
-                  <div class="item"></div>
-                  <div class="item"></div>
-                  <div class="item"></div>
+                  <div class="item">
+                      <img src="/images/Icons/membershipIcon.png" alt="redcross logo here">
+                      <div class="text"><h3>Membership Form</h3></div>
+                      <a href="/membershipForm">Make Form</a>
+                  </div>
+                  <div class="item">
+                      <img src="/images/Icons/CouncilMonthlyIcon.png" alt="redcross logo here">
+                      <div class="text"><h3>Council Monthly Reports</h3></div>
+                      <a href="/councilMonthlyReportForm">Make Form</a>
+                  </div>
+                  <div class="item">
+                      <img src="/images/Icons/UniformReqIcon.png" alt="redcross logo here">
+                      <div class="text"><h3>Uniform Request Forms</h3></div>
+                      <a href="/unifRequest">Make Form</a>
+                  </div>
+                  <div class="item">
+                        <img src="/images/Icons/CommitteeMembershipIcon.png" alt="redcross logo here">
+                        <div class="text"><h3>Committee Membership Forms</h3></div>
+                        <a href="/committeeForm">Make Form</a>
+                  </div>
+                  <div class="item">
+                      <img src="/images/Icons/ActivityReqIcon.png" alt="redcross logo here">
+                      <div class="text"><h3>Activity Request Forms</h3></div>
+                      <a href="/activityRequestForm">Make Form</a>
+                  </div>
+                  <div class="item">
+                      <img src="/images/Icons/ActivityReportIcon.png" alt="redcross logo here">
+                      <div class="text"><h3>Activity Report Forms</h3></div>
+                      <a href="/activityReportForm">Make Form</a>
+                  </div>
+                  <div class="item">
+                      <img src="/images/Icons/ServiceReqIcon.png" alt="redcross logo here">
+                      <div class="text"><h3>Service Request Forms</h3></div>
+                      <a href="/membershipForm">Make Form</a>
+                  </div>
                 </div>
             </div>
         </section>
@@ -53,7 +75,7 @@ export default {
     #hero {
     width: 100%;
     height: 75vh;
-    background: url("/images/REDCROSS123-1280x720.jpg") top left;
+    background: #eee;
     background-size: cover;
     position: relative;
     }
@@ -73,14 +95,23 @@ export default {
     padding-top: 132px;
     }
 
-    @media (max-width: 992px) {
+    @media (max-width: 768px) {
     #hero .container {
         padding-top: 58px;
     }
+    .container h1{
+    margin-top: 100px;
+
+    }
+    .formsContainer{
+      row-gap: 10px;
     }
 
+    }
+    /*end of @media*/
+
     #hero h1 {
-    margin: 0;
+    margin: 1vh;
     font-size: 48px;
     font-weight: 700;
     line-height: 56px;
@@ -91,17 +122,42 @@ export default {
     #hero h1 span {
     color: #ea1010;
     }
-
+    .container{
+    }
     .formsContainer{
       display: grid;
-      grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+      padding: 5vh;
       column-gap: 50px;
       row-gap: 50px;
     }
+
     .item{
+      display: grid;
+      place-items: center;
+      padding: 20px;
       background: #eee;
+      border-radius: 10px;
+      box-shadow: 10px 10px 30px #dfdfdf,
+                  -10px -10px 30px #ffffff;
+                  
+      row-gap: 5px;
+    }
+
+    .item img{
+      width: 50%;
+    }
+    .item .text{
+      text-align: center;
+      font-size: 5rem;
+    }
+    .item a{
+      background: #e00;
+      text-decoration: none;
+      color: #eee;
+      font-weight: 500;
+      padding: 10px;
       border-radius: 5px;
-      height: 400px;
     }
 
 </style>

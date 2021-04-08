@@ -5,7 +5,13 @@ import App from './App.vue'
 import home from './views/Home.vue'
 import docs from './views/docs.vue'
 import membership from './views/membershipForm.vue'
-import oldmembership from './views/oldmembershipForm.vue'
+/* rich started making routes here*/
+import councilMonthlyReport from './views/councilMonthlyReportForm.vue'
+import unifRequest from './views/uniformRequestForm.vue'
+import oldmembership from './views/oldmembershipForm.vue' // this is for testing. not essential. 
+import activityRequestForm from './views/activityRequestForm.vue'
+import activityReportForm from './views/activityReportForm.vue'
+/*rich stopped making routes here */
 
 import committee from './views/committeeForm.vue'
 import index from './views/index.vue'
@@ -43,9 +49,29 @@ const router = new VueRouter({
       component: membership
     },
     {
+      path: "/councilMonthlyReportForm",
+      name: "councilMonthlyReport",
+      component: councilMonthlyReport
+    },
+    {
+      path: "/unifRequest",
+      name: "unifRequest",
+      component: unifRequest
+    },
+    {
       path: "/oldmembershipForm",
       name: "oldmembershipform",
       component: oldmembership
+    },
+    {
+      path: "/activityRequestForm",
+      name: "activityRequestForm",
+      component: activityRequestForm
+    },
+    {
+      path: "/activityReportForm",
+      name: "activityReportForm",
+      component: activityReportForm
     },
     {
       path: "/committeeForm",

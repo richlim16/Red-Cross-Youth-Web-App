@@ -8,7 +8,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <h2>COMMITTEE MEMBERSHIP FORM</h2>
                 <ol>
-                <li><a href="index.html">Back To Activity Page</a></li>
+                <li><a href="/docs">Back To Documents Page</a></li>
                 <li>Adding Report</li>
                 </ol>
             </div>
@@ -153,7 +153,6 @@
                 <hr class="mb-4">        
                 <button type='submit' class="btn btn-danger btn-lg btn-block text-white">Post</button>        
                 </form>
-                <a href="activities.php">Back</a>
             </div>
         </section>
 

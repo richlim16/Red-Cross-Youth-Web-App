@@ -7,7 +7,7 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <h2>Membership Form</h2>
                     <ol>
-                    <li><a href="index.html">Back To Activity Page</a></li>
+                    <li><a href="/docs">Back To Activity Page</a></li>
                     <li>Adding Report</li>
                     </ol>
                 </div>
@@ -108,7 +108,7 @@
                   </div>
                   <div class="item">
                     <label for="cityTel">City Telephone Number</label>
-                    <input type="text" class="form-control" v-model="cityTel" name="cityTel" placeholder="City Telephone No." value="" required="">
+                    <input type="text" class="form-control" v-model="cityTel" name="cityTel" placeholder="(032) 123-4567" value="" required="">
                   </div>
                 </div>
                 <div class="row">
@@ -118,7 +118,7 @@
                   </div>
                   <div class="item">
                     <label for="provincialTel">Provincial Telephone Number</label>
-                    <input type="text" class="form-control" v-model="provinceTel" name="provinceTel" placeholder="Provincial Telephone No." value="" required="">
+                    <input type="text" class="form-control" v-model="provinceTel" name="provinceTel" placeholder="(032) 123-4567" value="" required="">
                   </div>
                 </div>
                 <div class="row">
@@ -158,7 +158,7 @@
                   </div>
                   <div class="item">
                     <label for="fathersTel">Father's Telephone Number</label>
-                    <input type="text" class="form-control" v-model="fathersTel" name="fathersTel" placeholder="Father's Telephone No." value="" required="">
+                    <input type="text" class="form-control" v-model="fathersTel" name="fathersTel" placeholder="+63 995 123 4567" value="" required="">
                   </div>
                 </div>
                 <div class="row">
@@ -178,7 +178,7 @@
                   </div>
                   <div class="item">
                     <label for="mothersTel">Mother's Telephone Number</label>
-                    <input type="text" class="form-control" v-model="mothersTel" name="mothersTel" placeholder="Mother's Telephone No." value="" required="">
+                    <input type="text" class="form-control" v-model="mothersTel" name="mothersTel" placeholder="+63 995 123 4567" value="" required="">
                   </div>
                 </div>
                 <div class="row">
@@ -198,7 +198,7 @@
                   </div>
                   <div class="item">
                     <label for="guardiansTel">Guardian's Telephone Number</label>
-                    <input type="text" class="form-control" v-model="guardiansTel" name="guardiansTel" placeholder="Guardian's Telephone No." value="" required="">
+                    <input type="text" class="form-control" v-model="guardiansTel" name="guardiansTel" placeholder="+63 995 123 4567" value="" required="">
                   </div>
                 </div>
 
@@ -738,11 +738,6 @@ export default {
     margin: 0;
     }
 
-    @media (max-width: 992px) {
-    .breadcrumbs h2 {
-        margin: 0 0 10px 0;
-    }
-    }
 
     .breadcrumbs ol {
     display: flex;
@@ -764,17 +759,7 @@ export default {
     content: "/";
     }
 
-    @media (max-width: 768px) {
-    .breadcrumbs .d-flex {
-        display: block !important;
-    }
-    .breadcrumbs ol {
-        display: block;
-    }
-    .breadcrumbs ol li {
-        display: inline-block;
-    }
-    }
+    
     .inner-page{
       margin-top: 50px;
       margin-bottom: 50px;
@@ -840,4 +825,33 @@ export default {
       margin-top: 5px;
       box-shadow: none;
     }
+
+
+    @media (max-width: 768px) {
+    .breadcrumbs .d-flex {
+        display: block !important;
+    }
+    .breadcrumbs ol {
+        display: block;
+    }
+    .breadcrumbs ol li {
+        display: inline-block;
+    }
+    .inner-page{
+      box-shadow: none;
+      background: #efefef;
+    }
+    .row{
+      flex-direction: column;
+    }
+    .item, #widerInput, #wideInput{
+      width: 100%;
+    }
+    #test{
+      width: 100%;
+      margin: 0;
+    }
+    }
+
+    /* end of @media */
 </style>
